@@ -16,7 +16,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        UIApplication.shared.isIdleTimerDisabled = true
         BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.brandon.furtherBurstUpdate", using: nil) { (task) in
             self.handleAppBurstTask(task: task as! BGProcessingTask)
         }

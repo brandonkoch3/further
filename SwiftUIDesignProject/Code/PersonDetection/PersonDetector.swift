@@ -55,6 +55,10 @@ class PersonDetector: NSObject, ObservableObject {
             self.backgroundExecution = backgroundStatus
         }
         
+        if !self.backgroundExecution {
+            UIApplication.shared.isIdleTimerDisabled = true
+        }
+        
         print("MY ID:", self.myID)
         
         self.serviceAdvertiser = MCNearbyServiceAdvertiser(peer: self.myPeerID, discoveryInfo: nil, serviceType: serviceType)
@@ -84,28 +88,27 @@ class PersonDetector: NSObject, ObservableObject {
                 }
             })
         
-//        detectingCancellable = $isDetecting
-//            .receive(on: RunLoop.main)
-//            .sink(receiveValue: { detecting in
-//                detecting ? self.start() : self.stop()
-//            })
+        self.isDetecting = true
         
-        self.start()
+        detectingCancellable = $isDetecting
+        .receive(on: RunLoop.main)
+        .sink(receiveValue: { detecting in
+            print("DETECTING?", detecting)
+            detecting ? self.start() : self.stop()
+        })
     
     }
     
     func start() {
-        //guard !self.isDetecting else { return }
         self.serviceAdvertiser.startAdvertisingPeer()
         self.serviceBrowser.startBrowsingForPeers()
-        //self.isDetecting = true
     }
     
     func stop() {
-        //guard self.isDetecting else { return }
+        self.session.disconnect()
         self.serviceAdvertiser.stopAdvertisingPeer()
         self.serviceBrowser.stopBrowsingForPeers()
-        //self.isDetecting = false
+        self.activeParticipants.removeAll()
     }
     
     func peerConnected(peerID: MCPeerID) {
@@ -145,12 +148,15 @@ class PersonDetector: NSObject, ObservableObject {
 extension PersonDetector: MCNearbyServiceAdvertiserDelegate {
     func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
         invitationHandler(true, self.session)
+        print("RECEIVED INVITATION FROM:", peerID)
     }
 }
 
 extension PersonDetector: MCNearbyServiceBrowserDelegate {
     func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
+        print("FOUND PEER")
         guard !self.activeParticipants.contains(where: { $0.personUUID == peerID.displayName }), peerID.displayName != self.myID else { return }
+        print("INVITING:", peerID)
         browser.invitePeer(peerID, to: self.session, withContext: nil, timeout: 10)
     }
     
@@ -165,7 +171,7 @@ extension PersonDetector: MCSessionDelegate {
         case .connected:
             peerConnected(peerID: peerID)
         case .connecting:
-            break
+            print("ATTEMPTING TO CONNECT")
         case .notConnected:
             peerDisconnected(peerID: peerID)
         @unknown default:

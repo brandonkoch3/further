@@ -8,13 +8,13 @@
 
 import SwiftUI
 import Combine
+import UIKit
 
 struct EntryView: View {
     
     // UI Config
     @Environment(\.colorScheme) var colorScheme
     @State private var pulsate = false
-    @State private var userDetected = false
     @State var showingQuestionSheet = false
     private var haptics = Haptics()
     
@@ -53,7 +53,7 @@ struct EntryView: View {
                             SearchButton(pulsate: $pulsate)
                                 .buttonStyle(LightButtonStyle())
                         }
-                        Text(pulsate ? "Checking For Others" : "Paused")
+                        Text(detector.isDetecting ? "Checking For Others" : "Paused")
                             .foregroundColor(colorScheme == .dark ? .offWhite : .lairDarkGray)
                             .bold()
                     }
@@ -62,15 +62,16 @@ struct EntryView: View {
                 HStack {
                     if colorScheme == .dark {
                         QuestionButton(showingQuestionSheet: $showingQuestionSheet, userID: self.detector.myID)
-                            .buttonStyle(DarkButtonStyle())
+                        Spacer()
+                        CameraButton()
+                        
                     } else {
                         QuestionButton(showingQuestionSheet: $showingQuestionSheet, userID: self.detector.myID)
-                            .buttonStyle(LightButtonStyle())
+                        Spacer()
+                        CameraButton()
                     }
-                    Spacer()
                 }
             }.padding()
-            
         }
         .alert(isPresented: $network.isWifiConnected) {
             Alert(title: Text("Disable Wifi"), message: Text("For best performance, we suggest disconnecting from your Wi-Fi network.  Wi-Fi can result in inaccurate distance calculations."), dismissButton: .default(Text("Dismiss")) {
@@ -97,12 +98,24 @@ struct QuestionButton: View {
         Button(action: {
             self.showingQuestionSheet.toggle()
         }) {
-            Image(systemName: "questionmark")
+            Image(systemName: "list.dash")
                 .foregroundColor(.gray)
                 .font(.system(size: 30, weight: .regular))
         }.sheet(isPresented: $showingQuestionSheet) {
             QuestionView(showingQuestionSheet: self.$showingQuestionSheet)
-        }
+        }.padding()
+    }
+}
+
+struct CameraButton: View {
+    var body: some View {
+        Button(action: {
+            //
+        }) {
+            Image(systemName: "camera.fill")
+                .foregroundColor(.gray)
+                .font(.system(size: 30, weight: .regular))
+        }.padding()
     }
 }
 
@@ -114,7 +127,7 @@ struct SearchButton: View {
             self.pulsate.toggle()
             self.detector.isDetecting.toggle()
         }) {
-            Image(systemName: pulsate ? "heart.fill" : "heart.slash.fill")
+            Image(systemName: detector.isDetecting ? "heart.fill" : "heart.slash.fill")
                 .foregroundColor(.gray)
                 .font(.system(size: 50, weight: .ultraLight))
                 .scaleEffect(pulsate ? 0.5 : 1)
@@ -134,11 +147,11 @@ struct PersonButton: View {
             self.pulsate.toggle()
             self.detector.isDetecting.toggle()
         }) {
-            Image(systemName: pulsate ? "exclamationmark.triangle.fill" : "heart.slash.fill")
-                .foregroundColor(pulsate ? .red : .gray)
+            Image(systemName: detector.isDetecting ? "exclamationmark.triangle.fill" : "heart.slash.fill")
+                .foregroundColor(detector.isDetecting ? .red : .gray)
                 .font(.system(size: 50, weight: .ultraLight))
                 .scaleEffect(pulsate ? 0.5 : 1)
-                .animation(Animation.easeInOut(duration: 1).delay(0).repeat(while: pulsate))
+                .animation(Animation.easeInOut(duration: 1).delay(0).repeat(while: detector.isDetecting))
                 .onAppear() {
                     self.pulsate.toggle()
             }

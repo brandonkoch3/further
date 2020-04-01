@@ -9,7 +9,6 @@
 import SwiftUI
 
 struct LightButtonStyle: ButtonStyle {
-    @Environment(\.colorScheme) var colorScheme
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
         .padding(30)
@@ -44,6 +43,16 @@ struct LightButtonStyle: ButtonStyle {
     }
 }
 
+struct DarkAnswerButtonStyle: ButtonStyle {
+    func makeBody(configuration: Self.Configuration) -> some View {
+        configuration.label
+            .padding(30)
+            .contentShape(RoundedRectangle(cornerRadius: 20))
+            .background(
+                DarkBackground(isHighlighted: configuration.isPressed, shape: RoundedRectangle(cornerRadius: 20))
+            )
+    }
+}
 
 struct DarkButtonStyle: ButtonStyle {
     func makeBody(configuration: Self.Configuration) -> some View {
