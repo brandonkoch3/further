@@ -20,6 +20,7 @@ struct EntryView: View {
     
     // Detector config
     @EnvironmentObject var detector: PersonDetector
+    let detectee = PersonDetecee()
     @ObservedObject var network = NetworkHelper()
     
     var body: some View {

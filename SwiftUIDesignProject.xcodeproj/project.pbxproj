@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		CA11D509242ACAE10074E024 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA11D508242ACAE10074E024 /* Extensions.swift */; };
 		CA11D50B242ACB920074E024 /* SimpleButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA11D50A242ACB920074E024 /* SimpleButtonStyle.swift */; };
+		CA2D368424351C2900401C84 /* PersonDetectee.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2D368324351C2900401C84 /* PersonDetectee.swift */; };
 		CA6A81CC2433D22F00E17DC3 /* PersonNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6A81CB2433D22F00E17DC3 /* PersonNotification.swift */; };
 		CA7544612431878300C45C28 /* PersonModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7544602431878300C45C28 /* PersonModel.swift */; };
 		CA7544642432EF3C00C45C28 /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7544632432EF3C00C45C28 /* Haptics.swift */; };
@@ -27,6 +28,7 @@
 /* Begin PBXFileReference section */
 		CA11D508242ACAE10074E024 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		CA11D50A242ACB920074E024 /* SimpleButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleButtonStyle.swift; sourceTree = "<group>"; };
+		CA2D368324351C2900401C84 /* PersonDetectee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDetectee.swift; sourceTree = "<group>"; };
 		CA6A81CB2433D22F00E17DC3 /* PersonNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonNotification.swift; sourceTree = "<group>"; };
 		CA7544602431878300C45C28 /* PersonModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonModel.swift; sourceTree = "<group>"; };
 		CA7544632432EF3C00C45C28 /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
@@ -168,6 +170,7 @@
 			isa = PBXGroup;
 			children = (
 				CAAD96BF2431711B00C054E1 /* PersonDetector.swift */,
+				CA2D368324351C2900401C84 /* PersonDetectee.swift */,
 				CA7544602431878300C45C28 /* PersonModel.swift */,
 				CA6A81CB2433D22F00E17DC3 /* PersonNotification.swift */,
 			);
@@ -245,6 +248,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA2D368424351C2900401C84 /* PersonDetectee.swift in Sources */,
 				CA754469243306F000C45C28 /* QuestionView3.swift in Sources */,
 				CA11D50B242ACB920074E024 /* SimpleButtonStyle.swift in Sources */,
 				CAAD96C02431711B00C054E1 /* PersonDetector.swift in Sources */,

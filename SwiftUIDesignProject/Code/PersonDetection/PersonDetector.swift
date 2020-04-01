@@ -23,8 +23,8 @@ class PersonDetector: NSObject, ObservableObject {
     @Published var isDetecting = false
     
     // Multipeer Config
-    private let serviceAdvertiser: MCNearbyServiceAdvertiser
-    private let serviceBrowser: MCNearbyServiceBrowser
+    private var serviceAdvertiser: MCNearbyServiceAdvertiser!
+    private var serviceBrowser: MCNearbyServiceBrowser!
     private var session: MCSession!
     
     // Participants
@@ -57,14 +57,14 @@ class PersonDetector: NSObject, ObservableObject {
         
         print("MY ID:", self.myID)
         
-        self.serviceAdvertiser = MCNearbyServiceAdvertiser(peer: self.myPeerID, discoveryInfo: nil, serviceType: serviceType)
-        self.serviceBrowser = MCNearbyServiceBrowser(peer: self.myPeerID, serviceType: serviceType)
-        self.session = MCSession(peer: self.myPeerID, securityIdentity: nil, encryptionPreference: .required)
+        //self.serviceAdvertiser = MCNearbyServiceAdvertiser(peer: self.myPeerID, discoveryInfo: nil, serviceType: serviceType)
+        //self.serviceBrowser = MCNearbyServiceBrowser(peer: self.myPeerID, serviceType: serviceType)
+        //self.session = MCSession(peer: self.myPeerID, securityIdentity: nil, encryptionPreference: .required)
         
         super.init()
-        self.serviceAdvertiser.delegate = self
-        self.serviceBrowser.delegate = self
-        self.session.delegate = self
+        //self.serviceAdvertiser.delegate = self
+        //self.serviceBrowser.delegate = self
+        //self.session.delegate = self
         
         if let savedData = defaults.object(forKey: "interactions") as? Data {
             if let loadedData = try? decoder.decode([PersonModel].self, from: savedData) {
@@ -90,7 +90,7 @@ class PersonDetector: NSObject, ObservableObject {
 //                detecting ? self.start() : self.stop()
 //            })
         
-        self.start()
+        //self.start()
     
     }
     
