@@ -18,9 +18,8 @@ struct EntryView: View {
     @State var showingQuestionSheet = false
     private var haptics = Haptics()
     
-    
     // Detector config
-    @ObservedObject var detector = PersonDetector()
+    @EnvironmentObject var detector: PersonDetector
     @ObservedObject var network = NetworkHelper()
     
     var body: some View {
@@ -77,7 +76,6 @@ struct EntryView: View {
             Alert(title: Text("Disable Wifi"), message: Text("For best performance, we suggest disconnecting from your Wi-Fi network.  Wi-Fi can result in inaccurate distance calculations."), dismissButton: .default(Text("Dismiss")) {
                     UserDefaults.standard.set(true, forKey: "sawWifiAlert")
                     self.network.stopWifiCheck()
-                    print("ENDED WIFI CHECK")
                 })
         }
         .edgesIgnoringSafeArea(.all)
@@ -87,6 +85,7 @@ struct EntryView: View {
 struct EntryView_Previews: PreviewProvider {
     static var previews: some View {
         EntryView()
+            .environmentObject(PersonDetector())
             .environment(\.colorScheme, .light)
     }
 }
@@ -102,22 +101,24 @@ struct QuestionButton: View {
                 .foregroundColor(.gray)
                 .font(.system(size: 30, weight: .regular))
         }.sheet(isPresented: $showingQuestionSheet) {
-            QuestionView(showingQuestionSheet: self.$showingQuestionSheet, uuid: self.userID)
+            QuestionView(showingQuestionSheet: self.$showingQuestionSheet)
         }
     }
 }
 
 struct SearchButton: View {
     @Binding var pulsate: Bool
+    @EnvironmentObject var detector: PersonDetector
     var body: some View {
         Button(action: {
             self.pulsate.toggle()
+            self.detector.isDetecting.toggle()
         }) {
             Image(systemName: pulsate ? "heart.fill" : "heart.slash.fill")
                 .foregroundColor(.gray)
                 .font(.system(size: 50, weight: .ultraLight))
                 .scaleEffect(pulsate ? 0.5 : 1)
-                .animation(Animation.easeInOut(duration: 1).delay(0).repeatForever(autoreverses: true))
+                .animation(Animation.easeInOut(duration: 1).delay(0).repeat(while: pulsate))
                 .onAppear() {
                     self.pulsate.toggle()
             }
@@ -127,15 +128,17 @@ struct SearchButton: View {
 
 struct PersonButton: View {
     @Binding var pulsate: Bool
+    @EnvironmentObject var detector: PersonDetector
     var body: some View {
         Button(action: {
             self.pulsate.toggle()
+            self.detector.isDetecting.toggle()
         }) {
-            Image(systemName: "exclamationmark.triangle.fill")
-                .foregroundColor(.red)
+            Image(systemName: pulsate ? "exclamationmark.triangle.fill" : "heart.slash.fill")
+                .foregroundColor(pulsate ? .red : .gray)
                 .font(.system(size: 50, weight: .ultraLight))
                 .scaleEffect(pulsate ? 0.5 : 1)
-                .animation(Animation.easeInOut(duration: 1).delay(0).repeatForever(autoreverses: true))
+                .animation(Animation.easeInOut(duration: 1).delay(0).repeat(while: pulsate))
                 .onAppear() {
                     self.pulsate.toggle()
             }

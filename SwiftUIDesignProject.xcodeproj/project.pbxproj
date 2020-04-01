@@ -9,11 +9,12 @@
 /* Begin PBXBuildFile section */
 		CA11D509242ACAE10074E024 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA11D508242ACAE10074E024 /* Extensions.swift */; };
 		CA11D50B242ACB920074E024 /* SimpleButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA11D50A242ACB920074E024 /* SimpleButtonStyle.swift */; };
+		CA6A81CC2433D22F00E17DC3 /* PersonNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6A81CB2433D22F00E17DC3 /* PersonNotification.swift */; };
 		CA7544612431878300C45C28 /* PersonModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7544602431878300C45C28 /* PersonModel.swift */; };
 		CA7544642432EF3C00C45C28 /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7544632432EF3C00C45C28 /* Haptics.swift */; };
 		CA7544662432EFD000C45C28 /* NetworkingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7544652432EFD000C45C28 /* NetworkingHelper.swift */; };
-		CA754469243306F000C45C28 /* QuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA754468243306F000C45C28 /* QuestionView.swift */; };
-		CA75446B2433A51F00C45C28 /* QuestionView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA75446A2433A51F00C45C28 /* QuestionView2.swift */; };
+		CA754469243306F000C45C28 /* QuestionView3.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA754468243306F000C45C28 /* QuestionView3.swift */; };
+		CA75446B2433A51F00C45C28 /* QuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA75446A2433A51F00C45C28 /* QuestionView.swift */; };
 		CA9D81CF242151AE009625DF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9D81CE242151AE009625DF /* AppDelegate.swift */; };
 		CA9D81D1242151AE009625DF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9D81D0242151AE009625DF /* SceneDelegate.swift */; };
 		CA9D81D3242151AE009625DF /* EntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9D81D2242151AE009625DF /* EntryView.swift */; };
@@ -26,11 +27,12 @@
 /* Begin PBXFileReference section */
 		CA11D508242ACAE10074E024 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		CA11D50A242ACB920074E024 /* SimpleButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleButtonStyle.swift; sourceTree = "<group>"; };
+		CA6A81CB2433D22F00E17DC3 /* PersonNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonNotification.swift; sourceTree = "<group>"; };
 		CA7544602431878300C45C28 /* PersonModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonModel.swift; sourceTree = "<group>"; };
 		CA7544632432EF3C00C45C28 /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
 		CA7544652432EFD000C45C28 /* NetworkingHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingHelper.swift; sourceTree = "<group>"; };
-		CA754468243306F000C45C28 /* QuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionView.swift; sourceTree = "<group>"; };
-		CA75446A2433A51F00C45C28 /* QuestionView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionView2.swift; sourceTree = "<group>"; };
+		CA754468243306F000C45C28 /* QuestionView3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionView3.swift; sourceTree = "<group>"; };
+		CA75446A2433A51F00C45C28 /* QuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionView.swift; sourceTree = "<group>"; };
 		CA9D81CB242151AE009625DF /* Further.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Further.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA9D81CE242151AE009625DF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CA9D81D0242151AE009625DF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -119,8 +121,8 @@
 		CA7544672432F5DB00C45C28 /* Questionnaire */ = {
 			isa = PBXGroup;
 			children = (
-				CA754468243306F000C45C28 /* QuestionView.swift */,
-				CA75446A2433A51F00C45C28 /* QuestionView2.swift */,
+				CA754468243306F000C45C28 /* QuestionView3.swift */,
+				CA75446A2433A51F00C45C28 /* QuestionView.swift */,
 			);
 			path = Questionnaire;
 			sourceTree = "<group>";
@@ -167,6 +169,7 @@
 			children = (
 				CAAD96BF2431711B00C054E1 /* PersonDetector.swift */,
 				CA7544602431878300C45C28 /* PersonModel.swift */,
+				CA6A81CB2433D22F00E17DC3 /* PersonNotification.swift */,
 			);
 			path = PersonDetection;
 			sourceTree = "<group>";
@@ -242,15 +245,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CA754469243306F000C45C28 /* QuestionView.swift in Sources */,
+				CA754469243306F000C45C28 /* QuestionView3.swift in Sources */,
 				CA11D50B242ACB920074E024 /* SimpleButtonStyle.swift in Sources */,
 				CAAD96C02431711B00C054E1 /* PersonDetector.swift in Sources */,
 				CA9D81CF242151AE009625DF /* AppDelegate.swift in Sources */,
 				CA7544662432EFD000C45C28 /* NetworkingHelper.swift in Sources */,
+				CA6A81CC2433D22F00E17DC3 /* PersonNotification.swift in Sources */,
 				CA7544612431878300C45C28 /* PersonModel.swift in Sources */,
 				CA7544642432EF3C00C45C28 /* Haptics.swift in Sources */,
 				CA9D81D1242151AE009625DF /* SceneDelegate.swift in Sources */,
-				CA75446B2433A51F00C45C28 /* QuestionView2.swift in Sources */,
+				CA75446B2433A51F00C45C28 /* QuestionView.swift in Sources */,
 				CA9D81D3242151AE009625DF /* EntryView.swift in Sources */,
 				CA11D509242ACAE10074E024 /* Extensions.swift in Sources */,
 			);

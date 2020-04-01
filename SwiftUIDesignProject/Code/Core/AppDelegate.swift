@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import BackgroundTasks
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,7 +16,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        UIApplication.shared.isIdleTimerDisabled = true
+        BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.brandon.furtherBurstUpdate", using: nil) { (task) in
+            self.handleAppBurstTask(task: task as! BGProcessingTask)
+        }
+        
         return true
+    }
+    
+    func scheduleRefreshTask() {
+        let refreshTask = BGProcessingTaskRequest(identifier: "com.brandon.furtherBurstUpdate")
+        refreshTask.requiresExternalPower = false
+        refreshTask.requiresNetworkConnectivity = false
+        refreshTask.earliestBeginDate = Date(timeIntervalSinceNow: 1)
+        do {
+            try BGTaskScheduler.shared.submit(refreshTask)
+            print("DEBUG -- Background task scheduled.")
+        } catch {
+            print("DEBUG -- Unable to schedule refresh task", error.localizedDescription)
+        }
+    }
+    
+    func handleAppBurstTask(task: BGProcessingTask) {
+        let personDetector = PersonDetector(backgroundExecution: true)
+        print("DEBUG -- About to handle background task.")
+        task.expirationHandler = {
+            personDetector.stop()
+            self.scheduleRefreshTask()
+            DispatchQueue.main.async {
+                task.setTaskCompleted(success: true)
+            }
+        }
     }
 
     // MARK: UISceneSession Lifecycle
@@ -31,7 +62,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
-
-
 }
 

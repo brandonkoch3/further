@@ -20,6 +20,7 @@ class PersonDetector: NSObject, ObservableObject {
     
     // Updateable config
     @Published var personFound = false
+    @Published var isDetecting = false
     
     // Multipeer Config
     private let serviceAdvertiser: MCNearbyServiceAdvertiser
@@ -32,13 +33,16 @@ class PersonDetector: NSObject, ObservableObject {
     
     // Combine
     var participantCancellable: AnyCancellable?
+    var detectingCancellable: AnyCancellable?
+    var backgroundExecution: Bool = false
     
     // Helpers
     let encoder = JSONEncoder()
     let decoder = JSONDecoder()
     let defaults = UserDefaults.standard
+    let notifications = PersonNotifications()
     
-    override init() {
+    init(backgroundExecution: Bool? = false) {
         if let myID = UserDefaults.standard.string(forKey: "deviceID") {
             self.myID = myID
         } else {
@@ -47,6 +51,9 @@ class PersonDetector: NSObject, ObservableObject {
             UserDefaults.standard.set(newID, forKey: "deviceID")
         }
         self.myPeerID = MCPeerID(displayName: self.myID)
+        if let backgroundStatus = backgroundExecution {
+            self.backgroundExecution = backgroundStatus
+        }
         
         print("MY ID:", self.myID)
         
@@ -68,21 +75,37 @@ class PersonDetector: NSObject, ObservableObject {
         participantCancellable = $activeParticipants
             .receive(on: RunLoop.main)
             .sink(receiveValue: { participants in
-                self.personFound = (participants.count > 0)
+                if !self.backgroundExecution {
+                    self.personFound = (participants.count > 0)
+                } else {
+                    if participants.count > 0 {
+                        self.notifications.sendNotification()
+                    }
+                }
             })
+        
+//        detectingCancellable = $isDetecting
+//            .receive(on: RunLoop.main)
+//            .sink(receiveValue: { detecting in
+//                detecting ? self.start() : self.stop()
+//            })
         
         self.start()
     
     }
     
     func start() {
+        //guard !self.isDetecting else { return }
         self.serviceAdvertiser.startAdvertisingPeer()
         self.serviceBrowser.startBrowsingForPeers()
+        //self.isDetecting = true
     }
     
     func stop() {
+        //guard self.isDetecting else { return }
         self.serviceAdvertiser.stopAdvertisingPeer()
         self.serviceBrowser.stopBrowsingForPeers()
+        //self.isDetecting = false
     }
     
     func peerConnected(peerID: MCPeerID) {
@@ -104,7 +127,9 @@ class PersonDetector: NSObject, ObservableObject {
                 print("Disconnected from", peerID.displayName, "with 60 second interval")
                 self.save(participant: myParticipant)
             }
-            self.activeParticipants.removeAll(where: { $0.personUUID == peerID.displayName })
+            DispatchQueue.main.async {
+                self.activeParticipants.removeAll(where: { $0.personUUID == peerID.displayName })
+            }
             print("Disconnected from", peerID.displayName)
         }
     }
