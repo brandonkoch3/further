@@ -10,6 +10,7 @@ import Foundation
 
 struct PersonModel: Codable {
     var personUUID: String
+    var bleUUID: String?
     var connectTime: Double
     var disconnectTime: Double?
     var hasReceivedNotification: Bool

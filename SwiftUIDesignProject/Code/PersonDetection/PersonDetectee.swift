@@ -10,15 +10,17 @@ import Foundation
 import CoreBluetooth
 import Combine
 
-class PersonDetecee: NSObject, ObservableObject {
+class PersonDetectee: NSObject, ObservableObject {
     
-    // Updateable config
+    // UI-based config
     @Published var personFound = false
     @Published var isDetecting = false
     
-    let testUUID = UUID().uuidString
-    
+    // Person config
+    var myID = UUID().uuidString
     @Published var connectedPeriperhals = [CBPeripheral]()
+    private var activeParticipants = [PersonModel]()
+    private var savedParticipants = [PersonModel]()
     
     // Bluetooth
     var centralManager: CBCentralManager!
@@ -31,9 +33,24 @@ class PersonDetecee: NSObject, ObservableObject {
     var connectedSubscriber: AnyCancellable?
     var rssiTimer: AnyCancellable?
     var foundSubscriber: AnyCancellable?
+    var detectingCancellable: AnyCancellable?
+    
+    // Helpers
+    let encoder = JSONEncoder()
+    let decoder = JSONDecoder()
+    let defaults = UserDefaults.standard
     
     override init() {
         super.init()
+        
+        if let myID = UserDefaults.standard.string(forKey: "deviceID") {
+            self.myID = myID
+        } else {
+            let newID = UUID().uuidString
+            self.myID = newID
+            UserDefaults.standard.set(newID, forKey: "deviceID")
+        }
+        
         peripheralManager = CBPeripheralManager(delegate: self, queue: nil)
         centralManager = CBCentralManager(delegate: self, queue: nil)
         
@@ -43,8 +60,32 @@ class PersonDetecee: NSObject, ObservableObject {
                 connectors.count > 0 ? self.startTimer() : self.stopTimer()
             })
         
+        if let savedData = defaults.object(forKey: "interactions") as? Data {
+            if let loadedData = try? decoder.decode([PersonModel].self, from: savedData) {
+                self.savedParticipants = loadedData
+            }
+        }
+        
+        self.isDetecting = true
+        
+        detectingCancellable = $isDetecting
+        .receive(on: RunLoop.main)
+        .sink(receiveValue: { detecting in
+            detecting ? self.start() : self.stop()
+        })
     }
     
+    // MARK: Parent BLE Functions
+    private func start() {
+        
+    }
+    
+    private func stop() {
+        peripheralManager.stopAdvertising()
+        centralManager.stopScan()
+    }
+        
+    // MARK: RSSI Timer Check
     private func startTimer() {
         rssiTimer = Timer.publish(every: 1.0, tolerance: 0.5, on: .main, in: .common)
             .autoconnect()
@@ -53,6 +94,7 @@ class PersonDetecee: NSObject, ObservableObject {
     
     private func stopTimer() {
         rssiTimer?.cancel()
+        self.personFound = false
     }
     
     private func checkRSSI() {
@@ -61,15 +103,49 @@ class PersonDetecee: NSObject, ObservableObject {
         }
     }
     
+    // MARK: Internal BLE Checking
+    func peerConnected(peerID: String, bleID: String) {
+        guard !self.activeParticipants.contains(where: { $0.personUUID == peerID }) else { return }
+        guard !self.savedParticipants.contains(where: { $0.personUUID == peerID && $0.hasReceivedNotification }) else { return }
+        let newParticipant = PersonModel(personUUID: peerID, bleUUID: bleID, connectTime: Date().timeIntervalSince1970, disconnectTime: nil, hasReceivedNotification: false)
+        print("Connected to", peerID)
+        DispatchQueue.main.async {
+            self.activeParticipants.append(newParticipant)
+        }
+    }
+    
+    func peerDisconnected(peerID: String, bleID: String) {
+        guard self.activeParticipants.contains(where: { $0.personUUID == peerID }) else { return }
+        if let participant = self.activeParticipants.first(where: { $0.personUUID == peerID }) {
+            var myParticipant = participant
+            if Date().timeIntervalSince1970 - myParticipant.connectTime >= 60 {
+                myParticipant.disconnectTime = Date().timeIntervalSince1970
+                print("Disconnected from", peerID, "with 60 second interval")
+                self.save(participant: myParticipant)
+            }
+            DispatchQueue.main.async {
+                self.connectedPeriperhals.removeAll(where: { $0.identifier.uuidString == bleID })
+                self.activeParticipants.removeAll(where: { $0.personUUID == peerID })
+            }
+            print("Disconnected from", peerID)
+        }
+    }
+    
+    func save(participant: PersonModel) {
+        self.savedParticipants.append(participant)
+        if let encoded = try? encoder.encode(self.savedParticipants) {
+            defaults.set(encoded, forKey: "interactions")
+        }
+    }
 }
 
-extension PersonDetecee: CBPeripheralManagerDelegate {
+extension PersonDetectee: CBPeripheralManagerDelegate {
     func peripheralManagerDidUpdateState(_ peripheral: CBPeripheralManager) {
         
         // Start advertising
         var advertiseData = [String: Any]()
         advertiseData["kCBAdvDataTimestamp"] = Date().timeIntervalSinceReferenceDate
-        advertiseData["kCBAdvDataLocalName"] = "further_\(testUUID)"
+        advertiseData["kCBAdvDataLocalName"] = "further_\(myID)"
         advertiseData["kCBAdvDataIsConnectable"] = 1
         advertiseData["kCBAdvDataServiceUUIDs"] = [CBUUID(string: "FFE0")]
         peripheralManager.startAdvertising(advertiseData)
@@ -98,75 +174,26 @@ extension PersonDetecee: CBPeripheralManagerDelegate {
     // MARK: Advertising Delegates
     func peripheralManagerDidStartAdvertising(_ peripheral: CBPeripheralManager,
                                               error: Error?) {
-        print("We're advertising peripheral:", peripheral)
-    }
-    
-    func peripheralManager(_ peripheral: CBPeripheralManager, didAdd service: CBService, error: Error?) {
-        print("Service added!", service)
-    }
-    
-    func peripheralManager(_ peripheral: CBPeripheralManager,
-                           didReceiveRead request: CBATTRequest) {
-        
-        peripheralManager.respond(to: request, withResult: .success)
-        
-        print("Got read request!", request)
-    }
-    
-    func peripheralManager(_ peripheral: CBPeripheralManager, didReceiveWrite requests: [CBATTRequest]) {
-        
-        for request in requests {
-            peripheral.updateValue(request.value!, for: request.characteristic as! CBMutableCharacteristic, onSubscribedCentrals: [request.central])
-        }
-        peripheralManager.respond(to: requests[0], withResult: .success)
-    }
-    
-    func peripheralManager(_ peripheral: CBPeripheralManager, central: CBCentral, didSubscribeTo characteristic: CBCharacteristic) {
-        let test: [UInt8] = [0xd7, 0x4f, 0x88, 0x01]
-        let data = Data(test)
-        peripheralManager.updateValue(data, for: characteristic as! CBMutableCharacteristic, onSubscribedCentrals: [central])
-        print("Someone subscribed!", characteristic)
-        
-    }
-    func peripheralManager(_ peripheral: CBPeripheralManager, central: CBCentral, didUnsubscribeFrom characteristic: CBCharacteristic) {
-        print("Someone unsubscribed!", characteristic)
-    }
-    
-    func peripheralManagerIsReady(toUpdateSubscribers peripheral: CBPeripheralManager) {
-        print("Ready to update subscribers!")
-    }
-    
-    func peripheralManager(_ peripheral: CBPeripheralManager, didOpen channel: CBL2CAPChannel?, error: Error?) {
-        print("OPENED CHANNEL!")
-    }
-    
-    func peripheralManager(_ peripheral: CBPeripheralManager, didUnpublishL2CAPChannel PSM: CBL2CAPPSM, error: Error?) {
-        print("DID UNPUBLISH CHANNEL")
-    }
-    
-    func peripheralManager(_ peripheral: CBPeripheralManager, didPublishL2CAPChannel PSM: CBL2CAPPSM, error: Error?) {
-        print("DID PUBLISH CHANNEL")
+        //
     }
 }
 
 // MARK: Bluetooth Delegates
-extension PersonDetecee: CBCentralManagerDelegate {
+extension PersonDetectee: CBCentralManagerDelegate {
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         switch central.state {
         case .unknown:
-            print("central.state is .unknown")
+            break
         case .resetting:
-            print("central.state is .resetting")
+            break
         case .unsupported:
-            print("central.state is .unsupported")
+            break
         case .unauthorized:
-            print("central.state is .unauthorized")
+            break
         case .poweredOff:
-            print("central.state is .poweredOff")
+            break
         case .poweredOn:
-            print("central.state is .poweredOn")
             centralManager.scanForPeripherals(withServices: [internalServiceCBUUID], options: ["CBCentralManagerScanOptionAllowDuplicatesKey": 1])
-            //centralManager.scanForPeripherals(withServices: [internalServiceCBUUID])
         @unknown default:
             print("central.state cannot be understood.")
         }
@@ -179,45 +206,33 @@ extension PersonDetecee: CBCentralManagerDelegate {
         guard localName.contains("further_") else { return }
         guard !connectedPeriperhals.contains(where: { $0.identifier == peripheral.identifier }) else { return }
         let foundUUID = localName.replacingOccurrences(of: "further_", with: "")
-        guard foundUUID != testUUID else { return }
-        
-        
-        print("DISCOVERED AN ACCESSORY WITH IDENTIFIER", peripheral.identifier, "with further ID:", foundUUID, "with RSSI:", RSSI)
+        guard foundUUID != myID else { return }
 
         let foundPerson = peripheral
         foundPerson.delegate = self
         connectedPeriperhals.append(peripheral)
+        self.peerConnected(peerID: foundUUID, bleID: peripheral.identifier.uuidString)
         centralManager.connect(foundPerson)
-        //peripheral.delegate = self
-        //centralManager.connect(peripheral)
-        //internalPeripheral = peripheral
-//        sp107ePeripheral = peripheral
-//        sp107ePeripheral.delegate = self
-//        centralManager.stopScan()
-        //centralManager.connect(internalPeripheral)
-
+        
+        print("DISCOVERED AN ACCESSORY WITH IDENTIFIER", peripheral.identifier, "with further ID:", foundUUID, "with RSSI:", RSSI)
     }
     
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
-        let now = Date().timeIntervalSince1970
-        print("Connected to Salsa at", now, "peripheral:", peripheral)
-        
-        
-        //internalPeripheral.discoverServices([internalServiceCBUUID])
+        print("Connected to Further Participant at", peripheral.identifier.uuidString)
     }
     
     internal func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
-        let now = Date().timeIntervalSince1970
-        print("Disconnect from Salsa at", now, "peripheral:", peripheral)
-        connectedPeriperhals.removeAll(where: { $0.identifier == peripheral.identifier})
+        if let peer = self.activeParticipants.first(where: { $0.bleUUID == peripheral.identifier.uuidString }) {
+            let peerID = peer.personUUID
+            self.peerDisconnected(peerID: peerID, bleID: peripheral.identifier.uuidString)
+        }
     }
 }
 
 // MARK: Service/Characteristic Discovery Delegates
-extension PersonDetecee: CBPeripheralDelegate {
+extension PersonDetectee: CBPeripheralDelegate {
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
         guard let services = peripheral.services else {return}
-        
         for service in services {
             peripheral.discoverCharacteristics(nil, for: service)
         }
@@ -225,106 +240,11 @@ extension PersonDetecee: CBPeripheralDelegate {
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
         guard let characteristics = service.characteristics else {return}
-        
         for characteristic in characteristics {
-
-            print("Characteristic:", characteristic)
-            peripheral.discoverDescriptors(for: characteristic)
-            
-            if characteristic.properties.contains(.authenticatedSignedWrites) {
-                print("Allows signed writes.")
-            }
-            if characteristic.properties.contains(.broadcast) {
-                print("Allows broadcast.")
-            }
-            if characteristic.properties.contains(.extendedProperties) {
-                print("Has extended properties.")
-            }
-            if characteristic.properties.contains(.indicate) {
-                print("Allows indicate.")
-            }
-            if characteristic.properties.contains(.indicateEncryptionRequired) {
-                print("Indicate encryption required.")
-            }
-            if characteristic.properties.contains(.notify) {
-                print("Allows notify.")
-            }
-            if characteristic.properties.contains(.notifyEncryptionRequired) {
-                print("Notify encryption required.")
-            }
-            if characteristic.properties.contains(.read) {
-                print("Allows read.")
-            }
-            if characteristic.properties.contains(.write) {
-                print("Allows write.")
-            }
-            if characteristic.properties.contains(.writeWithoutResponse) {
-                print("Allows write without response.")
-            }
-            
             if characteristic.uuid == CBUUID(string: "FFE1") {
                 peripheral.setNotifyValue(true, for: characteristic)
                 txCharacteristic = characteristic
             }
-        }
-    }
-    
-    public func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
-        if let ASCIIstring = NSString(data: characteristic.value!, encoding: String.Encoding.utf8.rawValue) {
-            let characteristicASCIIValue = ASCIIstring
-            print("Value Recieved: \((characteristicASCIIValue as String))")
-        }
-    }
-    
-    public func peripheral(_ peripheral: CBPeripheral, didWriteValueFor descriptor: CBDescriptor, error: Error?) {
-        guard error == nil else {
-            print("Error writing value:", error?.localizedDescription ?? "Unknown descriptor error.")
-            return
-        }
-        print("Succeeded in writing value!")
-    }
-    
-    func peripheral(_ peripheral: CBPeripheral, didDiscoverDescriptorsFor characteristic: CBCharacteristic, error: Error?) {
-        if error != nil {
-            print("\(error.debugDescription)")
-            return
-        }
-        if ((characteristic.descriptors) != nil) {
-            for x in characteristic.descriptors!{
-                let descript = x as CBDescriptor?
-                _ = descript
-            }
-        }
-    }
-    
-    public func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Error?) {
-        if (error != nil) {
-            print("Error changing notification state:\(String(describing: error?.localizedDescription))")
-        } else {
-            print("Characteristic's value subscribed")
-        }
-        if (characteristic.isNotifying) {
-            print ("Subscribed. Notification has begun for: \(characteristic.uuid)")
-            
-            // Send initial values
-            let new1: [UInt8] = [0, 113, 213, 9]
-            let new2: [UInt8] = [127, 59, 64, 11]
-            let new3: [UInt8] = [255, 255, 255, 12]
-            let new4: [UInt8] = [127, 201, 238, 10]
-            let dataToWrite = [new1, new2, new3, new4]
-            if characteristic.uuid == CBUUID(string: "FFE1") {
-                for item in dataToWrite {
-                    let data = Data(item)
-                    peripheral.writeValue(data, for: characteristic, type: .withResponse)
-                }
-            }
-        }
-    }
-    
-    func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
-        print("Wrote characteristic to", characteristic.uuid)
-        if let myError = error {
-            print("Received error:", myError)
         }
     }
     
@@ -335,7 +255,7 @@ extension PersonDetecee: CBPeripheralDelegate {
     
     func peripheral(_ peripheral: CBPeripheral, didReadRSSI RSSI: NSNumber, error: Error?) {
         print("RSSI:", RSSI)
-        self.personFound = (Double(truncating: RSSI) >= -40.0)
+        self.personFound = (Double(truncating: RSSI) >= -60.0)
     }
 }
 

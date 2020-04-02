@@ -19,8 +19,7 @@ struct EntryView: View {
     private var haptics = Haptics()
     
     // Detector config
-    @EnvironmentObject var detector: PersonDetector
-    let detectee = PersonDetecee()
+    @EnvironmentObject var detector: PersonDetectee
     @ObservedObject var network = NetworkHelper()
     
     var body: some View {
@@ -87,7 +86,7 @@ struct EntryView: View {
 struct EntryView_Previews: PreviewProvider {
     static var previews: some View {
         EntryView()
-            .environmentObject(PersonDetector())
+            .environmentObject(PersonDetectee())
             .environment(\.colorScheme, .light)
     }
 }
@@ -122,7 +121,7 @@ struct CameraButton: View {
 
 struct SearchButton: View {
     @Binding var pulsate: Bool
-    @EnvironmentObject var detector: PersonDetector
+    @EnvironmentObject var detector: PersonDetectee
     var body: some View {
         Button(action: {
             self.pulsate.toggle()
@@ -142,7 +141,7 @@ struct SearchButton: View {
 
 struct PersonButton: View {
     @Binding var pulsate: Bool
-    @EnvironmentObject var detector: PersonDetector
+    @EnvironmentObject var detector: PersonDetectee
     var body: some View {
         Button(action: {
             self.pulsate.toggle()

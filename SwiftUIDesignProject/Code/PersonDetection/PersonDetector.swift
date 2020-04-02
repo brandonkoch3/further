@@ -59,8 +59,6 @@ class PersonDetector: NSObject, ObservableObject {
             UIApplication.shared.isIdleTimerDisabled = true
         }
         
-        print("MY ID:", self.myID)
-        
         self.serviceAdvertiser = MCNearbyServiceAdvertiser(peer: self.myPeerID, discoveryInfo: nil, serviceType: serviceType)
         self.serviceBrowser = MCNearbyServiceBrowser(peer: self.myPeerID, serviceType: serviceType)
         self.session = MCSession(peer: self.myPeerID, securityIdentity: nil, encryptionPreference: .required)
@@ -114,7 +112,7 @@ class PersonDetector: NSObject, ObservableObject {
     func peerConnected(peerID: MCPeerID) {
         guard !self.activeParticipants.contains(where: { $0.personUUID == peerID.displayName }) else { return }
         guard !self.savedParticipants.contains(where: { $0.personUUID == peerID.displayName && $0.hasReceivedNotification }) else { return }
-        let newParticipant = PersonModel(personUUID: peerID.displayName, connectTime: Date().timeIntervalSince1970, disconnectTime: nil, hasReceivedNotification: false)
+        let newParticipant = PersonModel(personUUID: peerID.displayName, bleUUID: nil, connectTime: Date().timeIntervalSince1970, disconnectTime: nil, hasReceivedNotification: false)
         print("Connected to", peerID.displayName)
         DispatchQueue.main.async {
             self.activeParticipants.append(newParticipant)

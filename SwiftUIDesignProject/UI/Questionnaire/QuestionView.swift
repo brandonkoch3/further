@@ -42,7 +42,7 @@ struct QuestionView: View {
                 VStack {
                     ZStack {
                         RoundedRectangle(cornerRadius: 20)
-                            .fill(LinearGradient(Color.darkStart, Color.darkEnd))
+                            .fill(Color.offWhite)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                             .edgesIgnoringSafeArea(.all)
                         VStack {
@@ -51,20 +51,19 @@ struct QuestionView: View {
                             InformationView(sectionImage: Image(systemName: "bandage.fill"), headerTitle: "Health", subTitle: "Feeling sick?  This app is informative and does not provide medical care or guidance.", imageOffset: 3)
                             InformationView(sectionImage: Image(systemName: "location.fill"), headerTitle: "Honesty", subTitle: "Your provided reponses are not validated.  Please answer honestly in the interest of helping others.")
                             Spacer(minLength: 60)
-                            VStack {
-                                
+                            HStack {
+                                Spacer()
                                 Button(action: {
-                                    
+                                    //
                                 }) {
-                                    ZStack {
-                                        Text("YUP")
-                                    }
-                                }.buttonStyle(DarkAnswerButtonStyle())
-                                .frame(width: 200, height: 100)
-                            }
+                                    Image(systemName: "arrow.right")
+                                        .foregroundColor(.gray)
+                                        .font(.system(size: 50, weight: .ultraLight))
+                                }.buttonStyle(LightButtonStyle())
+                            }.padding()
                         }
                     }.offset(x: 0, y: -50)
-                }.background(LinearGradient(Color.darkStart, Color.darkEnd))
+                }.background(Color.offWhite)
             }.edgesIgnoringSafeArea(.all)
         }
     }
@@ -72,7 +71,11 @@ struct QuestionView: View {
 
 struct QuestionView_Previews: PreviewProvider {
     static var previews: some View {
-        QuestionView(showingQuestionSheet: .constant(true)).previewDevice("iPhone 11 Pro Max").environment(\.colorScheme, .dark)
+        Group {
+            QuestionView(showingQuestionSheet: .constant(true))
+                .previewDevice("iPad Pro 12.9-inch")
+                .environment(\.colorScheme, .light)
+        }
     }
 }
 
@@ -86,14 +89,14 @@ struct InformationView: View {
         GeometryReader { geometry in
             ZStack {
                 RoundedRectangle(cornerRadius: 18)
-                    .fill(LinearGradient(Color.darkStart, Color.darkEnd))
+                    .fill(Color.offWhite)
                     .frame(width: geometry.size.width - 20, height: 100)
                     .shadow(color: Color("LightShadow"), radius: 8, x: -8, y: -8)
                     .shadow(color: Color("DarkShadow"), radius: 8, x: 8, y: 8)
                 HStack {
                     ZStack {
                         RoundedRectangle(cornerRadius: 18)
-                            .fill(LinearGradient(Color.darkStart, Color.darkEnd))
+                            .fill(Color.offWhite)
                             .frame(width: 60, height: 60)
                             .shadow(color: Color("LightShadow"), radius: 8, x: -8, y: -8)
                             .shadow(color: Color("DarkShadow"), radius: 8, x: 8, y: 8)
@@ -104,14 +107,13 @@ struct InformationView: View {
                             .multilineTextAlignment(.center)
                             .offset(x: self.imageOffset!, y: 0)
                     }
-                    Spacer()
                     VStack(alignment: .leading, spacing: 0) {
                         Text(self.headerTitle)
                             .font(.title)
                         Spacer()
                         Text(self.subTitle).font(.caption)
                         Spacer()
-                    }.frame(height: 80)
+                    }.frame(height: 80).padding(.leading, 6.0)
                     Spacer()
                 }
                 .padding()
