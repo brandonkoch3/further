@@ -20,7 +20,6 @@ struct EntryView: View {
     
     // Detector config
     @EnvironmentObject var detector: PersonDetectee
-    @ObservedObject var network = NetworkHelper()
     
     var body: some View {
         ZStack {
@@ -72,12 +71,6 @@ struct EntryView: View {
                     }
                 }
             }.padding()
-        }
-        .alert(isPresented: $network.isWifiConnected) {
-            Alert(title: Text("Disable Wifi"), message: Text("For best performance, we suggest disconnecting from your Wi-Fi network.  Wi-Fi can result in inaccurate distance calculations."), dismissButton: .default(Text("Dismiss")) {
-                    UserDefaults.standard.set(true, forKey: "sawWifiAlert")
-                    self.network.stopWifiCheck()
-                })
         }
         .edgesIgnoringSafeArea(.all)
     }

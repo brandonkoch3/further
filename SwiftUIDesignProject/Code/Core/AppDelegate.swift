@@ -26,8 +26,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func scheduleRefreshTask() {
         let refreshTask = BGProcessingTaskRequest(identifier: "com.brandon.furtherBurstUpdate")
         refreshTask.requiresExternalPower = false
-        refreshTask.requiresNetworkConnectivity = false
-        refreshTask.earliestBeginDate = Date(timeIntervalSinceNow: 1)
+        refreshTask.requiresNetworkConnectivity = true
+        refreshTask.earliestBeginDate = Date(timeIntervalSinceNow: 60)
         do {
             try BGTaskScheduler.shared.submit(refreshTask)
             print("DEBUG -- Background task scheduled.")
@@ -37,10 +37,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func handleAppBurstTask(task: BGProcessingTask) {
-        let personDetector = PersonDetector(backgroundExecution: true)
+        let storiesController = StoriesController()
+        storiesController.updateStories() { response in }
         print("DEBUG -- About to handle background task.")
         task.expirationHandler = {
-            personDetector.stop()
             self.scheduleRefreshTask()
             DispatchQueue.main.async {
                 task.setTaskCompleted(success: true)

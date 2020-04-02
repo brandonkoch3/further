@@ -29,10 +29,10 @@ class PersonNotifications {
     
     func sendNotification() {
         let content = UNMutableNotificationContent()
-        content.title = "Someone Nearby!"
-        content.body = "Someone has been detected nearby.  Please be aware of your surroundings and try to keep six feet from others."
+        content.title = "Updated Interactions Are Available"
+        content.body = "We've updated your app to determine if any nearby contacts have reported a positive COVID-19 test result."
         content.sound = UNNotificationSound.default
-        let identifier = "Further Detection"
+        let identifier = "Further - Updated Contacts"
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
         let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
         self.userNotificationCenter.add(request) { (error) in
