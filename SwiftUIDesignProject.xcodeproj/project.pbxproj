@@ -25,6 +25,7 @@
 		CAA0AD0924366321007A9522 /* CovidModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA0AD0824366321007A9522 /* CovidModel.swift */; };
 		CAA0AD0C243665CA007A9522 /* StoriesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA0AD0B243665CA007A9522 /* StoriesController.swift */; };
 		CAA0AD122436A03C007A9522 /* StoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA0AD112436A03C007A9522 /* StoryView.swift */; };
+		CAA0AD162436E408007A9522 /* QuestionsViewA.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA0AD152436E408007A9522 /* QuestionsViewA.swift */; };
 		CAAD96C02431711B00C054E1 /* PersonDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAD96BF2431711B00C054E1 /* PersonDetector.swift */; };
 		CACE2A3824356B3D00A8B8D5 /* QuestionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACE2A3724356B3D00A8B8D5 /* QuestionsView.swift */; };
 /* End PBXBuildFile section */
@@ -50,6 +51,7 @@
 		CAA0AD0824366321007A9522 /* CovidModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CovidModel.swift; sourceTree = "<group>"; };
 		CAA0AD0B243665CA007A9522 /* StoriesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoriesController.swift; sourceTree = "<group>"; };
 		CAA0AD112436A03C007A9522 /* StoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryView.swift; sourceTree = "<group>"; };
+		CAA0AD152436E408007A9522 /* QuestionsViewA.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionsViewA.swift; sourceTree = "<group>"; };
 		CAAD96BF2431711B00C054E1 /* PersonDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDetector.swift; sourceTree = "<group>"; };
 		CACE2A3724356B3D00A8B8D5 /* QuestionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -137,6 +139,7 @@
 			children = (
 				CA75446A2433A51F00C45C28 /* QuestionView.swift */,
 				CACE2A3724356B3D00A8B8D5 /* QuestionsView.swift */,
+				CAA0AD152436E408007A9522 /* QuestionsViewA.swift */,
 			);
 			path = Questionnaire;
 			sourceTree = "<group>";
@@ -282,6 +285,7 @@
 				CAA0AD122436A03C007A9522 /* StoryView.swift in Sources */,
 				CA1AB6052435831000291F3D /* QuestionsController.swift in Sources */,
 				CAA0AD0C243665CA007A9522 /* StoriesController.swift in Sources */,
+				CAA0AD162436E408007A9522 /* QuestionsViewA.swift in Sources */,
 				CAAD96C02431711B00C054E1 /* PersonDetector.swift in Sources */,
 				CA9D81CF242151AE009625DF /* AppDelegate.swift in Sources */,
 				CA6A81CC2433D22F00E17DC3 /* PersonNotification.swift in Sources */,

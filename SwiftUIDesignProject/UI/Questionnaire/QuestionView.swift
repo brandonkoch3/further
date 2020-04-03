@@ -126,7 +126,7 @@ struct QuestionView_Previews: PreviewProvider {
         Group {
             QuestionView(showingQuestionSheet: .constant(true))
                 .previewDevice("iPad Pro 12.9-inch")
-                .environment(\.colorScheme, .dark)
+                .environment(\.colorScheme, .light)
         }
     }
 }

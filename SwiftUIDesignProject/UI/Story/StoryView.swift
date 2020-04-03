@@ -25,16 +25,15 @@ struct StoryView: View {
                     Color.offWhite
                 }
                 VStack{
-                    HStack {
-                        Text((self.storyController.stories.count > 0) ? "Previous Interactions" : "No Previous Interactions")
-                        .font(.largeTitle)
-                        .fontWeight(.semibold)
-                            .foregroundColor(self.colorScheme == .dark ? .white : .black)
-                            .padding([.leading, .trailing], 10.0)
-                        Spacer()
-                    }.padding()
-                    
                     ScrollView(.vertical, showsIndicators: true) {
+                        HStack {
+                            Text((self.storyController.stories.count > 0) ? "Previous Interactions" : "No Previous Interactions")
+                            .font(.largeTitle)
+                            .fontWeight(.semibold)
+                                .foregroundColor(self.colorScheme == .dark ? .white : .black)
+                                .padding([.leading, .trailing], 10.0)
+                            Spacer()
+                        }.padding()
                         ForEach(self.storyController.testData.indices) { idx in
                             StoryItem(story: self.$storyController.testData[idx]).frame(height: 120)
                             Spacer()
