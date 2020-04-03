@@ -34,8 +34,8 @@ struct StoryView: View {
                                 .padding([.leading, .trailing], 10.0)
                             Spacer()
                         }.padding()
-                        ForEach(self.storyController.testData.indices) { idx in
-                            StoryItem(story: self.$storyController.testData[idx]).frame(height: 120)
+                        ForEach(self.storyController.stories.indices) { idx in
+                            StoryItem(story: self.$storyController.stories[idx]).frame(height: 120)
                             Spacer()
                         }
                     }

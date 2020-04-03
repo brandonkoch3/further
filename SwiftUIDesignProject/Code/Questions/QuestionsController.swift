@@ -42,7 +42,7 @@ class QuestionsController: ObservableObject {
         }
         
         if self.answers == nil {
-            self.answers = CovidModel(id: self.myID, feelingSick: false, hasBeenTested: false, testResult: false, update: Date().timeIntervalSince1970)
+            self.answers = CovidModel(id: self.myID, feelingSick: false, hasBeenTested: false, testResult: false, update: Date().timeIntervalSince1970, didAnswer: false)
         }
         
         answerSubscriber = $answers
@@ -109,6 +109,7 @@ class QuestionsController: ObservableObject {
     
     private func saveAnswers() {
         var myAnswers = self.answers!
+        myAnswers.didAnswer = true
         myAnswers.update = Date().timeIntervalSince1970
         defer {
             if let encoded = try? encoder.encode(myAnswers) {

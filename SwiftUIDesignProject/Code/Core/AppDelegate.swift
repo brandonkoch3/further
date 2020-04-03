@@ -30,7 +30,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         refreshTask.earliestBeginDate = Date(timeIntervalSinceNow: 60)
         do {
             try BGTaskScheduler.shared.submit(refreshTask)
-            print("DEBUG -- Background task scheduled.")
         } catch {
             print("DEBUG -- Unable to schedule refresh task", error.localizedDescription)
         }
@@ -39,7 +38,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func handleAppBurstTask(task: BGProcessingTask) {
         let storiesController = StoriesController()
         storiesController.updateStories() { response in }
-        print("DEBUG -- About to handle background task.")
         task.expirationHandler = {
             self.scheduleRefreshTask()
             DispatchQueue.main.async {

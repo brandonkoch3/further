@@ -9,56 +9,70 @@
 import SwiftUI
 
 struct QuestionView: View {
-    @Binding var showingQuestionSheet: Bool
     
-    // Internal
+    // UI
+    @Binding var showingQuestionSheet: Bool
     @State private var showingQuestion = false
+    
+    // Helpers
+    @EnvironmentObject var questions: QuestionsController
     
     @Environment(\.colorScheme) var colorScheme
     var body: some View {
         
         GeometryReader { geometry in
-            ZStack {
-                if self.colorScheme == .light {
-                    Color.offWhite
-                } else {
-                    LinearGradient(Color.darkStart, Color.darkEnd)
-                }
-                
-                VStack {
+            NavigationView {
+                ZStack {
+                    if self.colorScheme == .light {
+                        Color.offWhite
+                    } else {
+                        LinearGradient(Color.darkStart, Color.darkEnd)
+                    }
+                    
                     VStack {
-                        Spacer()
                         VStack {
-                            VStack(alignment: .leading) {
-                                HStack {
-                                Text("COVID-19")
-                                    .font(.largeTitle)
-                                    .fontWeight(.semibold)
-                                    .fixedSize()
-                                    .foregroundColor(.white)
-                                    Spacer()
-                                }
-                                HStack {
-                                Text("Questionnaire")
-                                    .font(.subheadline)
-                                    .fontWeight(.semibold)
-                                    .fixedSize()
-                                    .foregroundColor(.white)
-                                    Spacer()
-                                }
-                                }.padding().offset(x: 0, y: -40)
-                        }
-                    }.frame(maxWidth: .infinity, minHeight: geometry.size.height / 3, maxHeight: geometry.size.height / 3)
-                        .background(LinearGradient(gradient: Gradient(colors: [Color(hex: "D94c7a"), Color(hex: "Fcde89"), Color.blue]), startPoint: .topLeading, endPoint: .trailing))
-                    VStack {
-                        if self.colorScheme == .light {
-                            self.modalViewLight(geometry: geometry)
-                        } else {
-                            self.modalViewDark(geometry: geometry)
+                            Spacer()
+                            VStack {
+                                VStack(alignment: .leading) {
+                                    HStack {
+                                    Text("COVID-19")
+                                        .font(.largeTitle)
+                                        .fontWeight(.semibold)
+                                        .fixedSize()
+                                        .foregroundColor(.white)
+                                        Spacer()
+                                    }
+                                    HStack {
+                                    Text("Questionnaire")
+                                        .font(.subheadline)
+                                        .fontWeight(.semibold)
+                                        .fixedSize()
+                                        .foregroundColor(.white)
+                                        Spacer()
+                                    }
+                                    }.padding().offset(x: 0, y: -40)
+                            }
+                        }.frame(maxWidth: .infinity, minHeight: geometry.size.height / 3, maxHeight: geometry.size.height / 3)
+                            .background(LinearGradient(gradient: Gradient(colors: [Color(hex: "D94c7a"), Color(hex: "Fcde89"), Color.blue]), startPoint: .topLeading, endPoint: .trailing))
+                        VStack {
+                            if self.colorScheme == .light {
+                                self.modalViewLight(geometry: geometry)
+                            } else {
+                                self.modalViewDark(geometry: geometry)
+                            }
                         }
                     }
-                }
-            }.edgesIgnoringSafeArea(.all)
+                }.edgesIgnoringSafeArea(.all)
+            } .navigationViewStyle(StackNavigationViewStyle())
+        }
+    }
+    
+    func informationView() -> some View {
+        return VStack {
+            InformationView(sectionImage: Image(systemName: "hand.raised.fill"), headerTitle: "Privacy", subTitle: "All answers are completely anonymous and cannot be associated with you.", imageOffset: 5)
+            InformationView(sectionImage: Image(systemName: "person.2.fill"), headerTitle: "Honesty", subTitle: "Your provided reponses are not validated.  Please answer honestly in the interest of helping others.")
+            InformationView(sectionImage: Image(systemName: "bandage.fill"), headerTitle: "Health", subTitle: self.questions.answers!.didAnswer ? "You have already answered these questions.  You can update your answers at any time." : "You have not yet answered these questions.  Your answers can help inform others.", imageOffset: 3)
+            
         }
     }
     
@@ -70,26 +84,21 @@ struct QuestionView: View {
                 .edgesIgnoringSafeArea(.all)
             VStack {
                 Spacer()
-                InformationView(sectionImage: Image(systemName: "hand.raised.fill"), headerTitle: "Privacy", subTitle: "All answers are completely anonymous and cannot be associated with you.", imageOffset: 5)
-                InformationView(sectionImage: Image(systemName: "bandage.fill"), headerTitle: "Health", subTitle: "Feeling sick?  This app is informative and does not provide medical care or guidance.", imageOffset: 3)
-                InformationView(sectionImage: Image(systemName: "location.fill"), headerTitle: "Honesty", subTitle: "Your provided reponses are not validated.  Please answer honestly in the interest of helping others.")
+                informationView()
                 Spacer(minLength: 60)
+                
                 HStack {
                     Spacer()
-                    Button(action: {
-                        self.showingQuestion.toggle()
-                    }) {
+                    NavigationLink(destination: QuestionsView(questionID: 0, showingQuestion: self.$showingQuestionSheet).environmentObject(self.questions)) {
                         Image(systemName: "arrow.right")
-                            .foregroundColor(.gray)
-                            .font(.system(size: 30, weight: .ultraLight))
-                    }.buttonStyle(LightButtonStyle())
+                        .foregroundColor(.gray)
+                        .font(.system(size: 30, weight: .ultraLight))
+                    }.padding().buttonStyle(LightButtonStyle())
                 }
-                .sheet(isPresented: self.$showingQuestion) {
-                    QuestionsView(questionID: 0).environmentObject(QuestionsController())
-                }.padding()
             }
         }.offset(x: 0, y: -50)
     }
+    
     
     func modalViewDark(geometry: GeometryProxy) -> some View {
         return ZStack {
@@ -99,23 +108,16 @@ struct QuestionView: View {
                 .edgesIgnoringSafeArea(.all)
             VStack {
                 Spacer()
-                InformationView(sectionImage: Image(systemName: "hand.raised.fill"), headerTitle: "Privacy", subTitle: "All answers are completely anonymous and cannot be associated with you.", imageOffset: 5)
-                InformationView(sectionImage: Image(systemName: "bandage.fill"), headerTitle: "Health", subTitle: "Feeling sick?  This app is informative and does not provide medical care or guidance.", imageOffset: 3)
-                InformationView(sectionImage: Image(systemName: "location.fill"), headerTitle: "Honesty", subTitle: "Your provided reponses are not validated.  Please answer honestly in the interest of helping others.")
+                informationView()
                 Spacer(minLength: 60)
                 HStack {
                     Spacer()
-                    Button(action: {
-                        self.showingQuestion.toggle()
-                    }) {
+                    NavigationLink(destination: QuestionsView(questionID: 0, showingQuestion: self.$showingQuestionSheet).environmentObject(self.questions)) {
                         Image(systemName: "arrow.right")
-                            .foregroundColor(.gray)
-                            .font(.system(size: 30, weight: .ultraLight))
-                    }.buttonStyle(DarkButtonStyle())
+                        .foregroundColor(.gray)
+                        .font(.system(size: 30, weight: .ultraLight))
+                    }.padding().buttonStyle(DarkButtonStyle())
                 }
-                .sheet(isPresented: self.$showingQuestion) {
-                    QuestionsView(questionID: 0).environmentObject(QuestionsController())
-                }.padding()
             }
         }.offset(x: 0, y: -50)
     }

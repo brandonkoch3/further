@@ -21,7 +21,6 @@ struct EntryView: View {
     
     // Detector config
     @EnvironmentObject var detector: PersonDetectee
-    @EnvironmentObject var questions: QuestionsController
     @ObservedObject var storyController = StoriesController()
     
     var body: some View {
@@ -37,12 +36,28 @@ struct EntryView: View {
                     if detector.personFound {
                         if colorScheme == .dark {
                             PersonButton(pulsate: $pulsate)
-                                .onAppear(perform: haptics.detectedHaptics)
+                                .onAppear(perform: haptics.intenseDetection)
                                 .buttonStyle(DarkButtonStyle())
+                                .contextMenu {
+                                    Button(action: {
+                                        self.haptics.allowed.toggle()
+                                    }) {
+                                        Image(systemName: haptics.allowed ? "bell" : "bell.slash")
+                                        Text(haptics.allowed ? "Disable Vibrations" : "Enable Vibrations")
+                                    }
+                                }
                         } else {
                             PersonButton(pulsate: $pulsate)
-                                .onAppear(perform: haptics.detectedHaptics)
+                                .onAppear(perform: haptics.intenseDetection)
                                 .buttonStyle(LightButtonStyle())
+                                .contextMenu {
+                                    Button(action: {
+                                        self.haptics.allowed.toggle()
+                                    }) {
+                                        Image(systemName: haptics.allowed ? "bell" : "bell.slash")
+                                        Text(haptics.allowed ? "Disable Vibrations" : "Enable Vibrations")
+                                    }
+                                }
                         }
                         Text("Someone Is Nearby!")
                             .foregroundColor(colorScheme == .dark ? .offWhite : .lairDarkGray)
@@ -50,9 +65,11 @@ struct EntryView: View {
                     } else {
                         if colorScheme == .dark {
                             SearchButton(pulsate: $pulsate)
+                                .onAppear(perform: haptics.cancelHaptics)
                                 .buttonStyle(DarkButtonStyle())
                         } else {
                             SearchButton(pulsate: $pulsate)
+                                .onAppear(perform: haptics.cancelHaptics)
                                 .buttonStyle(LightButtonStyle())
                         }
                         Text(detector.isDetecting ? "Checking For Others" : "Paused")
@@ -89,6 +106,7 @@ struct EntryView_Previews: PreviewProvider {
 struct QuestionButton: View {
     @Binding var showingQuestionSheet: Bool
     @Environment(\.colorScheme) var colorScheme
+    var questions = QuestionsController()
     var userID: String
     var body: some View {
         Button(action: {
@@ -98,7 +116,7 @@ struct QuestionButton: View {
                 .foregroundColor(self.colorScheme == .dark ? Color.gray : Color.lairDarkGray)
                 .font(.system(size: 25, weight: .regular))
         }.sheet(isPresented: $showingQuestionSheet) {
-            QuestionView(showingQuestionSheet: self.$showingQuestionSheet)
+            QuestionView(showingQuestionSheet: self.$showingQuestionSheet).environmentObject(self.questions)
         }.padding()
     }
 }

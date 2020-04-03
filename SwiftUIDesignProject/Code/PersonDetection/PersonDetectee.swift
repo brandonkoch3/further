@@ -51,9 +51,6 @@ class PersonDetectee: NSObject, ObservableObject {
             UserDefaults.standard.set(newID, forKey: "deviceID")
         }
         
-        peripheralManager = CBPeripheralManager(delegate: self, queue: nil)
-        centralManager = CBCentralManager(delegate: self, queue: nil)
-        
         connectedSubscriber = $connectedPeriperhals
             .receive(on: RunLoop.main)
             .sink(receiveValue: { connectors in
@@ -77,12 +74,17 @@ class PersonDetectee: NSObject, ObservableObject {
     
     // MARK: Parent BLE Functions
     private func start() {
-        
+        peripheralManager = CBPeripheralManager(delegate: self, queue: nil)
+        centralManager = CBCentralManager(delegate: self, queue: nil)
     }
     
     private func stop() {
         peripheralManager.stopAdvertising()
         centralManager.stopScan()
+        peripheralManager = nil
+        centralManager = nil
+        self.activeParticipants.removeAll()
+        self.connectedPeriperhals.removeAll()
     }
         
     // MARK: RSSI Timer Check

@@ -16,7 +16,10 @@ struct QuestionsView: View {
     @EnvironmentObject var questions: QuestionsController
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.colorScheme) var colorScheme
-    @State private var showingQuestion = false
+    @Binding var showingQuestion: Bool
+    
+    // MARK: UI Helpers
+    
     
     // MARK: View
     var body: some View {
@@ -44,9 +47,17 @@ struct QuestionsView: View {
                     HStack {
                         Spacer()
                         if self.colorScheme == .light {
-                            self.advanceButtonLight()
+                            if self.shouldShowDoneButton() {
+                                self.getDoneButtonLight()
+                            } else {
+                                self.advanceButtonLight()
+                            }
                         } else {
-                            self.advanceButtonDark()
+                            if self.shouldShowDoneButton() {
+                                self.getDoneButtonDark()
+                            } else {
+                                self.advanceButtonDark()
+                            }
                         }
                     }.padding()
                 }.padding(.top, 70).padding(.leading, 10).padding(.trailing, 10)
@@ -78,49 +89,49 @@ struct QuestionsView: View {
         }
     }
     
-    func advanceButtonLight() -> some View {
+    func getDoneButtonLight() -> some View {
         return Button(action: {
-            if self.shouldShowDoneButton() {
-                self.presentationMode.wrappedValue.dismiss()
-            } else {
-                self.showingQuestion.toggle()
-            }
+            self.showingQuestion.toggle()
         }) {
-            Image(systemName: self.shouldShowDoneButton() ? "checkmark" : "arrow.right")
+            Image(systemName: "checkmark")
             .foregroundColor(.gray)
             .font(.system(size: 30, weight: .ultraLight))
-        }
-        .sheet(isPresented: self.$showingQuestion) {
-            QuestionsView(questionID: self.nextQuestion()).environmentObject(QuestionsController())
-        }
-        .buttonStyle(LightButtonStyle())
+        }.buttonStyle(LightButtonStyle()).padding(.bottom, 50).padding(.trailing, -5)
+    }
+    
+    func getDoneButtonDark() -> some View {
+        return Button(action: {
+            self.showingQuestion.toggle()
+        }) {
+            Image(systemName: "checkmark")
+            .foregroundColor(.gray)
+            .font(.system(size: 30, weight: .ultraLight))
+        }.buttonStyle(DarkButtonStyle()).padding(.bottom, 50).padding(.trailing, -5)
+    }
+    
+    func advanceButtonLight() -> some View {
+        return NavigationLink(destination: QuestionsView(questionID: self.nextQuestion(), showingQuestion: self.$showingQuestion).environmentObject(self.questions)) {
+            Image(systemName: "arrow.right")
+            .foregroundColor(.gray)
+            .font(.system(size: 30, weight: .ultraLight))
+        }.padding(.bottom, 50).padding(.trailing, -5.0).buttonStyle(LightButtonStyle())
     }
     
     func advanceButtonDark() -> some View {
-        return Button(action: {
-            if self.shouldShowDoneButton() {
-                self.presentationMode.wrappedValue.dismiss()
-            } else {
-                self.showingQuestion.toggle()
-            }
-        }) {
-            Image(systemName: self.shouldShowDoneButton() ? "checkmark" : "arrow.right")
+        return NavigationLink(destination: QuestionsView(questionID: self.nextQuestion(), showingQuestion: self.$showingQuestion).environmentObject(self.questions)) {
+            Image(systemName: "arrow.right")
             .foregroundColor(.gray)
             .font(.system(size: 30, weight: .ultraLight))
-        }
-        .sheet(isPresented: self.$showingQuestion) {
-            QuestionsView(questionID: self.nextQuestion()).environmentObject(QuestionsController())
-        }
-        .buttonStyle(DarkButtonStyle())
+        }.padding(.bottom, 50).padding(.trailing, -5.0).buttonStyle(DarkButtonStyle())
     }
 }
 
 struct QuestionsView_Previews: PreviewProvider {
     static var previews: some View {
-        QuestionsView(questionID: 1)
+        QuestionsView(questionID: 1, showingQuestion: .constant(true))
             .previewDevice("iPhone 11 Pro Max")
             .environmentObject(QuestionsController())
-            .environment(\.colorScheme, .dark)
+            .environment(\.colorScheme, .light)
     }
 }
 
@@ -129,6 +140,7 @@ struct QuestionAnswerView: View {
     @EnvironmentObject var questionsController: QuestionsController
     var imageOffset: CGFloat? = 0
     @Environment(\.colorScheme) var colorScheme
+    let generator = UIImpactFeedbackGenerator(style: .light)
     var body: some View {
         GeometryReader { geometry in
             if self.colorScheme == .light {
@@ -149,6 +161,7 @@ struct QuestionAnswerView: View {
             HStack {
                 ZStack {
                     Button(action: {
+                        self.generator.impactOccurred()
                         self.questionsController.updateAnswers(questionID: self.question.id, response: true)
                     }) {
                         ZStack {
@@ -192,6 +205,7 @@ struct QuestionAnswerView: View {
             HStack {
                 ZStack {
                     Button(action: {
+                        self.generator.impactOccurred()
                         self.questionsController.updateAnswers(questionID: self.question.id, response: true)
                     }) {
                         ZStack {
