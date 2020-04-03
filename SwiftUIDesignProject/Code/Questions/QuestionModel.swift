@@ -8,13 +8,15 @@
 
 import Foundation
 struct QuestionModel: Codable, Equatable, Identifiable {
-    var id = UUID()
+    var id: Int
     var sectionHeader: String
-    var question: [Question]
+    var questions: [Question]
 }
 
 struct Question: Codable, Equatable, Identifiable {
-    var id = UUID()
-    var text: String
+    var id: Int
+    var icon: String
+    var headline: String
+    var subtitle: String
     var response: Bool
 }

@@ -15,7 +15,6 @@
 		CA6A81CC2433D22F00E17DC3 /* PersonNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6A81CB2433D22F00E17DC3 /* PersonNotification.swift */; };
 		CA7544612431878300C45C28 /* PersonModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7544602431878300C45C28 /* PersonModel.swift */; };
 		CA7544642432EF3C00C45C28 /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7544632432EF3C00C45C28 /* Haptics.swift */; };
-		CA754469243306F000C45C28 /* QuestionView3.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA754468243306F000C45C28 /* QuestionView3.swift */; };
 		CA75446B2433A51F00C45C28 /* QuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA75446A2433A51F00C45C28 /* QuestionView.swift */; };
 		CA9D81CF242151AE009625DF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9D81CE242151AE009625DF /* AppDelegate.swift */; };
 		CA9D81D1242151AE009625DF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9D81D0242151AE009625DF /* SceneDelegate.swift */; };
@@ -25,6 +24,7 @@
 		CA9D81DB242151AF009625DF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA9D81D9242151AF009625DF /* LaunchScreen.storyboard */; };
 		CAA0AD0924366321007A9522 /* CovidModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA0AD0824366321007A9522 /* CovidModel.swift */; };
 		CAA0AD0C243665CA007A9522 /* StoriesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA0AD0B243665CA007A9522 /* StoriesController.swift */; };
+		CAA0AD122436A03C007A9522 /* StoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA0AD112436A03C007A9522 /* StoryView.swift */; };
 		CAAD96C02431711B00C054E1 /* PersonDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAD96BF2431711B00C054E1 /* PersonDetector.swift */; };
 		CACE2A3824356B3D00A8B8D5 /* QuestionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACE2A3724356B3D00A8B8D5 /* QuestionsView.swift */; };
 /* End PBXBuildFile section */
@@ -38,7 +38,6 @@
 		CA6A81CB2433D22F00E17DC3 /* PersonNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonNotification.swift; sourceTree = "<group>"; };
 		CA7544602431878300C45C28 /* PersonModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonModel.swift; sourceTree = "<group>"; };
 		CA7544632432EF3C00C45C28 /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
-		CA754468243306F000C45C28 /* QuestionView3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionView3.swift; sourceTree = "<group>"; };
 		CA75446A2433A51F00C45C28 /* QuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionView.swift; sourceTree = "<group>"; };
 		CA9D81CB242151AE009625DF /* Further.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Further.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA9D81CE242151AE009625DF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -50,6 +49,7 @@
 		CA9D81DC242151AF009625DF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CAA0AD0824366321007A9522 /* CovidModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CovidModel.swift; sourceTree = "<group>"; };
 		CAA0AD0B243665CA007A9522 /* StoriesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoriesController.swift; sourceTree = "<group>"; };
+		CAA0AD112436A03C007A9522 /* StoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryView.swift; sourceTree = "<group>"; };
 		CAAD96BF2431711B00C054E1 /* PersonDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDetector.swift; sourceTree = "<group>"; };
 		CACE2A3724356B3D00A8B8D5 /* QuestionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -68,6 +68,7 @@
 		CA11D4FF242AC9220074E024 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				CAA0AD102436A033007A9522 /* Story */,
 				CA11D506242AC9D60074E024 /* Shared */,
 				CA11D503242AC9540074E024 /* Entry */,
 				CA7544672432F5DB00C45C28 /* Questionnaire */,
@@ -134,7 +135,6 @@
 		CA7544672432F5DB00C45C28 /* Questionnaire */ = {
 			isa = PBXGroup;
 			children = (
-				CA754468243306F000C45C28 /* QuestionView3.swift */,
 				CA75446A2433A51F00C45C28 /* QuestionView.swift */,
 				CACE2A3724356B3D00A8B8D5 /* QuestionsView.swift */,
 			);
@@ -184,6 +184,14 @@
 				CAA0AD0B243665CA007A9522 /* StoriesController.swift */,
 			);
 			path = Stories;
+			sourceTree = "<group>";
+		};
+		CAA0AD102436A033007A9522 /* Story */ = {
+			isa = PBXGroup;
+			children = (
+				CAA0AD112436A03C007A9522 /* StoryView.swift */,
+			);
+			path = Story;
 			sourceTree = "<group>";
 		};
 		CAAD96BE2431710C00C054E1 /* PersonDetection */ = {
@@ -269,9 +277,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				CA2D368424351C2900401C84 /* PersonDetectee.swift in Sources */,
-				CA754469243306F000C45C28 /* QuestionView3.swift in Sources */,
 				CA11D50B242ACB920074E024 /* SimpleButtonStyle.swift in Sources */,
 				CAA0AD0924366321007A9522 /* CovidModel.swift in Sources */,
+				CAA0AD122436A03C007A9522 /* StoryView.swift in Sources */,
 				CA1AB6052435831000291F3D /* QuestionsController.swift in Sources */,
 				CAA0AD0C243665CA007A9522 /* StoriesController.swift in Sources */,
 				CAAD96C02431711B00C054E1 /* PersonDetector.swift in Sources */,

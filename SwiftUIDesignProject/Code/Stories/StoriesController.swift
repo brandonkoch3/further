@@ -15,6 +15,8 @@ class StoriesController: ObservableObject {
     @Published var stories = [CovidStory]()
     private var interactions = [PersonModel]()
     
+    @Published var testData = [CovidStory(displayDate: "2020-03-30", dateGathered: 1585522400, positiveContacts: [], didSendNotification: true), CovidStory(displayDate: "2020-04-02", dateGathered: 1585785600, positiveContacts: [], didSendNotification: true), CovidStory(displayDate: "2020-04-01", dateGathered: 1585699200, positiveContacts: ["99999999999-999999999", "99999999999-999999999", "99999999999-999999999", "99999999999-999999999", "99999999999-999999999"], didSendNotification: true), CovidStory(displayDate: "2020-03-31", dateGathered: 1585612800, positiveContacts: ["99999999999-999999999"], didSendNotification: true), CovidStory(displayDate: "2020-03-31", dateGathered: 1585612600, positiveContacts: ["99999999999-999999999"], didSendNotification: true), CovidStory(displayDate: "2020-03-31", dateGathered: 1585612500, positiveContacts: ["99999999999-999999999"], didSendNotification: true)]
+    
     // Helpers
     let encoder = JSONEncoder()
     let decoder = JSONDecoder()
@@ -31,6 +33,9 @@ class StoriesController: ObservableObject {
                 self.stories = loadedData
             }
         }
+        
+        self.stories.sort(by: { $0.dateGathered > $1.dateGathered })
+        self.testData.sort(by: { $0.dateGathered > $1.dateGathered })
         
         if let savedData = defaults.object(forKey: "interactions") as? Data {
             if let loadedData = try? decoder.decode([PersonModel].self, from: savedData) {
@@ -71,6 +76,8 @@ class StoriesController: ObservableObject {
                 if let encoded = try? self.encoder.encode(self.stories) {
                     self.defaults.set(encoded, forKey: "stories")
                 }
+                
+                self.stories.sort(by: { $0.dateGathered > $1.dateGathered })
                 
                 completion(true)
                 return

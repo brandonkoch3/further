@@ -64,20 +64,54 @@ class QuestionsController: ObservableObject {
         
     }
     
+    public func updateAnswers(questionID: Int, response: Bool) {
+        switch questionID {
+        case 0:
+            self.answers!.feelingSick = true
+            self.questions[0].questions[0].response = true
+            self.questions[0].questions[1].response = false
+        case 1:
+            self.answers!.feelingSick = false
+            self.questions[0].questions[0].response = false
+            self.questions[0].questions[1].response = true
+        case 2:
+            self.answers!.hasBeenTested = true
+            self.questions[1].questions[0].response = true
+            self.questions[1].questions[1].response = false
+        case 3:
+            self.answers!.hasBeenTested = false
+            self.questions[1].questions[0].response = false
+            self.questions[1].questions[1].response = true
+        case 4:
+            self.answers!.testResult = true
+            self.questions[2].questions[0].response = true
+            self.questions[2].questions[1].response = false
+        case 5:
+            self.answers!.testResult = false
+            self.questions[2].questions[0].response = false
+            self.questions[2].questions[1].response = true
+        default:
+            break
+        }
+    }
+    
     /// We are manually setting the questions given the simplicity of this app.  In other cases, we may want to download the questions from a server.
     private func setupQuestions() {
-        let questionA = QuestionModel(sectionHeader: "Are you experiencing symptoms you think may be related to COVID-19?", question: [Question(text: "Fever, shortness of breath, and difficulty breathing are common symptoms.", response: false), Question(text: "I am not experiencing symptoms that seem related to COVID-19.", response: true)])
         
-        let questionB = QuestionModel(sectionHeader: "Have you been professionally tested for COVID-19?", question: [Question(text: "Yes, I have visitied a testing facility and have been tested using a CDC-approved test.", response: false), Question(text: "No, I have not been professionally tested for COVID-19.", response: true)])
+        let questionA = QuestionModel(id: 0, sectionHeader: "Are you experiencing symptoms you think may be related to COVID-19?", questions: [Question(id: 0, icon: "checkmark", headline: "Yes", subtitle: "Fever, shortness of breath, and coughing are common symptoms.", response: self.answers!.feelingSick), Question(id: 1, icon: "xmark", headline: "No", subtitle: "No, I am not experiecing symptoms that seem related to COVID-19.", response: !self.answers!.feelingSick)])
         
-        let questionC = QuestionModel(sectionHeader: "Did you show a positive, confirmed test for COVID-19?", question: [Question(text: "Yes, my test was confirmed to show a positive result for COVID-19.", response: false), Question(text: "No, my test did not show a positive result/I tested negative for COVID-19.", response: true)])
+        let questionB = QuestionModel(id: 1, sectionHeader: "Have you been professionally tested for COVID-19?", questions: [Question(id: 2, icon: "checkmark", headline: "Yes", subtitle: "Yes, I have visitied a testing facility and have been tested using a CDC-approved test.", response: self.answers!.hasBeenTested), Question(id: 3, icon: "xmark", headline: "No", subtitle: "No, I have not been professionally tested for COVID-19.", response: !self.answers!.hasBeenTested)])
+        
+        let questionC = QuestionModel(id: 2, sectionHeader: "Did you show a positive, confirmed test for COVID-19?", questions: [Question(id: 4, icon: "checkmark", headline: "Yes", subtitle: "Yes, my test was confirmed to show a positive result for COVID-19.", response: false), Question(id: 5, icon: "xmark", headline: "No", subtitle: "No, my test did not show a positive result/I tested negative for COVID-19.", response: true)])
         
         questions.append(contentsOf: [questionA, questionB, questionC])
     }
     
     private func saveAnswers() {
+        var myAnswers = self.answers!
+        myAnswers.update = Date().timeIntervalSince1970
         defer {
-            if let encoded = try? encoder.encode(self.answers) {
+            if let encoded = try? encoder.encode(myAnswers) {
                 defaults.set(encoded, forKey: "answers")
             }
         }

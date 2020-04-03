@@ -16,10 +16,13 @@ struct EntryView: View {
     @Environment(\.colorScheme) var colorScheme
     @State private var pulsate = false
     @State var showingQuestionSheet = false
+    @State var showingStorySheet = false
     private var haptics = Haptics()
     
     // Detector config
     @EnvironmentObject var detector: PersonDetectee
+    @EnvironmentObject var questions: QuestionsController
+    @ObservedObject var storyController = StoriesController()
     
     var body: some View {
         ZStack {
@@ -62,12 +65,11 @@ struct EntryView: View {
                     if colorScheme == .dark {
                         QuestionButton(showingQuestionSheet: $showingQuestionSheet, userID: self.detector.myID)
                         Spacer()
-                        CameraButton()
-                        
+                        StoryButton(showingStorySheet: $showingStorySheet)
                     } else {
                         QuestionButton(showingQuestionSheet: $showingQuestionSheet, userID: self.detector.myID)
                         Spacer()
-                        CameraButton()
+                        StoryButton(showingStorySheet: $showingStorySheet)
                     }
                 }
             }.padding()
@@ -80,20 +82,21 @@ struct EntryView_Previews: PreviewProvider {
     static var previews: some View {
         EntryView()
             .environmentObject(PersonDetectee())
-            .environment(\.colorScheme, .light)
+            .environment(\.colorScheme, .dark)
     }
 }
 
 struct QuestionButton: View {
     @Binding var showingQuestionSheet: Bool
+    @Environment(\.colorScheme) var colorScheme
     var userID: String
     var body: some View {
         Button(action: {
             self.showingQuestionSheet.toggle()
         }) {
             Image(systemName: "list.dash")
-                .foregroundColor(.gray)
-                .font(.system(size: 30, weight: .regular))
+                .foregroundColor(self.colorScheme == .dark ? Color.gray : Color.lairDarkGray)
+                .font(.system(size: 25, weight: .regular))
         }.sheet(isPresented: $showingQuestionSheet) {
             QuestionView(showingQuestionSheet: self.$showingQuestionSheet)
         }.padding()
@@ -108,6 +111,23 @@ struct CameraButton: View {
             Image(systemName: "camera.fill")
                 .foregroundColor(.gray)
                 .font(.system(size: 30, weight: .regular))
+        }.padding()
+    }
+}
+
+struct StoryButton: View {
+    @Binding var showingStorySheet: Bool
+    @Environment(\.colorScheme) var colorScheme
+    var storiesController = StoriesController()
+    var body: some View {
+        Button(action: {
+            self.showingStorySheet.toggle()
+        }) {
+            Image(systemName: "person.3")
+                .foregroundColor(self.colorScheme == .dark ? Color.gray : Color.lairDarkGray)
+                .font(.system(size: 25, weight: .regular))
+        }.sheet(isPresented: $showingStorySheet) {
+            StoryView(storyController: self.storiesController)
         }.padding()
     }
 }
