@@ -25,17 +25,26 @@ class QuestionsController: ObservableObject {
     let encoder = JSONEncoder()
     let decoder = JSONDecoder()
     let defaults = UserDefaults.standard
+    var keyValStore = NSUbiquitousKeyValueStore()
     
     init() {
-        if let myID = UserDefaults.standard.string(forKey: "deviceID") {
+        if let myID = keyValStore.string(forKey: "deviceID") {
+            self.myID = myID
+        } else if let myID = UserDefaults.standard.string(forKey: "deviceID") {
             self.myID = myID
         } else {
             let newID = UUID().uuidString
             self.myID = newID
             UserDefaults.standard.set(newID, forKey: "deviceID")
+            keyValStore.set(self.myID, forKey: "deviceID")
+            keyValStore.synchronize()
         }
         
-        if let savedData = defaults.object(forKey: "answers") as? Data {
+        if let savedData = keyValStore.object(forKey: "answers") as? Data {
+            if let loadedData = try? decoder.decode(CovidModel.self, from: savedData) {
+                self.answers = loadedData
+            }
+        } else if let savedData = defaults.object(forKey: "answers") as? Data {
             if let loadedData = try? decoder.decode(CovidModel.self, from: savedData) {
                 self.answers = loadedData
             }
@@ -53,11 +62,8 @@ class QuestionsController: ObservableObject {
         
         publishSubscriber = $answers
             .receive(on: RunLoop.main)
-            .filter({ $0!.testResult == true })
             .sink(receiveValue: { positive in
-                self.publishAnswer() { update in
-                    
-                }
+                self.publishAnswer() { update in }
             })
         
         setupQuestions()
@@ -102,7 +108,7 @@ class QuestionsController: ObservableObject {
         
         let questionB = QuestionModel(id: 1, sectionHeader: "Have you been professionally tested for COVID-19?", questions: [Question(id: 2, icon: "checkmark", headline: "Yes", subtitle: "Yes, I have visitied a testing facility and have been tested using a CDC-approved test.", response: self.answers!.hasBeenTested), Question(id: 3, icon: "xmark", headline: "No", subtitle: "No, I have not been professionally tested for COVID-19.", response: !self.answers!.hasBeenTested)])
         
-        let questionC = QuestionModel(id: 2, sectionHeader: "Did you show a positive, confirmed test for COVID-19?", questions: [Question(id: 4, icon: "checkmark", headline: "Yes", subtitle: "Yes, my test was confirmed to show a positive result for COVID-19.", response: false), Question(id: 5, icon: "xmark", headline: "No", subtitle: "No, my test did not show a positive result/I tested negative for COVID-19.", response: true)])
+        let questionC = QuestionModel(id: 2, sectionHeader: "Did you show a positive, confirmed test for COVID-19?", questions: [Question(id: 4, icon: "checkmark", headline: "Yes", subtitle: "Yes, my test was confirmed to show a positive result for COVID-19.", response: self.answers!.testResult), Question(id: 5, icon: "xmark", headline: "No", subtitle: "No, my test did not show a positive result/I tested negative for COVID-19.", response: !self.answers!.testResult)])
         
         questions.append(contentsOf: [questionA, questionB, questionC])
     }
@@ -113,12 +119,13 @@ class QuestionsController: ObservableObject {
         myAnswers.update = Date().timeIntervalSince1970
         defer {
             if let encoded = try? encoder.encode(myAnswers) {
+                keyValStore.set(encoded, forKey: "answers")
                 defaults.set(encoded, forKey: "answers")
             }
         }
         if let savedData = defaults.object(forKey: "answers") as? Data {
             if let loadedData = try? decoder.decode(CovidModel.self, from: savedData) {
-                guard loadedData != self.answers else { return }
+                guard loadedData != myAnswers else { return }
             }
         }
     }
@@ -130,7 +137,7 @@ class QuestionsController: ObservableObject {
         }
         let t = try? encoder.encode(answerSet)
         
-        let destination = URL(string: "hello.com")!
+        let destination = URL(string: "https://mlv3dsc5tc.execute-api.us-east-1.amazonaws.com/health")!
         let urlconfig = URLSessionConfiguration.default
         urlconfig.timeoutIntervalForResource = 15.0
         urlconfig.timeoutIntervalForRequest = 15.0
@@ -139,7 +146,8 @@ class QuestionsController: ObservableObject {
         var request = URLRequest(url: destination)
         request.httpMethod = "POST"
         request.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData
-        t != nil ? request.httpBody = t : nil
+        request.httpBody = t
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
         updateCancellable = session.dataTaskPublisher(for: request)
             .receive(on: RunLoop.main)
@@ -147,7 +155,6 @@ class QuestionsController: ObservableObject {
             .compactMap({ $0 as? HTTPURLResponse })
             .eraseToAnyPublisher()
             .sink(receiveCompletion: { completed in
-                print("Status of answer update:", completed)
                 self.updateCancellable?.cancel()
             }, receiveValue: { response in
                 switch response.statusCode {

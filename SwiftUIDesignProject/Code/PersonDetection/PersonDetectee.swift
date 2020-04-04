@@ -39,16 +39,21 @@ class PersonDetectee: NSObject, ObservableObject {
     let encoder = JSONEncoder()
     let decoder = JSONDecoder()
     let defaults = UserDefaults.standard
+    var keyValStore = NSUbiquitousKeyValueStore()
     
     override init() {
         super.init()
         
-        if let myID = UserDefaults.standard.string(forKey: "deviceID") {
+        if let myID = keyValStore.string(forKey: "deviceID") {
+            self.myID = myID
+        } else if let myID = UserDefaults.standard.string(forKey: "deviceID") {
             self.myID = myID
         } else {
             let newID = UUID().uuidString
             self.myID = newID
             UserDefaults.standard.set(newID, forKey: "deviceID")
+            keyValStore.set(self.myID, forKey: "deviceID")
+            keyValStore.synchronize()
         }
         
         connectedSubscriber = $connectedPeriperhals
@@ -79,6 +84,7 @@ class PersonDetectee: NSObject, ObservableObject {
     }
     
     private func stop() {
+        _ = self.connectedPeriperhals.compactMap{ self.centralManager.cancelPeripheralConnection($0) }
         peripheralManager.stopAdvertising()
         centralManager.stopScan()
         peripheralManager = nil
@@ -122,7 +128,6 @@ class PersonDetectee: NSObject, ObservableObject {
             var myParticipant = participant
             if Date().timeIntervalSince1970 - myParticipant.connectTime >= 60 {
                 myParticipant.disconnectTime = Date().timeIntervalSince1970
-                print("Disconnected from", peerID, "with 60 second interval")
                 self.save(participant: myParticipant)
             }
             DispatchQueue.main.async {
@@ -212,15 +217,18 @@ extension PersonDetectee: CBCentralManagerDelegate {
 
         let foundPerson = peripheral
         foundPerson.delegate = self
+        centralManager.registerForConnectionEvents(options: [.peripheralUUIDs: [peripheral.identifier]])
         connectedPeriperhals.append(peripheral)
         self.peerConnected(peerID: foundUUID, bleID: peripheral.identifier.uuidString)
         centralManager.connect(foundPerson)
-        
-        print("DISCOVERED AN ACCESSORY WITH IDENTIFIER", peripheral.identifier, "with further ID:", foundUUID, "with RSSI:", RSSI)
     }
     
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
-        print("Connected to Further Participant at", peripheral.identifier.uuidString)
+        //
+    }
+    
+    func centralManager(_ central: CBCentralManager, connectionEventDidOccur event: CBConnectionEvent, for peripheral: CBPeripheral) {
+        //
     }
     
     internal func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
@@ -240,6 +248,10 @@ extension PersonDetectee: CBPeripheralDelegate {
         }
     }
     
+    func peripheral(_ peripheral: CBPeripheral, didModifyServices invalidatedServices: [CBService]) {
+        //
+    }
+    
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
         guard let characteristics = service.characteristics else {return}
         for characteristic in characteristics {
@@ -256,7 +268,7 @@ extension PersonDetectee: CBPeripheralDelegate {
     }
     
     func peripheral(_ peripheral: CBPeripheral, didReadRSSI RSSI: NSNumber, error: Error?) {
-        print("RSSI:", RSSI)
+        print("RSSI:", RSSI, "ID:", peripheral.identifier, peripheral.state.rawValue)
         self.personFound = (Double(truncating: RSSI) >= -60.0)
     }
 }

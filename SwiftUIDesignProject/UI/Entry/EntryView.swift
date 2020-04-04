@@ -14,6 +14,7 @@ struct EntryView: View {
     
     // UI Config
     @Environment(\.colorScheme) var colorScheme
+    @EnvironmentObject var environmentSettings: EnvironmentSettings
     @State private var pulsate = false
     @State var showingQuestionSheet = false
     @State var showingStorySheet = false
@@ -80,13 +81,21 @@ struct EntryView: View {
                 Spacer()
                 HStack {
                     if colorScheme == .dark {
-                        QuestionButton(showingQuestionSheet: $showingQuestionSheet, userID: self.detector.myID)
+                        if environmentSettings.env.allowQuestions {
+                            QuestionButton(showingQuestionSheet: $showingQuestionSheet, userID: self.detector.myID)
+                        }
                         Spacer()
-                        StoryButton(showingStorySheet: $showingStorySheet)
+                        if environmentSettings.env.allowStories {
+                            StoryButton(showingStorySheet: $showingStorySheet)
+                        }
                     } else {
-                        QuestionButton(showingQuestionSheet: $showingQuestionSheet, userID: self.detector.myID)
+                        if environmentSettings.env.allowQuestions {
+                            QuestionButton(showingQuestionSheet: $showingQuestionSheet, userID: self.detector.myID)
+                        }
                         Spacer()
-                        StoryButton(showingStorySheet: $showingStorySheet)
+                        if environmentSettings.env.allowStories {
+                            StoryButton(showingStorySheet: $showingStorySheet)
+                        }
                     }
                 }
             }.padding()

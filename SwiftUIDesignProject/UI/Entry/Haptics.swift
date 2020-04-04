@@ -30,9 +30,13 @@ class Haptics {
         
         hapticSubscriber = $allowed
             .receive(on: RunLoop.main)
-            .filter({ !$0 })
             .sink(receiveValue: { val in
-                self.cancelHaptics()
+                if val {
+                    UserDefaults.standard.set(false, forKey: "disableHaptics")
+                } else {
+                    UserDefaults.standard.set(true, forKey: "disableHaptics")
+                    self.cancelHaptics()
+                }
             })
     }
     
