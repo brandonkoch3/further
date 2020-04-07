@@ -25,9 +25,29 @@ class QuestionsController: ObservableObject {
     let encoder = JSONEncoder()
     let decoder = JSONDecoder()
     let defaults = UserDefaults.standard
+    #if !os(watchOS)
     var keyValStore = NSUbiquitousKeyValueStore()
+    #endif
     
     init() {
+        
+        #if os(watchOS)
+        if let myID = UserDefaults.standard.string(forKey: "deviceID") {
+            self.myID = myID
+        } else {
+            let newID = UUID().uuidString
+            self.myID = newID
+            UserDefaults.standard.set(newID, forKey: "deviceID")
+        }
+        
+        if let savedData = defaults.object(forKey: "answers") as? Data {
+            if let loadedData = try? decoder.decode(CovidModel.self, from: savedData) {
+                self.answers = loadedData
+            }
+        }
+        
+        #else
+        
         if let myID = keyValStore.string(forKey: "deviceID") {
             self.myID = myID
         } else if let myID = UserDefaults.standard.string(forKey: "deviceID") {
@@ -49,6 +69,7 @@ class QuestionsController: ObservableObject {
                 self.answers = loadedData
             }
         }
+        #endif
         
         if self.answers == nil {
             self.answers = CovidModel(id: self.myID, feelingSick: false, hasBeenTested: false, testResult: false, update: Date().timeIntervalSince1970, didAnswer: false)
@@ -119,7 +140,9 @@ class QuestionsController: ObservableObject {
         myAnswers.update = Date().timeIntervalSince1970
         defer {
             if let encoded = try? encoder.encode(myAnswers) {
+                #if !os(watchOS)
                 keyValStore.set(encoded, forKey: "answers")
+                #endif
                 defaults.set(encoded, forKey: "answers")
             }
         }

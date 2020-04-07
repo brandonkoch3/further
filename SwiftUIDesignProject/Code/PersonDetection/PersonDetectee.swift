@@ -39,22 +39,15 @@ class PersonDetectee: NSObject, ObservableObject {
     let encoder = JSONEncoder()
     let decoder = JSONDecoder()
     let defaults = UserDefaults.standard
+    
+    #if !os(watchOS)
     var keyValStore = NSUbiquitousKeyValueStore()
+    #endif
     
     override init() {
         super.init()
         
-        if let myID = keyValStore.string(forKey: "deviceID") {
-            self.myID = myID
-        } else if let myID = UserDefaults.standard.string(forKey: "deviceID") {
-            self.myID = myID
-        } else {
-            let newID = UUID().uuidString
-            self.myID = newID
-            UserDefaults.standard.set(newID, forKey: "deviceID")
-            keyValStore.set(self.myID, forKey: "deviceID")
-            keyValStore.synchronize()
-        }
+        // TODO: REIMPLEMENT ID
         
         connectedSubscriber = $connectedPeriperhals
             .receive(on: RunLoop.main)
@@ -79,7 +72,9 @@ class PersonDetectee: NSObject, ObservableObject {
     
     // MARK: Parent BLE Functions
     private func start() {
+        #if !os(watchOS)
         peripheralManager = CBPeripheralManager(delegate: self, queue: nil)
+        #endif
         centralManager = CBCentralManager(delegate: self, queue: nil)
     }
     
@@ -149,6 +144,8 @@ class PersonDetectee: NSObject, ObservableObject {
 extension PersonDetectee: CBPeripheralManagerDelegate {
     func peripheralManagerDidUpdateState(_ peripheral: CBPeripheralManager) {
         
+        #if !os(watchOS)
+        
         // Start advertising
         var advertiseData = [String: Any]()
         advertiseData["kCBAdvDataTimestamp"] = Date().timeIntervalSinceReferenceDate
@@ -176,6 +173,8 @@ extension PersonDetectee: CBPeripheralManagerDelegate {
         
         // Add service
         peripheralManager.add(service)
+        
+        #endif
     }
     
     // MARK: Advertising Delegates

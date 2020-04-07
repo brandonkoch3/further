@@ -12,10 +12,22 @@
 		CA1AB6032435829400291F3D /* QuestionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA1AB6022435829400291F3D /* QuestionModel.swift */; };
 		CA1AB6052435831000291F3D /* QuestionsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA1AB6042435831000291F3D /* QuestionsController.swift */; };
 		CA2D368424351C2900401C84 /* PersonDetectee.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2D368324351C2900401C84 /* PersonDetectee.swift */; };
+		CA444838243CE0CD005B883C /* IdentificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA444837243CE0CD005B883C /* IdentificationHelper.swift */; };
 		CA6A81CC2433D22F00E17DC3 /* PersonNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6A81CB2433D22F00E17DC3 /* PersonNotification.swift */; };
 		CA7544612431878300C45C28 /* PersonModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7544602431878300C45C28 /* PersonModel.swift */; };
 		CA7544642432EF3C00C45C28 /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7544632432EF3C00C45C28 /* Haptics.swift */; };
 		CA75446B2433A51F00C45C28 /* QuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA75446A2433A51F00C45C28 /* QuestionView.swift */; };
+		CA80E017243C3DA000410CBF /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA80E015243C3DA000410CBF /* Interface.storyboard */; };
+		CA80E019243C3DA300410CBF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA80E018243C3DA300410CBF /* Assets.xcassets */; };
+		CA80E020243C3DA300410CBF /* Further Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CA80E01F243C3DA300410CBF /* Further Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		CA80E025243C3DA300410CBF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA80E024243C3DA300410CBF /* ContentView.swift */; };
+		CA80E027243C3DA300410CBF /* HostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA80E026243C3DA300410CBF /* HostingController.swift */; };
+		CA80E029243C3DA300410CBF /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA80E028243C3DA300410CBF /* ExtensionDelegate.swift */; };
+		CA80E02B243C3DA400410CBF /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA80E02A243C3DA300410CBF /* NotificationController.swift */; };
+		CA80E02D243C3DA400410CBF /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA80E02C243C3DA400410CBF /* NotificationView.swift */; };
+		CA80E02F243C3DA400410CBF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA80E02E243C3DA400410CBF /* Assets.xcassets */; };
+		CA80E032243C3DA400410CBF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA80E031243C3DA400410CBF /* Preview Assets.xcassets */; };
+		CA80E037243C3DA400410CBF /* Further.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = CA80E013243C3DA000410CBF /* Further.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		CA9D81CF242151AE009625DF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9D81CE242151AE009625DF /* AppDelegate.swift */; };
 		CA9D81D1242151AE009625DF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9D81D0242151AE009625DF /* SceneDelegate.swift */; };
 		CA9D81D3242151AE009625DF /* EntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9D81D2242151AE009625DF /* EntryView.swift */; };
@@ -26,9 +38,61 @@
 		CAA0AD0C243665CA007A9522 /* StoriesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA0AD0B243665CA007A9522 /* StoriesController.swift */; };
 		CAA0AD122436A03C007A9522 /* StoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA0AD112436A03C007A9522 /* StoryView.swift */; };
 		CAAD96C02431711B00C054E1 /* PersonDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAD96BF2431711B00C054E1 /* PersonDetector.swift */; };
+		CABD5D08243C3E5900BB99EB /* EnvironmentSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6D131243819B20088B3E4 /* EnvironmentSettings.swift */; };
+		CABD5D09243C3E5900BB99EB /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA11D508242ACAE10074E024 /* Extensions.swift */; };
+		CABD5D0A243C3E5900BB99EB /* PersonDetectee.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2D368324351C2900401C84 /* PersonDetectee.swift */; };
+		CABD5D0B243C3E5900BB99EB /* PersonModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7544602431878300C45C28 /* PersonModel.swift */; };
+		CABD5D0C243C3E5900BB99EB /* PersonNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6A81CB2433D22F00E17DC3 /* PersonNotification.swift */; };
+		CABD5D0D243C3E5900BB99EB /* QuestionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA1AB6022435829400291F3D /* QuestionModel.swift */; };
+		CABD5D0E243C3E5900BB99EB /* QuestionsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA1AB6042435831000291F3D /* QuestionsController.swift */; };
+		CABD5D0F243C3E5900BB99EB /* CovidModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA0AD0824366321007A9522 /* CovidModel.swift */; };
+		CABD5D10243C3E5900BB99EB /* StoriesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA0AD0B243665CA007A9522 /* StoriesController.swift */; };
+		CABD5D11243C3E5900BB99EB /* SimpleButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA11D50A242ACB920074E024 /* SimpleButtonStyle.swift */; };
 		CAC6D132243819B20088B3E4 /* EnvironmentSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6D131243819B20088B3E4 /* EnvironmentSettings.swift */; };
 		CACE2A3824356B3D00A8B8D5 /* QuestionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACE2A3724356B3D00A8B8D5 /* QuestionsView.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CA80E021243C3DA300410CBF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CA9D81C3242151AE009625DF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CA80E01E243C3DA300410CBF;
+			remoteInfo = "Further Extension";
+		};
+		CA80E035243C3DA400410CBF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CA9D81C3242151AE009625DF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CA80E012243C3DA000410CBF;
+			remoteInfo = Further;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		CA80E03B243C3DA400410CBF /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				CA80E020243C3DA300410CBF /* Further Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CA80E03F243C3DA400410CBF /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				CA80E037243C3DA400410CBF /* Further.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		CA11D508242ACAE10074E024 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -36,10 +100,25 @@
 		CA1AB6022435829400291F3D /* QuestionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionModel.swift; sourceTree = "<group>"; };
 		CA1AB6042435831000291F3D /* QuestionsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionsController.swift; sourceTree = "<group>"; };
 		CA2D368324351C2900401C84 /* PersonDetectee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDetectee.swift; sourceTree = "<group>"; };
+		CA444837243CE0CD005B883C /* IdentificationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentificationHelper.swift; sourceTree = "<group>"; };
 		CA6A81CB2433D22F00E17DC3 /* PersonNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonNotification.swift; sourceTree = "<group>"; };
 		CA7544602431878300C45C28 /* PersonModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonModel.swift; sourceTree = "<group>"; };
 		CA7544632432EF3C00C45C28 /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
 		CA75446A2433A51F00C45C28 /* QuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionView.swift; sourceTree = "<group>"; };
+		CA80E013243C3DA000410CBF /* Further.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Further.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA80E016243C3DA000410CBF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
+		CA80E018243C3DA300410CBF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CA80E01A243C3DA300410CBF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CA80E01F243C3DA300410CBF /* Further Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Further Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA80E024243C3DA300410CBF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		CA80E026243C3DA300410CBF /* HostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostingController.swift; sourceTree = "<group>"; };
+		CA80E028243C3DA300410CBF /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
+		CA80E02A243C3DA300410CBF /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
+		CA80E02C243C3DA400410CBF /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
+		CA80E02E243C3DA400410CBF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CA80E031243C3DA400410CBF /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		CA80E033243C3DA400410CBF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CA80E034243C3DA400410CBF /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
 		CA9D81CB242151AE009625DF /* Further.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Further.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA9D81CE242151AE009625DF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CA9D81D0242151AE009625DF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -58,6 +137,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		CA80E01C243C3DA300410CBF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CA9D81C8242151AE009625DF /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -106,6 +192,7 @@
 				CA9D81CE242151AE009625DF /* AppDelegate.swift */,
 				CA9D81D0242151AE009625DF /* SceneDelegate.swift */,
 				CAC6D131243819B20088B3E4 /* EnvironmentSettings.swift */,
+				CA444837243CE0CD005B883C /* IdentificationHelper.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -145,10 +232,46 @@
 			path = Questionnaire;
 			sourceTree = "<group>";
 		};
+		CA80E014243C3DA000410CBF /* Further */ = {
+			isa = PBXGroup;
+			children = (
+				CA80E015243C3DA000410CBF /* Interface.storyboard */,
+				CA80E018243C3DA300410CBF /* Assets.xcassets */,
+				CA80E01A243C3DA300410CBF /* Info.plist */,
+			);
+			path = Further;
+			sourceTree = "<group>";
+		};
+		CA80E023243C3DA300410CBF /* Further Extension */ = {
+			isa = PBXGroup;
+			children = (
+				CA80E024243C3DA300410CBF /* ContentView.swift */,
+				CA80E026243C3DA300410CBF /* HostingController.swift */,
+				CA80E028243C3DA300410CBF /* ExtensionDelegate.swift */,
+				CA80E02A243C3DA300410CBF /* NotificationController.swift */,
+				CA80E02C243C3DA400410CBF /* NotificationView.swift */,
+				CA80E02E243C3DA400410CBF /* Assets.xcassets */,
+				CA80E033243C3DA400410CBF /* Info.plist */,
+				CA80E034243C3DA400410CBF /* PushNotificationPayload.apns */,
+				CA80E030243C3DA400410CBF /* Preview Content */,
+			);
+			path = "Further Extension";
+			sourceTree = "<group>";
+		};
+		CA80E030243C3DA400410CBF /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				CA80E031243C3DA400410CBF /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
 		CA9D81C2242151AE009625DF = {
 			isa = PBXGroup;
 			children = (
 				CA9D81CD242151AE009625DF /* SwiftUIDesignProject */,
+				CA80E014243C3DA000410CBF /* Further */,
+				CA80E023243C3DA300410CBF /* Further Extension */,
 				CA9D81CC242151AE009625DF /* Products */,
 			);
 			sourceTree = "<group>";
@@ -157,6 +280,8 @@
 			isa = PBXGroup;
 			children = (
 				CA9D81CB242151AE009625DF /* Further.app */,
+				CA80E013243C3DA000410CBF /* Further.app */,
+				CA80E01F243C3DA300410CBF /* Further Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -213,6 +338,40 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		CA80E012243C3DA000410CBF /* Further */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CA80E03C243C3DA400410CBF /* Build configuration list for PBXNativeTarget "Further" */;
+			buildPhases = (
+				CA80E011243C3DA000410CBF /* Resources */,
+				CA80E03B243C3DA400410CBF /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CA80E022243C3DA300410CBF /* PBXTargetDependency */,
+			);
+			name = Further;
+			productName = Further;
+			productReference = CA80E013243C3DA000410CBF /* Further.app */;
+			productType = "com.apple.product-type.application.watchapp2";
+		};
+		CA80E01E243C3DA300410CBF /* Further Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CA80E038243C3DA400410CBF /* Build configuration list for PBXNativeTarget "Further Extension" */;
+			buildPhases = (
+				CA80E01B243C3DA300410CBF /* Sources */,
+				CA80E01C243C3DA300410CBF /* Frameworks */,
+				CA80E01D243C3DA300410CBF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Further Extension";
+			productName = "Further Extension";
+			productReference = CA80E01F243C3DA300410CBF /* Further Extension.appex */;
+			productType = "com.apple.product-type.watchkit2-extension";
+		};
 		CA9D81CA242151AE009625DF /* SwiftUIDesignProject */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = CA9D81DF242151AF009625DF /* Build configuration list for PBXNativeTarget "SwiftUIDesignProject" */;
@@ -220,10 +379,12 @@
 				CA9D81C7242151AE009625DF /* Sources */,
 				CA9D81C8242151AE009625DF /* Frameworks */,
 				CA9D81C9242151AE009625DF /* Resources */,
+				CA80E03F243C3DA400410CBF /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				CA80E036243C3DA400410CBF /* PBXTargetDependency */,
 			);
 			name = SwiftUIDesignProject;
 			productName = SwiftUIDesignProject;
@@ -236,10 +397,16 @@
 		CA9D81C3242151AE009625DF /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1130;
+				LastSwiftUpdateCheck = 1140;
 				LastUpgradeCheck = 1130;
 				ORGANIZATIONNAME = Brandon;
 				TargetAttributes = {
+					CA80E012243C3DA000410CBF = {
+						CreatedOnToolsVersion = 11.4;
+					};
+					CA80E01E243C3DA300410CBF = {
+						CreatedOnToolsVersion = 11.4;
+					};
 					CA9D81CA242151AE009625DF = {
 						CreatedOnToolsVersion = 11.3.1;
 					};
@@ -259,11 +426,31 @@
 			projectRoot = "";
 			targets = (
 				CA9D81CA242151AE009625DF /* SwiftUIDesignProject */,
+				CA80E012243C3DA000410CBF /* Further */,
+				CA80E01E243C3DA300410CBF /* Further Extension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		CA80E011243C3DA000410CBF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CA80E019243C3DA300410CBF /* Assets.xcassets in Resources */,
+				CA80E017243C3DA000410CBF /* Interface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CA80E01D243C3DA300410CBF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CA80E032243C3DA400410CBF /* Preview Assets.xcassets in Resources */,
+				CA80E02F243C3DA400410CBF /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CA9D81C9242151AE009625DF /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -277,6 +464,28 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		CA80E01B243C3DA300410CBF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CABD5D11243C3E5900BB99EB /* SimpleButtonStyle.swift in Sources */,
+				CA80E027243C3DA300410CBF /* HostingController.swift in Sources */,
+				CABD5D0F243C3E5900BB99EB /* CovidModel.swift in Sources */,
+				CABD5D0A243C3E5900BB99EB /* PersonDetectee.swift in Sources */,
+				CABD5D0D243C3E5900BB99EB /* QuestionModel.swift in Sources */,
+				CA80E025243C3DA300410CBF /* ContentView.swift in Sources */,
+				CABD5D08243C3E5900BB99EB /* EnvironmentSettings.swift in Sources */,
+				CA80E02B243C3DA400410CBF /* NotificationController.swift in Sources */,
+				CABD5D10243C3E5900BB99EB /* StoriesController.swift in Sources */,
+				CABD5D0C243C3E5900BB99EB /* PersonNotification.swift in Sources */,
+				CABD5D0E243C3E5900BB99EB /* QuestionsController.swift in Sources */,
+				CA80E029243C3DA300410CBF /* ExtensionDelegate.swift in Sources */,
+				CABD5D0B243C3E5900BB99EB /* PersonModel.swift in Sources */,
+				CA80E02D243C3DA400410CBF /* NotificationView.swift in Sources */,
+				CABD5D09243C3E5900BB99EB /* Extensions.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CA9D81C7242151AE009625DF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -297,6 +506,7 @@
 				CA9D81D1242151AE009625DF /* SceneDelegate.swift in Sources */,
 				CAC6D132243819B20088B3E4 /* EnvironmentSettings.swift in Sources */,
 				CA75446B2433A51F00C45C28 /* QuestionView.swift in Sources */,
+				CA444838243CE0CD005B883C /* IdentificationHelper.swift in Sources */,
 				CA9D81D3242151AE009625DF /* EntryView.swift in Sources */,
 				CA11D509242ACAE10074E024 /* Extensions.swift in Sources */,
 			);
@@ -304,7 +514,28 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		CA80E022243C3DA300410CBF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CA80E01E243C3DA300410CBF /* Further Extension */;
+			targetProxy = CA80E021243C3DA300410CBF /* PBXContainerItemProxy */;
+		};
+		CA80E036243C3DA400410CBF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CA80E012243C3DA000410CBF /* Further */;
+			targetProxy = CA80E035243C3DA400410CBF /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
+		CA80E015243C3DA000410CBF /* Interface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CA80E016243C3DA000410CBF /* Base */,
+			);
+			name = Interface.storyboard;
+			sourceTree = "<group>";
+		};
 		CA9D81D9242151AF009625DF /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -316,6 +547,100 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		CA80E039243C3DA400410CBF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = "100-debug";
+				DEVELOPMENT_ASSET_PATHS = "\"Further Extension/Preview Content\"";
+				DEVELOPMENT_TEAM = 8CBEHASXWQ;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = "Further Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bnbmedia.further.watchkitapp.watchkitextension;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 6.2;
+			};
+			name = Debug;
+		};
+		CA80E03A243C3DA400410CBF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = "100-debug";
+				DEVELOPMENT_ASSET_PATHS = "\"Further Extension/Preview Content\"";
+				DEVELOPMENT_TEAM = 8CBEHASXWQ;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = "Further Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bnbmedia.further.watchkitapp.watchkitextension;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 6.2;
+			};
+			name = Release;
+		};
+		CA80E03D243C3DA400410CBF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = "100-debug";
+				DEVELOPMENT_TEAM = 8CBEHASXWQ;
+				IBSC_MODULE = Further_Extension;
+				INFOPLIST_FILE = Further/Info.plist;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bnbmedia.further.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 6.2;
+			};
+			name = Debug;
+		};
+		CA80E03E243C3DA400410CBF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = "100-debug";
+				DEVELOPMENT_TEAM = 8CBEHASXWQ;
+				IBSC_MODULE = Further_Extension;
+				INFOPLIST_FILE = Further/Info.plist;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bnbmedia.further.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 6.2;
+			};
+			name = Release;
+		};
 		CA9D81DD242151AF009625DF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -438,7 +763,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = "100-debug";
 				DEVELOPMENT_ASSET_PATHS = "\"SwiftUIDesignProject/Preview Content\"";
-				DEVELOPMENT_TEAM = H7CZL4QN4L;
+				DEVELOPMENT_TEAM = 8CBEHASXWQ;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = SwiftUIDesignProject/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
@@ -447,7 +772,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.brandon.further;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bnbmedia.further;
 				PRODUCT_NAME = Further;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -462,7 +787,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = "100-debug";
 				DEVELOPMENT_ASSET_PATHS = "\"SwiftUIDesignProject/Preview Content\"";
-				DEVELOPMENT_TEAM = H7CZL4QN4L;
+				DEVELOPMENT_TEAM = 8CBEHASXWQ;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = SwiftUIDesignProject/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
@@ -471,7 +796,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.brandon.further;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bnbmedia.further;
 				PRODUCT_NAME = Further;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -481,6 +806,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		CA80E038243C3DA400410CBF /* Build configuration list for PBXNativeTarget "Further Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CA80E039243C3DA400410CBF /* Debug */,
+				CA80E03A243C3DA400410CBF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CA80E03C243C3DA400410CBF /* Build configuration list for PBXNativeTarget "Further" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CA80E03D243C3DA400410CBF /* Debug */,
+				CA80E03E243C3DA400410CBF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		CA9D81C6242151AE009625DF /* Build configuration list for PBXProject "SwiftUIDesignProject" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
