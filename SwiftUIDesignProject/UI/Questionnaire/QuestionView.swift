@@ -52,7 +52,7 @@ struct QuestionView: View {
                                     }
                                     }.padding().offset(x: 0, y: -40)
                             }
-                        }.frame(maxWidth: .infinity, minHeight: geometry.size.height / 3, maxHeight: geometry.size.height / 3)
+                        }.frame(maxWidth: .infinity, minHeight: geometry.size.height / geometry.size.height < 600 ? 3.5 : 3.0, maxHeight: geometry.size.height / (geometry.size.height < 600.0 ? 3.5 : 3.0))
                             .background(LinearGradient(gradient: Gradient(colors: [Color(hex: "D94c7a"), Color(hex: "Fcde89"), Color.blue]), startPoint: .topLeading, endPoint: .trailing))
                         VStack {
                             if self.colorScheme == .light {
@@ -67,12 +67,17 @@ struct QuestionView: View {
         }
     }
     
-    func informationView() -> some View {
+    func informationView(geometry: GeometryProxy) -> some View {
         return VStack {
             InformationView(sectionImage: Image(systemName: "hand.raised.fill"), headerTitle: "Privacy", subTitle: "All answers are completely anonymous and cannot be associated with you.", imageOffset: 5)
-            InformationView(sectionImage: Image(systemName: "person.2.fill"), headerTitle: "Honesty", subTitle: "Your provided reponses are not validated.  Please answer honestly in the interest of helping others.")
+            if geometry.size.height < 600.0 {
+                Spacer(minLength: 50.0)
+            }
+            InformationView(sectionImage: Image(systemName: "person.2.fill"), headerTitle: "Honesty", subTitle: "Your provided reponses are not validated.  Please answer honestly to help others.")
+            if geometry.size.height < 600.0 {
+                Spacer(minLength: 50.0)
+            }
             InformationView(sectionImage: Image(systemName: "bandage.fill"), headerTitle: "Health", subTitle: self.questions.answers!.didAnswer ? "You have already answered these questions.  You can update your answers at any time." : "You have not yet answered these questions.  Your answers can help inform others.", imageOffset: 3)
-            
         }
     }
     
@@ -84,42 +89,66 @@ struct QuestionView: View {
                 .edgesIgnoringSafeArea(.all)
             VStack {
                 Spacer()
-                informationView()
+                informationView(geometry: geometry)
                 Spacer(minLength: 60)
                 
                 HStack {
                     Spacer()
-                    NavigationLink(destination: QuestionsView(questionID: 0, showingQuestion: self.$showingQuestionSheet).environmentObject(self.questions)) {
-                        Image(systemName: "arrow.right")
-                        .foregroundColor(.gray)
-                        .font(.system(size: 30, weight: .ultraLight))
-                    }.padding().buttonStyle(LightButtonStyle())
+                    if geometry.size.height < 600 {
+                        VStack {
+                            HStack {
+                                Spacer()
+                                NavigationLink(destination: QuestionsView(questionID: 0, showingQuestion: self.$showingQuestionSheet).environmentObject(self.questions)) {
+                                    Text("Tap to Continue")
+                                }
+                                Spacer()
+                            }
+                        }.padding(.top, 10)
+                    } else {
+                        NavigationLink(destination: QuestionsView(questionID: 0, showingQuestion: self.$showingQuestionSheet).environmentObject(self.questions)) {
+                            Image(systemName: "arrow.right")
+                            .foregroundColor(.gray)
+                            .font(.system(size: 30, weight: .ultraLight))
+                        }.padding().buttonStyle(LightButtonStyle())
+                    }
                 }
             }
-        }.offset(x: 0, y: -50)
+        }.offset(x: 0, y: geometry.size.height < 600.0 ? 0 : -50).padding(.bottom, geometry.size.height < 600 ? 15.0 : 0.0)
     }
     
     
     func modalViewDark(geometry: GeometryProxy) -> some View {
         return ZStack {
-            RoundedRectangle(cornerRadius: 20)
-                .fill(LinearGradient(Color.darkStart, Color.darkEnd))
+            RoundedRectangle(cornerRadius: 0)
+                .fill(Color.clear)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .edgesIgnoringSafeArea(.all)
             VStack {
                 Spacer()
-                informationView()
+                informationView(geometry: geometry)
                 Spacer(minLength: 60)
                 HStack {
                     Spacer()
-                    NavigationLink(destination: QuestionsView(questionID: 0, showingQuestion: self.$showingQuestionSheet).environmentObject(self.questions)) {
-                        Image(systemName: "arrow.right")
-                        .foregroundColor(.gray)
-                        .font(.system(size: 30, weight: .ultraLight))
-                    }.padding().buttonStyle(DarkButtonStyle())
+                        if geometry.size.height < 600 {
+                        VStack {
+                            HStack {
+                                Spacer()
+                                NavigationLink(destination: QuestionsView(questionID: 0, showingQuestion: self.$showingQuestionSheet).environmentObject(self.questions)) {
+                                    Text("Tap to Continue")
+                                }
+                                Spacer()
+                            }
+                        }.padding(.top, 10)
+                    } else {
+                        NavigationLink(destination: QuestionsView(questionID: 0, showingQuestion: self.$showingQuestionSheet).environmentObject(self.questions)) {
+                            Image(systemName: "arrow.right")
+                            .foregroundColor(.gray)
+                            .font(.system(size: 30, weight: .ultraLight))
+                        }.padding().buttonStyle(DarkButtonStyle())
+                    }
                 }
             }
-        }.offset(x: 0, y: -50)
+        }.offset(x: 0, y: geometry.size.height < 600.0 ? 0 : -50).padding(.bottom, geometry.size.height < 600 ? 15.0 : 0.0)
     }
 }
 
@@ -127,8 +156,14 @@ struct QuestionView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             QuestionView(showingQuestionSheet: .constant(true))
-                .previewDevice("iPad Pro 12.9-inch")
+                .previewDevice("iPhone SE")
                 .environment(\.colorScheme, .light)
+                .environmentObject(QuestionsController())
+            
+            QuestionView(showingQuestionSheet: .constant(true))
+            .previewDevice("iPhone XS")
+            .environment(\.colorScheme, .light)
+            .environmentObject(QuestionsController())
         }
     }
 }
@@ -173,10 +208,11 @@ struct InformationView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     Text(self.headerTitle)
                         .font(.title)
+                        .padding(.top, geometry.size.height < 600.0 ? 6.0 : 0.0)
                     Spacer()
                     Text(self.subTitle).font(.caption)
                     Spacer()
-                }.frame(height: 80).padding(.leading, 6.0)
+                }.frame(height: geometry.size.height < 600.0 ? 100 : 80).padding(.leading, 6.0)
                 Spacer()
             }
             .padding()
@@ -207,10 +243,11 @@ struct InformationView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     Text(self.headerTitle)
                         .font(.title)
+                        .padding(.top, geometry.size.height < 600.0 ? 6.0 : 0.0)
                     Spacer()
                     Text(self.subTitle).font(.caption)
                     Spacer()
-                }.frame(height: 80).padding(.leading, 6.0)
+                }.frame(height: geometry.size.height < 600.0 ? 100 : 80).padding(.leading, 6.0)
                 Spacer()
             }
             .padding()

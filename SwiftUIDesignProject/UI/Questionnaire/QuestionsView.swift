@@ -35,10 +35,11 @@ struct QuestionsView: View {
                         .font(.largeTitle)
                         .fontWeight(.semibold)
                         .foregroundColor(self.colorScheme == .dark ? .white : .black)
+                        .padding(.top, geometry.size.height < 600.0 ? -30 : 0).padding(.bottom, geometry.size.height < 600.0 ? 30.0 : 0)
                     Spacer()
                     VStack {
                         ForEach(self.questions.questions[self.questionID].questions.indices) { idx in
-                            QuestionAnswerView(question: self.$questions.questions[self.questionID].questions[idx], imageOffset: 5)
+                            QuestionAnswerView(question: self.$questions.questions[self.questionID].questions[idx], imageOffset: 5).frame(height: 120)
                             Spacer()
                         }
                         Spacer()
@@ -96,7 +97,7 @@ struct QuestionsView: View {
             Image(systemName: "checkmark")
             .foregroundColor(.gray)
             .font(.system(size: 30, weight: .ultraLight))
-        }.buttonStyle(LightButtonStyle()).padding(.bottom, 50).padding(.trailing, -5)
+        }.buttonStyle(LightButtonStyle()).padding(.bottom, 5).padding(.trailing, -5)
     }
     
     func getDoneButtonDark() -> some View {
@@ -106,7 +107,7 @@ struct QuestionsView: View {
             Image(systemName: "checkmark")
             .foregroundColor(.gray)
             .font(.system(size: 30, weight: .ultraLight))
-        }.buttonStyle(DarkButtonStyle()).padding(.bottom, 50).padding(.trailing, -5)
+        }.buttonStyle(DarkButtonStyle()).padding(.bottom, 5).padding(.trailing, -5)
     }
     
     func advanceButtonLight() -> some View {
@@ -114,7 +115,7 @@ struct QuestionsView: View {
             Image(systemName: "arrow.right")
             .foregroundColor(.gray)
             .font(.system(size: 30, weight: .ultraLight))
-        }.padding(.bottom, 50).padding(.trailing, -5.0).buttonStyle(LightButtonStyle())
+        }.padding(.bottom, 5).padding(.trailing, -5.0).buttonStyle(LightButtonStyle())
     }
     
     func advanceButtonDark() -> some View {
@@ -122,16 +123,24 @@ struct QuestionsView: View {
             Image(systemName: "arrow.right")
             .foregroundColor(.gray)
             .font(.system(size: 30, weight: .ultraLight))
-        }.padding(.bottom, 50).padding(.trailing, -5.0).buttonStyle(DarkButtonStyle())
+        }.padding(.bottom, 5).padding(.trailing, -5.0).buttonStyle(DarkButtonStyle())
     }
 }
 
 struct QuestionsView_Previews: PreviewProvider {
     static var previews: some View {
-        QuestionsView(questionID: 1, showingQuestion: .constant(true))
+        Group {
+            QuestionsView(questionID: 0, showingQuestion: .constant(true))
+            .previewDevice("iPhone SE")
+            .environmentObject(QuestionsController())
+            .environment(\.colorScheme, .dark)
+            
+            QuestionsView(questionID: 0, showingQuestion: .constant(true))
             .previewDevice("iPhone 11 Pro Max")
             .environmentObject(QuestionsController())
-            .environment(\.colorScheme, .light)
+            .environment(\.colorScheme, .dark)
+        }
+        
     }
 }
 
@@ -184,9 +193,8 @@ struct QuestionAnswerView: View {
                 }
                 VStack(alignment: .leading, spacing: 0) {
                     Text(self.question.headline)
-                        .font(.title)
-                    Spacer()
-                    Text(self.question.subtitle).font(.caption)
+                        .font(.title).padding(.top, 20)
+                    Text(self.question.subtitle).font(.caption).frame(height: 60.0)
                     Spacer()
                 }.frame(height: 80).padding(.leading, 6.0)
                 Spacer()
@@ -228,9 +236,8 @@ struct QuestionAnswerView: View {
                 }
                 VStack(alignment: .leading, spacing: 0) {
                     Text(self.question.headline)
-                        .font(.title)
-                    Spacer()
-                    Text(self.question.subtitle).font(.caption)
+                        .font(.title).padding(.top, 20)
+                    Text(self.question.subtitle).font(.caption).frame(height: 60.0)
                     Spacer()
                 }.frame(height: 80).padding(.leading, 6.0)
                 Spacer()
