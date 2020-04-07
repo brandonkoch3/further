@@ -108,7 +108,8 @@ struct EntryView_Previews: PreviewProvider {
     static var previews: some View {
         EntryView()
             .environmentObject(PersonDetectee())
-            .environment(\.colorScheme, .dark)
+            .environmentObject(EnvironmentSettings())
+            .environment(\.colorScheme, .light)
     }
 }
 
