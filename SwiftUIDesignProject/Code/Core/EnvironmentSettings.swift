@@ -13,7 +13,7 @@ import Combine
 class EnvironmentSettings: NSObject, ObservableObject {
     
     // Config
-    @Published var env = environmentModel(allowQuestions: true, allowStories: true)
+    @Published var env = environmentModel(allowDetection: true, allowQuestions: true, allowStories: true)
     
     // Helpers
     let decoder = JSONDecoder()
@@ -21,6 +21,7 @@ class EnvironmentSettings: NSObject, ObservableObject {
     
     // Models
     struct environmentModel: Codable {
+        var allowDetection: Bool
         var allowQuestions: Bool
         var allowStories: Bool
     }
@@ -41,7 +42,7 @@ class EnvironmentSettings: NSObject, ObservableObject {
     }
     
     private func updateEnvironment(completion: @escaping (Bool) -> Void) {
-        let destination = URL(string: "https://mlv3dsc5tc.execute-api.us-east-1.amazonaws.com/health")!
+        let destination = URL(string: "https://mlv3dsc5tc.execute-api.us-east-1.amazonaws.com/features")!
         let urlconfig = URLSessionConfiguration.default
         urlconfig.timeoutIntervalForResource = 15.0
         urlconfig.timeoutIntervalForRequest = 15.0

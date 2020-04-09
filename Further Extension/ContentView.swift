@@ -14,6 +14,9 @@ struct ContentView: View {
     @State private var pulsate = false
     @EnvironmentObject var detector: PersonDetectee
     
+    // Environment/Features
+    @EnvironmentObject var environmentSettings: EnvironmentSettings
+    
     var body: some View {
         VStack {
             VStack {
@@ -52,7 +55,9 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView().environmentObject(PersonDetectee())
+        ContentView()
+            .environmentObject(PersonDetectee())
+            .environmentObject(EnvironmentSettings())
     }
 }
 

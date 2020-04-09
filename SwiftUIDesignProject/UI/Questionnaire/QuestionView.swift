@@ -77,7 +77,7 @@ struct QuestionView: View {
             if geometry.size.height < 600.0 {
                 Spacer(minLength: 50.0)
             }
-            InformationView(sectionImage: Image(systemName: "bandage.fill"), headerTitle: "Health", subTitle: self.questions.answers!.didAnswer ? "You have already answered these questions.  You can update your answers at any time." : "You have not yet answered these questions.  Your answers can help inform others.", imageOffset: 3)
+            InformationView(sectionImage: Image(systemName: "bandage.fill"), headerTitle: "Health", subTitle: "Your answers can help inform others.", imageOffset: 3)
         }
     }
     

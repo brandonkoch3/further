@@ -26,7 +26,6 @@ class StoriesController: ObservableObject {
     var updateTimer: AnyCancellable?
     
     init() {
-        
         if let savedData = defaults.object(forKey: "stories") as? Data {
             if let loadedData = try? decoder.decode([CovidStory].self, from: savedData) {
                 self.stories = loadedData
@@ -44,30 +43,43 @@ class StoriesController: ObservableObject {
         updateTimer = Timer.publish(every: 600.0, tolerance: 0.5, on: .main, in: .common)
             .autoconnect()
             .sink { _ in
-                self.updateStories() { response in }
+                self.update() { response in }
             }
     }
     
-    public func updateStories(completion: @escaping (Bool) -> Void) {
-        print("UPDATING STORIES")
-        let date = Date()
+    public func update(completion: @escaping (Bool) -> Void) {
+        self.updateStories() { response in
+            if let yesterdayDate = Date().yesterdayCheckDate() {
+                if !self.stories.contains(where: { $0.displayDate == Date().yesterdayAsString() }) {
+                    self.updateStories(date: yesterdayDate) { response in }
+                }
+            }
+        }
+    }
+    
+    private func updateStories(date: Date? = Date(), completion: @escaping (Bool) -> Void) {
+        let nowDate = date!
         let dateFormatter = DateFormatter()
         //dateFormatter.locale = NSLocale.current
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         dateFormatter.dateFormat = "yyyy-MM-dd"
-        let strDate = dateFormatter.string(from: date)
+        let strDate = dateFormatter.string(from: nowDate)
         
         guard !self.stories.contains(where: { $0.displayDate == strDate }) else {
             completion(true)
             return
         }
         
+        dateFormatter.dateFormat = "HH"
+        guard let hourString = Int(dateFormatter.string(from: nowDate)) else { return }
+        guard hourString >= 19 else { return }
+        
         var todayStory = CovidStory(id: UUID(), displayDate: strDate, dateGathered: Date().timeIntervalSince1970, positiveContacts: [], didSendNotification: false)
         
         self.downloadData() { response in
             if let data = response {
                 for (index, id) in self.interactions.enumerated() {
-                    if data.contains(where: { $0.id == id.personUUID && $0.testResult && !id.hasReceivedNotification }) {
+                    if data.contains(where: { $0.id == id.personUUID && ($0.feelingSick || $0.testResult) && !id.hasReceivedNotification }) {
                         todayStory.positiveContacts.append(id.personUUID)
                         self.interactions[index].hasReceivedNotification = true
                     }
@@ -94,7 +106,7 @@ class StoriesController: ObservableObject {
     }
     
     private func downloadData(completion: @escaping ([CovidModel]?) -> Void) {
-        let destination = URL(string: "hello.com")!
+        let destination = URL(string: "https://mlv3dsc5tc.execute-api.us-east-1.amazonaws.com/data")!
         let urlconfig = URLSessionConfiguration.default
         urlconfig.timeoutIntervalForResource = 15.0
         urlconfig.timeoutIntervalForRequest = 15.0

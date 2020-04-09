@@ -86,7 +86,7 @@ struct EntryView: View {
                         }
                         Spacer()
                         if environmentSettings.env.allowStories {
-                            StoryButton(showingStorySheet: $showingStorySheet)
+                            StoryButton(showingStorySheet: $showingStorySheet, storiesController: self.storyController)
                         }
                     } else {
                         if environmentSettings.env.allowQuestions {
@@ -94,7 +94,7 @@ struct EntryView: View {
                         }
                         Spacer()
                         if environmentSettings.env.allowStories {
-                            StoryButton(showingStorySheet: $showingStorySheet)
+                            StoryButton(showingStorySheet: $showingStorySheet, storiesController: self.storyController)
                         }
                     }
                 }
@@ -146,7 +146,7 @@ struct CameraButton: View {
 struct StoryButton: View {
     @Binding var showingStorySheet: Bool
     @Environment(\.colorScheme) var colorScheme
-    var storiesController = StoriesController()
+    @ObservedObject var storiesController: StoriesController
     var body: some View {
         Button(action: {
             self.showingStorySheet.toggle()

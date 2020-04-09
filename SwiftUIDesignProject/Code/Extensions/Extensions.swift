@@ -77,3 +77,38 @@ extension View {
     )
   }
 }
+
+extension Date {
+    func checkDate() -> Date? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let strDate = dateFormatter.string(from: Date())
+        let desiredDate = "\(strDate) 19:00"
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
+        let desired = dateFormatter.date(from: desiredDate)
+        return desired
+    }
+    
+    func yesterdayCheckDate() -> Date? {
+        let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: Date())
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let strDate = dateFormatter.string(from: yesterday!)
+        let desiredDate = "\(strDate) 19:00"
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
+        let desired = dateFormatter.date(from: desiredDate)
+        guard let yesterdayDate = desired else { return nil }
+        return yesterdayDate
+    }
+    
+    func yesterdayAsString() -> String {
+        let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: Date())
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let strDate = dateFormatter.string(from: yesterday!)
+        return strDate
+    }
+}

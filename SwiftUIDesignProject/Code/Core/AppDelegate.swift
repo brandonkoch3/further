@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.brandon.furtherBurstUpdate", using: nil) { (task) in
+        BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.bnbmedia.furtherBurstUpdate", using: nil) { (task) in
             self.handleAppBurstTask(task: task as! BGProcessingTask)
         }
         
@@ -24,10 +24,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func scheduleRefreshTask() {
-        let refreshTask = BGProcessingTaskRequest(identifier: "com.brandon.furtherBurstUpdate")
+        let refreshTask = BGProcessingTaskRequest(identifier: "com.bnbmedia.furtherBurstUpdate")
         refreshTask.requiresExternalPower = false
         refreshTask.requiresNetworkConnectivity = true
-        refreshTask.earliestBeginDate = Date(timeIntervalSinceNow: 60)
+        
+        let now = Date()
+        guard let then = Date().checkDate() else { return }
+        let calendar = Calendar.current
+        let dateComponents = calendar.dateComponents([Calendar.Component.second], from: now, to: then)
+        let seconds = dateComponents.second
+        guard let diff = seconds, diff >= 0 else { return }
+        
+        refreshTask.earliestBeginDate = Date(timeIntervalSinceNow: TimeInterval(diff))
         do {
             try BGTaskScheduler.shared.submit(refreshTask)
         } catch {
@@ -37,7 +45,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func handleAppBurstTask(task: BGProcessingTask) {
         let storiesController = StoriesController()
-        storiesController.updateStories() { response in }
+        storiesController.update() { response in }
         task.expirationHandler = {
             self.scheduleRefreshTask()
             DispatchQueue.main.async {

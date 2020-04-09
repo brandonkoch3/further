@@ -77,6 +77,7 @@ class IdentificationHelper: NSObject, ObservableObject {
 }
 
 extension IdentificationHelper: WCSessionDelegate {
+    #if !os(watchOS)
     func sessionDidBecomeInactive(_ session: WCSession) {
         //
     }
@@ -84,6 +85,7 @@ extension IdentificationHelper: WCSessionDelegate {
     func sessionDidDeactivate(_ session: WCSession) {
         //
     }
+    #endif
     
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
         //

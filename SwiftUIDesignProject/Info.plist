@@ -4,7 +4,7 @@
 <dict>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
-		<string>com.brandon.furtherBurstUpdate</string>
+		<string>com.bnbmedia.furtherBurstUpdate</string>
 	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
@@ -20,8 +20,23 @@
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
 	<string>$(MARKETING_VERSION)</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Rubik-Black.ttf</string>
+		<string>Rubik-BlackItalic.ttf</string>
+		<string>Rubik-Bold.ttf</string>
+		<string>Rubik-BoldItalic.ttf</string>
+		<string>Rubik-Italic.ttf</string>
+		<string>Rubik-Light.ttf</string>
+		<string>Rubik-LightItalic.ttf</string>
+		<string>Rubik-Medium.ttf</string>
+		<string>Rubik-MediumItalic.ttf</string>
+		<string>Rubik-Regular.ttf</string>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSBluetoothAlwaysUsageDescription</key>

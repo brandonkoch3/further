@@ -14,7 +14,7 @@ class QuestionsController: ObservableObject {
     
     @Published var questions = [QuestionModel]()
     @Published var answers: CovidModel?
-    private var myID: String!
+    private var myID: String = ""
     
     // Combine
     var answerSubscriber: AnyCancellable?
@@ -30,41 +30,12 @@ class QuestionsController: ObservableObject {
     #endif
     
     init() {
-        
-        #if os(watchOS)
         if let myID = UserDefaults.standard.string(forKey: "deviceID") {
             self.myID = myID
-        } else {
-            let newID = UUID().uuidString
-            self.myID = newID
-            UserDefaults.standard.set(newID, forKey: "deviceID")
         }
         
-        if let savedData = defaults.object(forKey: "answers") as? Data {
-            if let loadedData = try? decoder.decode(CovidModel.self, from: savedData) {
-                self.answers = loadedData
-            }
-        }
-        
-        #else
-        
-        if let myID = keyValStore.string(forKey: "deviceID") {
-            self.myID = myID
-        } else if let myID = UserDefaults.standard.string(forKey: "deviceID") {
-            self.myID = myID
-        } else {
-            let newID = UUID().uuidString
-            self.myID = newID
-            UserDefaults.standard.set(newID, forKey: "deviceID")
-            keyValStore.set(self.myID, forKey: "deviceID")
-            keyValStore.synchronize()
-        }
-        
+        #if !os(watchOS)
         if let savedData = keyValStore.object(forKey: "answers") as? Data {
-            if let loadedData = try? decoder.decode(CovidModel.self, from: savedData) {
-                self.answers = loadedData
-            }
-        } else if let savedData = defaults.object(forKey: "answers") as? Data {
             if let loadedData = try? decoder.decode(CovidModel.self, from: savedData) {
                 self.answers = loadedData
             }
@@ -72,7 +43,15 @@ class QuestionsController: ObservableObject {
         #endif
         
         if self.answers == nil {
-            self.answers = CovidModel(id: self.myID, feelingSick: false, hasBeenTested: false, testResult: false, update: Date().timeIntervalSince1970, didAnswer: false)
+            if let savedData = defaults.object(forKey: "answers") as? Data {
+                if let loadedData = try? decoder.decode(CovidModel.self, from: savedData) {
+                    self.answers = loadedData
+                }
+            }
+        }
+        
+        if self.answers == nil {
+            self.answers = CovidModel(id: self.myID, feelingSick: false, hasBeenTested: false, testResult: false, update: Date().timeIntervalSince1970)
         }
         
         answerSubscriber = $answers
@@ -136,7 +115,6 @@ class QuestionsController: ObservableObject {
     
     private func saveAnswers() {
         var myAnswers = self.answers!
-        myAnswers.didAnswer = true
         myAnswers.update = Date().timeIntervalSince1970
         defer {
             if let encoded = try? encoder.encode(myAnswers) {

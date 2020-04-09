@@ -17,7 +17,7 @@ class PersonDetectee: NSObject, ObservableObject {
     @Published var isDetecting = false
     
     // Person config
-    var myID = UUID().uuidString
+    var myID: String = ""
     @Published var connectedPeriperhals = [CBPeripheral]()
     private var activeParticipants = [PersonModel]()
     private var savedParticipants = [PersonModel]()
@@ -34,20 +34,26 @@ class PersonDetectee: NSObject, ObservableObject {
     var rssiTimer: AnyCancellable?
     var foundSubscriber: AnyCancellable?
     var detectingCancellable: AnyCancellable?
+    var idCancellable: AnyCancellable?
     
     // Helpers
     let encoder = JSONEncoder()
     let decoder = JSONDecoder()
     let defaults = UserDefaults.standard
+    var idHelper = IdentificationHelper()
     
     #if !os(watchOS)
     var keyValStore = NSUbiquitousKeyValueStore()
     #endif
     
     override init() {
-        super.init()
         
-        // TODO: REIMPLEMENT ID
+        super.init()
+        self.myID = idHelper.myID
+        
+        idCancellable = idHelper.$myID
+            .receive(on: RunLoop.main)
+            .assign(to: \.myID, on: self)
         
         connectedSubscriber = $connectedPeriperhals
             .receive(on: RunLoop.main)
@@ -55,9 +61,19 @@ class PersonDetectee: NSObject, ObservableObject {
                 connectors.count > 0 ? self.startTimer() : self.stopTimer()
             })
         
-        if let savedData = defaults.object(forKey: "interactions") as? Data {
+        #if !os(watchOS)
+        if let savedData = keyValStore.object(forKey: "interactions") as? Data {
             if let loadedData = try? decoder.decode([PersonModel].self, from: savedData) {
                 self.savedParticipants = loadedData
+            }
+        }
+        #endif
+        
+        if savedParticipants.isEmpty {
+            if let savedData = defaults.object(forKey: "interactions") as? Data {
+                if let loadedData = try? decoder.decode([PersonModel].self, from: savedData) {
+                    self.savedParticipants = loadedData
+                }
             }
         }
         
@@ -137,6 +153,10 @@ class PersonDetectee: NSObject, ObservableObject {
         self.savedParticipants.append(participant)
         if let encoded = try? encoder.encode(self.savedParticipants) {
             defaults.set(encoded, forKey: "interactions")
+            #if !os(watchOS)
+            keyValStore.set(encoded, forKey: "interactions")
+            keyValStore.synchronize()
+            #endif
         }
     }
 }

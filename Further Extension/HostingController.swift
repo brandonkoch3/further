@@ -11,7 +11,12 @@ import Foundation
 import SwiftUI
 
 class HostingController: WKHostingController<AnyView> {
+    var detector = PersonDetectee()
+    var environmentSettings = EnvironmentSettings()
     override var body: AnyView {
-        return AnyView(ContentView().environmentObject(PersonDetectee()))
+        return AnyView(ContentView()
+            .environmentObject(detector)
+            .environmentObject(environmentSettings)
+        )
     }
 }
