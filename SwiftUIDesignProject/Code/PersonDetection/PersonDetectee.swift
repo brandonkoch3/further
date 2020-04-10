@@ -44,6 +44,7 @@ class PersonDetectee: NSObject, ObservableObject {
     
     #if !os(watchOS)
     var keyValStore = NSUbiquitousKeyValueStore()
+    private var haptics = Haptics()
     #endif
     
     override init() {
@@ -59,6 +60,9 @@ class PersonDetectee: NSObject, ObservableObject {
             .receive(on: RunLoop.main)
             .sink(receiveValue: { connectors in
                 connectors.count > 0 ? self.startTimer() : self.stopTimer()
+                #if !os(watchOS)
+                connectors.count > 0 ? self.haptics.intenseDetection() : self.haptics.cancelHaptics()
+                #endif
             })
         
         #if !os(watchOS)

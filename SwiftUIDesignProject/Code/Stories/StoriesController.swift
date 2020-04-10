@@ -20,25 +20,51 @@ class StoriesController: ObservableObject {
     let decoder = JSONDecoder()
     let defaults = UserDefaults.standard
     let notifications = PersonNotifications()
+    #if !os(watchOS)
+    var keyValStore = NSUbiquitousKeyValueStore()
+    #endif
     
     // Combine
     var dataCancellable: AnyCancellable?
     var updateTimer: AnyCancellable?
     
     init() {
-        if let savedData = defaults.object(forKey: "stories") as? Data {
+        
+        #if !os(watchOS)
+        if let savedData = keyValStore.object(forKey: "stories") as? Data {
             if let loadedData = try? decoder.decode([CovidStory].self, from: savedData) {
                 self.stories = loadedData
+            }
+        }
+        #endif
+        
+        if stories.isEmpty {
+            if let savedData = defaults.object(forKey: "stories") as? Data {
+                if let loadedData = try? decoder.decode([CovidStory].self, from: savedData) {
+                    self.stories = loadedData
+                }
             }
         }
         
         self.stories.sort(by: { $0.dateGathered > $1.dateGathered })
         
-        if let savedData = defaults.object(forKey: "interactions") as? Data {
+        #if !os(watchOS)
+        if let savedData = keyValStore.object(forKey: "interactions") as? Data {
             if let loadedData = try? decoder.decode([PersonModel].self, from: savedData) {
                 self.interactions = loadedData
             }
         }
+        #endif
+        
+        if interactions.isEmpty {
+            if let savedData = defaults.object(forKey: "interactions") as? Data {
+                if let loadedData = try? decoder.decode([PersonModel].self, from: savedData) {
+                    self.interactions = loadedData
+                }
+            }
+        }
+        
+        self.update() { response in }
         
         updateTimer = Timer.publish(every: 600.0, tolerance: 0.5, on: .main, in: .common)
             .autoconnect()
@@ -91,6 +117,10 @@ class StoriesController: ObservableObject {
                 
                 if let encoded = try? self.encoder.encode(self.stories) {
                     self.defaults.set(encoded, forKey: "stories")
+                    #if !os(watchOS)
+                    self.keyValStore.set(encoded, forKey: "stories")
+                    self.keyValStore.synchronize()
+                    #endif
                 }
                 
                 self.stories.sort(by: { $0.dateGathered > $1.dateGathered })

@@ -18,50 +18,88 @@ struct QuestionView: View {
     @EnvironmentObject var questions: QuestionsController
     
     @Environment(\.colorScheme) var colorScheme
+    
+    struct HeaderText: View {
+        var body: some View {
+            VStack {
+                HStack {
+                    Text("COVID-19")
+                    .font(Font.custom("Rubik-Medium", size: 34.0))
+                    .foregroundColor(.white)
+                    Spacer()
+                }.padding(.leading, 16.0)
+                
+                HStack {
+                    Text("Questionnaire")
+                        .font(Font.custom("Rubik-Medium", size: 16.5))
+                    .foregroundColor(.white)
+                    Spacer()
+                }.padding(.leading, 16.0).padding(.top, 12.0)
+            }.padding(.top, 12.0)
+        }
+    }
+    
+    struct RoundedCorner: Shape {
+
+        var radius: CGFloat = .infinity
+        var corners: UIRectCorner = .allCorners
+
+        func path(in rect: CGRect) -> Path {
+            let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
+            return Path(path.cgPath)
+        }
+    }
+    
+    
+    
     var body: some View {
         
         GeometryReader { geometry in
             NavigationView {
                 ZStack {
-                    if self.colorScheme == .light {
-                        Color.offWhite
-                    } else {
-                        LinearGradient(Color.darkStart, Color.darkEnd)
-                    }
-                    
+                    Image(self.colorScheme == .light ? "day_graident" : "night_graident").resizable()
                     VStack {
+                        HeaderText().padding(.top, geometry.size.height / 8).padding(.bottom, 38.0)
+                        Spacer()
                         VStack {
-                            Spacer()
-                            VStack {
-                                VStack(alignment: .leading) {
-                                    HStack {
-                                    Text("COVID-19")
-                                        .font(.largeTitle)
-                                        .fontWeight(.semibold)
-                                        .fixedSize()
-                                        .foregroundColor(.white)
-                                        Spacer()
-                                    }
-                                    HStack {
-                                    Text("Questionnaire")
-                                        .font(.subheadline)
-                                        .fontWeight(.semibold)
-                                        .fixedSize()
-                                        .foregroundColor(.white)
-                                        Spacer()
-                                    }
-                                    }.padding().offset(x: 0, y: -40)
-                            }
-                        }.frame(maxWidth: .infinity, minHeight: geometry.size.height / geometry.size.height < 600 ? 3.5 : 3.0, maxHeight: geometry.size.height / (geometry.size.height < 600.0 ? 3.5 : 3.0))
-                            .background(LinearGradient(gradient: Gradient(colors: [Color(hex: "D94c7a"), Color(hex: "Fcde89"), Color.blue]), startPoint: .topLeading, endPoint: .trailing))
-                        VStack {
-                            if self.colorScheme == .light {
-                                self.modalViewLight(geometry: geometry)
-                            } else {
-                                self.modalViewDark(geometry: geometry)
-                            }
+                            Rectangle().fill(Color.offWhite)
+                                .cornerRadius(20, corners: [.topLeft, .topRight])
                         }
                     }
+                    
+//                    VStack {
+//                        VStack {
+//                            Spacer()
+//                            VStack {
+//                                VStack(alignment: .leading) {
+//                                    HStack {
+//                                    Text("COVID-19")
+//                                        .font(.largeTitle)
+//                                        .fontWeight(.semibold)
+//                                        .fixedSize()
+//                                        .foregroundColor(.white)
+//                                        Spacer()
+//                                    }
+//                                    HStack {
+//                                    Text("Questionnaire")
+//                                        .font(.subheadline)
+//                                        .fontWeight(.semibold)
+//                                        .fixedSize()
+//                                        .foregroundColor(.white)
+//                                        Spacer()
+//                                    }
+//                                    }.padding().offset(x: 0, y: -40)
+//                            }
+//                        }.frame(maxWidth: .infinity, minHeight: geometry.size.height / geometry.size.height < 600 ? 3.5 : 3.0, maxHeight: geometry.size.height / (geometry.size.height < 600.0 ? 3.5 : 3.0))
+//                            .background(LinearGradient(gradient: Gradient(colors: [Color(hex: "D94c7a"), Color(hex: "Fcde89"), Color.blue]), startPoint: .topLeading, endPoint: .trailing))
+//                        VStack {
+//                            if self.colorScheme == .light {
+//                                self.modalViewLight(geometry: geometry)
+//                            } else {
+//                                self.modalViewDark(geometry: geometry)
+//                            }
+//                        }
+//                    }
                 }.edgesIgnoringSafeArea(.all)
             } .navigationViewStyle(StackNavigationViewStyle())
         }
@@ -149,6 +187,23 @@ struct QuestionView: View {
                 }
             }
         }.offset(x: 0, y: geometry.size.height < 600.0 ? 0 : -50).padding(.bottom, geometry.size.height < 600 ? 15.0 : 0.0)
+    }
+}
+
+struct RoundedCorner: Shape {
+
+    var radius: CGFloat = .infinity
+    var corners: UIRectCorner = .allCorners
+
+    func path(in rect: CGRect) -> Path {
+        let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
+        return Path(path.cgPath)
+    }
+}
+
+extension View {
+    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
+        clipShape( RoundedCorner(radius: radius, corners: corners) )
     }
 }
 
