@@ -34,8 +34,8 @@ struct QuestionView: View {
                         .font(Font.custom("Rubik-Medium", size: 16.5))
                     .foregroundColor(.white)
                     Spacer()
-                }.padding(.leading, 16.0).padding(.top, 12.0)
-            }.padding(.top, 12.0)
+                }.padding(.leading, 16.0).padding(.top, 10.0)
+            }
         }
     }
     
@@ -59,7 +59,7 @@ struct QuestionView: View {
                 ZStack {
                     Image(self.colorScheme == .light ? "day_graident" : "night_graident").resizable()
                     VStack {
-                        HeaderText().padding(.top, geometry.size.height / 8).padding(.bottom, 38.0)
+                        HeaderText().padding(.top, geometry.size.height * 0.09).padding(.bottom, 38.0)
                         Spacer()
                         VStack {
                             Rectangle().fill(Color.offWhite)
