@@ -54,7 +54,7 @@ struct EntryView_Previews: PreviewProvider {
         Group {
             EntryView()
                 .environmentObject(EnvironmentSettings())
-                .environment(\.colorScheme, .light)
+                .environment(\.colorScheme, .dark)
                 .previewDevice("iPhone 11 Pro Max")
             
             EntryView()
@@ -66,7 +66,45 @@ struct EntryView_Previews: PreviewProvider {
     }
 }
 
+struct HeartView: View {
+    
+    // UI Config
+    @Environment(\.colorScheme) var colorScheme
+    @State private var pulsate = false
+    
+    // Person Config
+    @ObservedObject var detector: PersonDetectee
+    
+    // View
+    var body: some View {
+        ZStack {
+            Image(colorScheme == .light ? "light_heart_back" : "dark_heart_back")
+            Image(colorScheme == .light ? "light_heart_middle" : "dark_heart_middle")
+            Image(colorScheme == .light ? "light_heart_\(self.detector.personFound ? "on" : "off")" : "dark_heart_\(self.detector.personFound ? "on" : "off")")
+            .scaleEffect(pulsate ? 0.5 : 1)
+                .animation(Animation.easeInOut(duration: 1).delay(0).repeat(while: pulsate))
+                .onAppear() {
+                    self.pulsate.toggle()
+                }
+        }
+    }
+}
 
+struct MainTextView: View {
+    
+    // UI Config
+    @Environment(\.colorScheme) var colorScheme
+    
+    // Person Config
+    @ObservedObject var detector: PersonDetectee
+    
+    // View
+    var body: some View {
+        Text(detector.personFound ? "Someone is nearby!" : "Checking for others")
+            .font(Font.custom("Rubik-Regular", size: 26.67))
+            .foregroundColor(colorScheme == .light ? Color(UIColor(red: 50.0/255.0, green: 54.0/255.0, blue: 83.0/255.0, alpha: 1.0)) : Color(UIColor(red: 172.0/255.0, green: 178.0/255.0, blue: 181.0/255.0, alpha: 1.0)))
+    }
+}
 
 
 

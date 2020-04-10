@@ -9,72 +9,41 @@
 import SwiftUI
 
 struct LightButtonStyle: ButtonStyle {
-    func makeBody(configuration: Self.Configuration) -> some View {
-        configuration.label
+    
+    private var lightMode: Bool = true
+    
+    init(lightMode: Bool) {
+        if lightMode {
+            self.lightMode = true
+        } else {
+            self.lightMode = false
+        }
+    }
+    
+    func makeLightBody(configuration: ButtonStyleConfiguration) -> some View {
+        return configuration.label
         .padding(30)
         .contentShape(Circle())
         .background(
-            Group {
-                if configuration.isPressed {
-                    Circle()
-                    .fill(Color.offWhite)
-                    .overlay(
-                        Circle()
-                            .stroke(Color.gray, lineWidth: 4)
-                            .blur(radius: 4)
-                            .offset(x: 2, y: 2)
-                            .mask(Circle().fill(LinearGradient(Color.black, Color.clear)))
-                    )
-                    .overlay(
-                        Circle()
-                            .stroke(Color.white, lineWidth: 8)
-                            .blur(radius: 4)
-                            .offset(x: -2, y: -2)
-                            .mask(Circle().fill(LinearGradient(Color.clear, Color.black)))
-                    )
-                } else {
-                    Circle()
-                        .fill(Color.offWhite)
-                        .shadow(color: Color.black.opacity(0.2), radius: 10, x: 10, y: 10)
-                        .shadow(color: Color.white.opacity(0.7), radius: 10, x: -5, y: -5)
-                }
-            }
+            LightBackground(isHighlighted: configuration.isPressed, shape: Circle())
         )
     }
-}
-
-struct LightButtonStyleNew: ButtonStyle {
-    func makeBody(configuration: Self.Configuration) -> some View {
-        configuration.label
+    
+    func makeDarkBody(configuration: ButtonStyleConfiguration) -> some View {
+        return configuration.label
         .padding(30)
         .contentShape(Circle())
         .background(
-            Group {
-                if configuration.isPressed {
-                    Circle()
-                    .fill(Color.offWhite)
-                    .overlay(
-                        Circle()
-                            .stroke(Color.gray, lineWidth: 4)
-                            .blur(radius: 4)
-                            .offset(x: 2, y: 2)
-                            .mask(Circle().fill(LinearGradient(Color.black, Color.clear)))
-                    )
-                    .overlay(
-                        Circle()
-                            .stroke(Color.white, lineWidth: 8)
-                            .blur(radius: 4)
-                            .offset(x: -2, y: -2)
-                            .mask(Circle().fill(LinearGradient(Color.clear, Color.black)))
-                    )
-                } else {
-                    Circle()
-                        .fill(Color.offWhite)
-                        .shadow(color: Color.black.opacity(0.2), radius: 10, x: 10, y: 10)
-                        .shadow(color: Color.white.opacity(0.7), radius: 10, x: -5, y: -5)
-                }
-            }
+            DarkBackground(isHighlighted: configuration.isPressed, shape: Circle())
         )
+    }
+    
+    func makeBody(configuration: Self.Configuration) -> some View {
+        if lightMode {
+            return AnyView(makeLightBody(configuration: configuration))
+        } else {
+            return AnyView(makeDarkBody(configuration: configuration))
+        }
     }
 }
 
@@ -98,8 +67,20 @@ struct LightBackground<S: Shape>: View {
             if isHighlighted {
                 shape
                     .fill(Color.offWhite)
-                    .shadow(color: Color.black.opacity(0.2), radius: 10, x: 10, y: 10)
-                    .shadow(color: Color.white.opacity(0.7), radius: 10, x: -5, y: -5)
+                    .overlay(
+                        Circle()
+                        .stroke(Color.gray, lineWidth: 4)
+                        .blur(radius: 4)
+                        .offset(x: 2, y: 2)
+                        .mask(Circle().fill(LinearGradient(Color.black, Color.clear)))
+                    )
+                    .overlay(
+                        Circle()
+                        .stroke(Color.white, lineWidth: 8)
+                        .blur(radius: 4)
+                        .offset(x: -2, y: -2)
+                        .mask(Circle().fill(LinearGradient(Color.clear, Color.black)))
+                    )
             } else {
                 shape
                     .fill(Color.offWhite)

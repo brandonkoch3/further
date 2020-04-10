@@ -97,7 +97,7 @@ struct QuestionsView: View {
             Image(systemName: "checkmark")
             .foregroundColor(.gray)
             .font(.system(size: 30, weight: .ultraLight))
-        }.buttonStyle(LightButtonStyle()).padding(.bottom, 5).padding(.trailing, -5)
+        }.buttonStyle(LightButtonStyle(lightMode: true)).padding(.bottom, 5).padding(.trailing, -5)
     }
     
     func getDoneButtonDark() -> some View {
@@ -115,7 +115,7 @@ struct QuestionsView: View {
             Image(systemName: "arrow.right")
             .foregroundColor(.gray)
             .font(.system(size: 30, weight: .ultraLight))
-        }.padding(.bottom, 5).padding(.trailing, -5.0).buttonStyle(LightButtonStyle())
+        }.padding(.bottom, 5).padding(.trailing, -5.0).buttonStyle(LightButtonStyle(lightMode: true))
     }
     
     func advanceButtonDark() -> some View {
