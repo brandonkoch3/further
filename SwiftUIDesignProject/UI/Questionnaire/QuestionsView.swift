@@ -17,51 +17,105 @@ struct QuestionsView: View {
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.colorScheme) var colorScheme
     @Binding var showingQuestion: Bool
+    @State var matching: [String] = ["symptoms", "COVID-19"]
+    
+    struct HeaderText: View {
+        var body: some View {
+            VStack {
+                HStack {
+                    Text("COVID-19")
+                    .font(Font.custom("Rubik-Medium", size: 34.0))
+                    .foregroundColor(.white)
+                    Spacer()
+                }.padding(.leading, 16.0)
+                
+                HStack {
+                    Text("Questionnaire")
+                        .font(Font.custom("Rubik-Medium", size: 16.5))
+                    .foregroundColor(.white)
+                    Spacer()
+                }.padding(.leading, 16.0).padding(.top, 5.0)
+            }
+        }
+    }
+    
+    struct HighlightedText: View {
+        var text: String
+        let matching: [String]
+
+        init(_ text: String, matching: [String]) {
+            self.matching = matching
+            var myText = text
+            _ = self.matching.compactMap { myText = myText.replacingOccurrences(of: $0, with: "<SPLIT>>\($0)<SPLIT>")}
+            self.text = myText
+            print("TEXT:", myText)
+        }
+
+        var body: some View {
+            let tagged = text
+            let split = tagged.components(separatedBy: "<SPLIT>")
+            return split.reduce(Text("")) { (a, b) -> Text in
+                guard !b.hasPrefix(">") else {
+                    return a + Text(b.dropFirst()).font(Font.custom("Rubik-Medium", size: 34.0))
+                }
+                return a + Text(b)
+            }
+        }
+    }
+    
     
     // MARK: UI Helpers
     
     
     // MARK: View
     var body: some View {
+        
         GeometryReader { geometry in
             ZStack {
-                if self.colorScheme == .dark {
-                    LinearGradient(Color.darkStart, Color.darkEnd)
-                } else {
-                    Color.offWhite
-                }
-                VStack{
-                    Text(self.questions.questions[self.questionID].sectionHeader)
-                        .font(.largeTitle)
-                        .fontWeight(.semibold)
-                        .foregroundColor(self.colorScheme == .dark ? .white : .black)
-                        .padding(.top, geometry.size.height < 600.0 ? -30 : 0).padding(.bottom, geometry.size.height < 600.0 ? 30.0 : 0)
-                    Spacer()
-                    VStack {
-                        ForEach(self.questions.questions[self.questionID].questions.indices) { idx in
-                            QuestionAnswerView(question: self.$questions.questions[self.questionID].questions[idx], imageOffset: 5).frame(height: 120)
-                            Spacer()
-                        }
-                        Spacer()
-                    }.frame(maxHeight: geometry.size.height / 3)
+                Image(self.colorScheme == .light ? "day_answers_gradient" : "night_answers_gradient").resizable()
+                VStack {
                     Spacer()
                     HStack {
-                        Spacer()
-                        if self.colorScheme == .light {
-                            if self.shouldShowDoneButton() {
-                                self.getDoneButtonLight()
-                            } else {
-                                self.advanceButtonLight()
+                        HighlightedText(self.questions.questions[self.questionID].sectionHeader, matching: self.matching)
+                            .font(Font.custom("Rubik-Light", size: geometry.size.height < 600.0 ? 24.0 : 34.0))
+                        .foregroundColor(.white)
+                        .padding(.leading, 16.0)
+                        .padding(.top, geometry.size.height < 600.0 ? 15.0 : 60.0)
+                    }
+                    ZStack {
+                    Rectangle().fill(self.colorScheme == .light ? LinearGradient(Color.offWhite, Color.offWhite) : LinearGradient(Color.darkStart, Color.darkEnd))
+                    .cornerRadius(20, corners: [.topLeft, .topRight])
+                        
+                        VStack {
+                            Spacer()
+                            ForEach(self.questions.questions[self.questionID].questions.indices) { idx in
+                                QuestionAnswerView(question: self.$questions.questions[self.questionID].questions[idx], imageOffset: 5)
+                                    .frame(height: 120)
+                                    .padding(.top, 25.0)
+                                    .padding([.leading, .trailing], 15.0)
+                                Spacer()
                             }
-                        } else {
-                            if self.shouldShowDoneButton() {
-                                self.getDoneButtonDark()
-                            } else {
-                                self.advanceButtonDark()
+                            
+                            HStack {
+                                Spacer()
+                                if self.shouldShowDoneButton() {
+                                    self.getDoneButton()
+                                    .scaleEffect(geometry.size.height < 600.0 ? 0.7 : 1.0)
+                                    .padding(.trailing, geometry.size.height < 600.0 ? -2.0 : 12.9)
+                                    .padding(.bottom, geometry.size.height < 600.0 ? 0.0 : 24.0)
+                                } else {
+                                    self.advanceButton()
+                                    .scaleEffect(geometry.size.height < 600.0 ? 0.7 : 1.0)
+                                    .padding(.trailing, geometry.size.height < 600.0 ? -2.0 : 12.9)
+                                    .padding(.bottom, geometry.size.height < 600.0 ? 0.0 : 24.0)
+                                }
                             }
+
+                            Spacer()
                         }
-                    }.padding()
-                }.padding(.top, 70).padding(.leading, 10).padding(.trailing, 10)
+                    }
+                }
+                
             }.edgesIgnoringSafeArea(.all)
         }
     }
@@ -90,40 +144,22 @@ struct QuestionsView: View {
         }
     }
     
-    func getDoneButtonLight() -> some View {
+    func getDoneButton() -> some View {
         return Button(action: {
             self.showingQuestion.toggle()
         }) {
             Image(systemName: "checkmark")
             .foregroundColor(.gray)
             .font(.system(size: 30, weight: .ultraLight))
-        }.buttonStyle(LightButtonStyle(lightMode: true)).padding(.bottom, 5).padding(.trailing, -5)
+        }.buttonStyle(LightButtonStyle(lightMode: colorScheme == .light ? true : false)).padding(.bottom, 5).padding(.trailing, -5)
     }
     
-    func getDoneButtonDark() -> some View {
-        return Button(action: {
-            self.showingQuestion.toggle()
-        }) {
-            Image(systemName: "checkmark")
-            .foregroundColor(.gray)
-            .font(.system(size: 30, weight: .ultraLight))
-        }.buttonStyle(DarkButtonStyle()).padding(.bottom, 5).padding(.trailing, -5)
-    }
-    
-    func advanceButtonLight() -> some View {
+    func advanceButton() -> some View {
         return NavigationLink(destination: QuestionsView(questionID: self.nextQuestion(), showingQuestion: self.$showingQuestion).environmentObject(self.questions)) {
             Image(systemName: "arrow.right")
             .foregroundColor(.gray)
             .font(.system(size: 30, weight: .ultraLight))
-        }.padding(.bottom, 5).padding(.trailing, -5.0).buttonStyle(LightButtonStyle(lightMode: true))
-    }
-    
-    func advanceButtonDark() -> some View {
-        return NavigationLink(destination: QuestionsView(questionID: self.nextQuestion(), showingQuestion: self.$showingQuestion).environmentObject(self.questions)) {
-            Image(systemName: "arrow.right")
-            .foregroundColor(.gray)
-            .font(.system(size: 30, weight: .ultraLight))
-        }.padding(.bottom, 5).padding(.trailing, -5.0).buttonStyle(DarkButtonStyle())
+        }.padding(.bottom, 5).padding(.trailing, -5.0).buttonStyle(LightButtonStyle(lightMode: colorScheme == .light ? true : false))
     }
 }
 
@@ -133,7 +169,7 @@ struct QuestionsView_Previews: PreviewProvider {
             QuestionsView(questionID: 0, showingQuestion: .constant(true))
             .previewDevice("iPhone SE")
             .environmentObject(QuestionsController())
-            .environment(\.colorScheme, .dark)
+            .environment(\.colorScheme, .light)
             
             QuestionsView(questionID: 0, showingQuestion: .constant(true))
             .previewDevice("iPhone 11 Pro Max")
@@ -152,97 +188,33 @@ struct QuestionAnswerView: View {
     let generator = UIImpactFeedbackGenerator(style: .light)
     var body: some View {
         GeometryReader { geometry in
-            if self.colorScheme == .light {
-                self.lightView(geometry: geometry)
-            } else {
-                self.darkView(geometry: geometry)
-            }
+            self.infoView(geometry: geometry)
         }
     }
     
-    func lightView(geometry: GeometryProxy) -> some View {
+    func infoView(geometry: GeometryProxy) -> some View {
+        
         return ZStack {
             RoundedRectangle(cornerRadius: 18)
-                .fill(Color.offWhite)
-                .frame(width: geometry.size.width - 20, height: 100)
+                .fill(colorScheme == .light ? LinearGradient(Color.offWhite, Color.offWhite) : LinearGradient(Color.darkStart, Color.darkEnd))
+                .frame(width: geometry.size.width, height: 100)
                 .shadow(color: Color("LightShadow"), radius: 8, x: -8, y: -8)
                 .shadow(color: Color("DarkShadow"), radius: 8, x: 8, y: 8)
             HStack {
-                ZStack {
-                    Button(action: {
-                        self.generator.impactOccurred()
-                        self.questionsController.updateAnswers(questionID: self.question.id, response: true)
-                    }) {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 18)
-                                .fill(Color.offWhite)
-                                .frame(width: 60, height: 60)
-                                .shadow(color: Color("LightShadow"), radius: 8, x: -8, y: -8)
-                                .shadow(color: Color("DarkShadow"), radius: 8, x: 8, y: 8)
-                                .padding(.leading, 6)
-                            
-                            if self.$question.response.wrappedValue {
-                                Image(systemName: self.question.icon)
-                                .foregroundColor(.gray)
-                                .font(.system(size: 30))
-                                .multilineTextAlignment(.center)
-                                .offset(x: self.imageOffset!, y: 0)
-                            }
-                        }
-                    }
-                }
-                VStack(alignment: .leading, spacing: 0) {
+                Button(action: {
+                    self.generator.impactOccurred()
+                    self.questionsController.updateAnswers(questionID: self.question.id, response: true)
+                }) {
+                    Image(self.question.response ? "\(colorScheme == .light ? "light" : "dark")_selected" : "\(colorScheme == .light ? "light" : "dark")_deselected")
+                }.buttonStyle(PlainButtonStyle())
+                VStack(alignment: .leading, spacing: 5.0) {
                     Text(self.question.headline)
-                        .font(.title).padding(.top, 20)
-                    Text(self.question.subtitle).font(.caption).frame(height: 60.0)
-                    Spacer()
-                }.frame(height: 80).padding(.leading, 6.0)
+                        .font(Font.custom("Rubik-Medium", size: 23.3))
+                    Text(self.question.subtitle)
+                        .font(Font.custom("Rubik-Light", size: 15.5))
+                }
                 Spacer()
             }
-            .padding()
-        }
-    }
-    
-    func darkView(geometry: GeometryProxy) -> some View {
-        return ZStack {
-            RoundedRectangle(cornerRadius: 18)
-                .fill(LinearGradient(Color.darkStart, Color.darkEnd))
-                .frame(width: geometry.size.width - 20, height: 100)
-                .shadow(color: Color("LightShadow"), radius: 8, x: -8, y: -8)
-                .shadow(color: Color("DarkShadow"), radius: 8, x: 8, y: 8)
-            HStack {
-                ZStack {
-                    Button(action: {
-                        self.generator.impactOccurred()
-                        self.questionsController.updateAnswers(questionID: self.question.id, response: true)
-                    }) {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 18)
-                                .fill(LinearGradient(Color.darkStart, Color.darkEnd))
-                                .frame(width: 60, height: 60)
-                                .shadow(color: Color("LightShadow"), radius: 8, x: -8, y: -8)
-                                .shadow(color: Color("DarkShadow"), radius: 8, x: 8, y: 8)
-                                .padding(.leading, 6)
-                            
-                            if self.$question.response.wrappedValue {
-                                Image(systemName: self.question.icon)
-                                    .foregroundColor(.red)
-                                    .font(.system(size: 30))
-                                    .multilineTextAlignment(.center)
-                                    .offset(x: self.imageOffset!, y: 0)
-                            }
-                        }
-                    }
-                }
-                VStack(alignment: .leading, spacing: 0) {
-                    Text(self.question.headline)
-                        .font(.title).padding(.top, 20)
-                    Text(self.question.subtitle).font(.caption).frame(height: 60.0)
-                    Spacer()
-                }.frame(height: 80).padding(.leading, 6.0)
-                Spacer()
-            }
-            .padding()
         }
     }
 }

@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "day_graident@1x.png",
+      "filename" : "dark_selected@1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "day_graident@2x.png",
+      "filename" : "dark_selected@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "day_graident@3x.png",
+      "filename" : "dark_selected@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

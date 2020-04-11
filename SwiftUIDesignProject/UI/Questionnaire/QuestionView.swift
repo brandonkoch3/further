@@ -56,7 +56,7 @@ struct QuestionView: View {
                             VStack {
                                 self.informationView(geometry: geometry)
                                     .padding(.top, 25.0)
-                                    .padding([.leading, .trailing], geometry.size.height < 600.0 ? 5.0 : 15.0)
+                                    .padding([.leading, .trailing], 15.0)
                                 Spacer()
                                 HStack {
                                     Spacer()

@@ -13,7 +13,7 @@ struct CovidModel: Codable, Equatable {
     var feelingSick: Bool
     var hasBeenTested: Bool
     var testResult: Bool
-    var update: Double
+    var lastUpdate: Double
 }
 
 struct CovidStory: Codable, Equatable, Identifiable {
