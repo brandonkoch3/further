@@ -47,16 +47,30 @@ struct QuestionView: View {
                 ZStack {
                     Image(self.colorScheme == .light ? "day_graident" : "night_graident").resizable()
                     VStack {
-                        HeaderText().padding(.top, geometry.size.height * 0.09).padding(.bottom, geometry.size.height < 600.0 ? 0.0 : 38.0)
-                        Spacer()
+                        
+                        // Header
+                        HeaderText()
+                            .padding(.top, geometry.size.height < 600.0 ? 60.0 : 100.0)
+                            .padding(.bottom, geometry.size.height < 600.0 ? 0.0 : 28.0)
+
+                        // Rectangle
                         ZStack {
                             Rectangle().fill(self.colorScheme == .light ? LinearGradient(Color.offWhite, Color.offWhite) : LinearGradient(Color.darkStart, Color.darkEnd))
                             .cornerRadius(20, corners: [.topLeft, .topRight])
                 
+                            // Information
                             VStack {
-                                self.informationView(geometry: geometry)
-                                    .padding(.top, 25.0)
+                                VStack {
+                                    self.informationView(geometry: geometry)
+                                        .padding(.top, geometry.size.height < 600.0 ? 25.0 : 50.0)
                                     .padding([.leading, .trailing], 15.0)
+                                }.frame(width: geometry.size.width, height: geometry.size.height / (geometry.size.height < 600.0 ? 1.5 : 1.6))
+
+                                Spacer()
+                            }
+                            
+                            // Button
+                            VStack {
                                 Spacer()
                                 HStack {
                                     Spacer()
@@ -66,9 +80,9 @@ struct QuestionView: View {
                                             .font(.system(size: 30, weight: .ultraLight))
                                     }
                                         .buttonStyle(LightButtonStyle(lightMode: self.colorScheme == .light ? true : false))
-                                        .scaleEffect(geometry.size.height < 600.0 ? 0.7 : 1.0)
-                                        .padding(.trailing, geometry.size.height < 600.0 ? -2.0 : 12.9)
-                                        .padding(.bottom, geometry.size.height < 600.0 ? 0.0 : 24.0)
+                                        .scaleEffect(geometry.size.height < 600.0 ? 0.8 : 1.0)
+                                        .padding(.trailing, geometry.size.height < 600.0 ? 6.0 : 12.9)
+                                        .padding(.bottom, geometry.size.height < 600.0 ? 35.0 : 50.0)
                                 }
                             }
                         }
