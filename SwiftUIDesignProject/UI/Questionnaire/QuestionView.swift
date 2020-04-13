@@ -88,7 +88,9 @@ struct QuestionView: View {
                         }
                     }
                 }.edgesIgnoringSafeArea(.all)
-            } .navigationViewStyle(StackNavigationViewStyle())
+            }
+            .navigationViewStyle(StackNavigationViewStyle())
+            .accentColor(.white)
         }
     }
     

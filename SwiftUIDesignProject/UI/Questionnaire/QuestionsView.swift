@@ -93,7 +93,7 @@ struct QuestionsView: View {
                         VStack {
                             VStack {
                                 ForEach(self.questions.questions[self.questionID].questions.indices) { idx in
-                                QuestionAnswerView(question: self.$questions.questions[self.questionID].questions[idx], imageOffset: 5)
+                                    QuestionAnswerView(geometry: geometry, question: self.$questions.questions[self.questionID].questions[idx])
                                     .padding(.top, geometry.size.height < 600.0 ? 25.0 : 50.0)
                                     .padding([.leading, .trailing], 15.0)
                                 }
@@ -112,13 +112,7 @@ struct QuestionsView: View {
                             Spacer()
                             HStack {
                                 Spacer()
-                                Button(action: {
-                                    self.showingQuestion.toggle()
-                                }) {
-                                    Image(systemName: self.shouldShowDoneButton() ? "checkmark" : "arrow.right")
-                                    .foregroundColor(.gray)
-                                    .font(.system(size: 30, weight: .ultraLight))
-                                }.buttonStyle(LightButtonStyle(lightMode: self.colorScheme == .light ? true : false))
+                                self.getButton().buttonStyle(LightButtonStyle(lightMode: self.colorScheme == .light ? true : false))
                                 .scaleEffect(geometry.size.height < 600.0 ? 0.8 : 1.0)
                                 .padding(.trailing, geometry.size.height < 600.0 ? 6.0 : 12.9)
                                 .padding(.bottom, geometry.size.height < 600.0 ? 35.0 : 50.0)
@@ -151,6 +145,24 @@ struct QuestionsView: View {
             return 0
         default:
             return 0
+        }
+    }
+    
+    func getButton() -> some View {
+        if self.shouldShowDoneButton() {
+            return AnyView(Button(action: {
+                self.showingQuestion.toggle()
+            }) {
+                Image(systemName: "checkmark")
+                .foregroundColor(.gray)
+                .font(.system(size: 30, weight: .ultraLight))
+            }.buttonStyle(LightButtonStyle(lightMode: colorScheme == .light ? true : false)))
+        } else {
+            return AnyView(NavigationLink(destination: QuestionsView(questionID: self.nextQuestion(), showingQuestion: self.$showingQuestion).environmentObject(self.questions)) {
+                Image(systemName: "arrow.right")
+                .foregroundColor(.gray)
+                .font(.system(size: 30, weight: .ultraLight))
+            }.buttonStyle(LightButtonStyle(lightMode: colorScheme == .light ? true : false)))
         }
     }
     
@@ -191,9 +203,9 @@ struct QuestionsView_Previews: PreviewProvider {
 }
 
 struct QuestionAnswerView: View {
+    var geometry: GeometryProxy
     @Binding var question: Question
     @EnvironmentObject var questionsController: QuestionsController
-    var imageOffset: CGFloat? = 0
     @Environment(\.colorScheme) var colorScheme
     let generator = UIImpactFeedbackGenerator(style: .light)
     var body: some View {
@@ -219,7 +231,7 @@ struct QuestionAnswerView: View {
                     Text(self.question.headline)
                         .font(Font.custom("Rubik-Medium", size: 23.3))
                     Text(self.question.subtitle)
-                        .font(Font.custom("Rubik-Light", size: 15.5))
+                        .font(Font.custom("Rubik-Light", size: geometry.size.height < 600.0 ? 12.0 : 15.5))
                 }
                 Spacer()
             }
