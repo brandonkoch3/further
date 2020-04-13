@@ -17,7 +17,7 @@ struct QuestionsView: View {
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.colorScheme) var colorScheme
     @Binding var showingQuestion: Bool
-    @State var matching: [String] = ["symptoms", "COVID-19"]
+    @State var matching: [String] = ["symptoms", "professionally", "COVID-19"]
     
     struct HeaderText: View {
         var body: some View {
@@ -80,7 +80,7 @@ struct QuestionsView: View {
                         HighlightedText(self.questions.questions[self.questionID].sectionHeader, matching: self.matching, geometry: geometry)
                             .font(Font.custom("Rubik-Light", size: geometry.size.height < 600.0 ? 24.0 : 34.0))
                         .foregroundColor(.white)
-                            .padding([.leading, .trailing], 10.0)
+                            .padding([.leading, .trailing], 15.0)
                         .padding(.top, geometry.size.height < 600.0 ? 15.0 : 60.0)
                     }
                     
@@ -188,15 +188,15 @@ struct QuestionsView: View {
 struct QuestionsView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            QuestionsView(questionID: 0, showingQuestion: .constant(true))
+            QuestionsView(questionID: 1, showingQuestion: .constant(true))
             .previewDevice("iPhone SE")
             .environmentObject(QuestionsController())
             .environment(\.colorScheme, .light)
             
-            QuestionsView(questionID: 0, showingQuestion: .constant(true))
+            QuestionsView(questionID: 1, showingQuestion: .constant(true))
             .previewDevice("iPhone 11 Pro Max")
             .environmentObject(QuestionsController())
-            .environment(\.colorScheme, .dark)
+            .environment(\.colorScheme, .light)
         }
         
     }

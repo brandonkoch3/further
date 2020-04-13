@@ -30,6 +30,9 @@ class QuestionsController: ObservableObject {
     #endif
     
     init() {
+        
+        print("INIT!")
+        
         if let myID = UserDefaults.standard.string(forKey: "deviceID") {
             self.myID = myID
         }
@@ -37,6 +40,7 @@ class QuestionsController: ObservableObject {
         #if !os(watchOS)
         if let savedData = keyValStore.object(forKey: "answers") as? Data {
             if let loadedData = try? decoder.decode(CovidModel.self, from: savedData) {
+                print("Set from iCloud")
                 self.answers = loadedData
             }
         }
@@ -62,6 +66,7 @@ class QuestionsController: ObservableObject {
         
         publishSubscriber = $answers
             .receive(on: RunLoop.main)
+            .debounce(for: 2.0, scheduler: RunLoop.main)
             .sink(receiveValue: { positive in
                 self.publishAnswer() { update in }
             })
@@ -106,15 +111,16 @@ class QuestionsController: ObservableObject {
         
         let questionA = QuestionModel(id: 0, sectionHeader: "Are you experiencing symptoms you think may be related to COVID-19?", questions: [Question(id: 0, icon: "checkmark", headline: "Yes", subtitle: "Fever, shortness of breath, and coughing are common symptoms.", response: self.answers!.feelingSick), Question(id: 1, icon: "xmark", headline: "No", subtitle: "No, I am not experiecing symptoms that seem related to COVID-19.", response: !self.answers!.feelingSick)])
         
-        let questionB = QuestionModel(id: 1, sectionHeader: "Have you been professionally tested for COVID-19?", questions: [Question(id: 2, icon: "checkmark", headline: "Yes", subtitle: "Yes, I have visitied a testing facility and have been tested using a CDC-approved test.", response: self.answers!.hasBeenTested), Question(id: 3, icon: "xmark", headline: "No", subtitle: "No, I have not been professionally tested for COVID-19.", response: !self.answers!.hasBeenTested)])
+        let questionB = QuestionModel(id: 1, sectionHeader: "Have you been professionally tested using a CDC-approved test for COVID-19?", questions: [Question(id: 2, icon: "checkmark", headline: "Yes", subtitle: "Yes, I have been professionally tested for COVID-19.", response: self.answers!.hasBeenTested), Question(id: 3, icon: "xmark", headline: "No", subtitle: "No, I have not been professionally tested for COVID-19.", response: !self.answers!.hasBeenTested)])
         
-        let questionC = QuestionModel(id: 2, sectionHeader: "Did you show a positive, confirmed test for COVID-19?", questions: [Question(id: 4, icon: "checkmark", headline: "Yes", subtitle: "Yes, my test was confirmed to show a positive result for COVID-19.", response: self.answers!.testResult), Question(id: 5, icon: "xmark", headline: "No", subtitle: "No, my test did not show a positive result/I tested negative for COVID-19.", response: !self.answers!.testResult)])
+        let questionC = QuestionModel(id: 2, sectionHeader: "Did your test results indicate a positive, confirmed case for COVID-19?", questions: [Question(id: 4, icon: "checkmark", headline: "Yes", subtitle: "Yes, my test was confirmed to show a positive result for COVID-19.", response: self.answers!.testResult), Question(id: 5, icon: "xmark", headline: "No", subtitle: "No, my test did not show a positive result for COVID-19.", response: !self.answers!.testResult)])
         
         questions.append(contentsOf: [questionA, questionB, questionC])
     }
     
     private func saveAnswers() {
         var myAnswers = self.answers!
+        myAnswers.id = self.myID
         myAnswers.lastUpdate = Date().timeIntervalSince1970
         defer {
             if let encoded = try? encoder.encode(myAnswers) {
@@ -132,10 +138,12 @@ class QuestionsController: ObservableObject {
     }
     
     private func publishAnswer(completion: @escaping (Bool) -> Void) {
-        guard let answerSet = self.answers else {
+        guard var answerSet = self.answers else {
             completion(false)
             return
         }
+        answerSet.id = self.myID
+        answerSet.lastUpdate = Date().timeIntervalSince1970
         let t = try? encoder.encode(answerSet)
         
         let destination = URL(string: "https://mlv3dsc5tc.execute-api.us-east-1.amazonaws.com/health")!

@@ -19,6 +19,7 @@ struct EntryView: View {
     
     // Detector config
     @ObservedObject var detector = PersonDetectee()
+    @ObservedObject var questionsController = QuestionsController()
     @ObservedObject var storyController = StoriesController()
     
     var body: some View {
@@ -36,7 +37,7 @@ struct EntryView: View {
                 Spacer()
                 HStack {
                     if environmentSettings.env.allowQuestions {
-                        QuestionButton(showingQuestionSheet: $showingQuestionSheet)
+                        QuestionButton(showingQuestionSheet: $showingQuestionSheet).environmentObject(self.questionsController)
                     }
                     Spacer()
                     if environmentSettings.env.allowStories {

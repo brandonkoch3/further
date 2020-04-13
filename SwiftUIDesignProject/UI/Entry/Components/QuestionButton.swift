@@ -15,7 +15,7 @@ struct QuestionButton: View {
     @Environment(\.colorScheme) var colorScheme
     
     // Helpers
-    var questions = QuestionsController()
+    @EnvironmentObject var questions: QuestionsController
     
     var body: some View {
         Button(action: {
