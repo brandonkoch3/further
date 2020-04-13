@@ -42,13 +42,14 @@ struct QuestionsView: View {
     struct HighlightedText: View {
         var text: String
         let matching: [String]
+        var geometry: GeometryProxy
 
-        init(_ text: String, matching: [String]) {
+        init(_ text: String, matching: [String], geometry: GeometryProxy) {
             self.matching = matching
             var myText = text
             _ = self.matching.compactMap { myText = myText.replacingOccurrences(of: $0, with: "<SPLIT>>\($0)<SPLIT>")}
             self.text = myText
-            print("TEXT:", myText)
+            self.geometry = geometry
         }
 
         var body: some View {
@@ -56,7 +57,7 @@ struct QuestionsView: View {
             let split = tagged.components(separatedBy: "<SPLIT>")
             return split.reduce(Text("")) { (a, b) -> Text in
                 guard !b.hasPrefix(">") else {
-                    return a + Text(b.dropFirst()).font(Font.custom("Rubik-Medium", size: 34.0))
+                    return a + Text(b.dropFirst()).font(Font.custom("Rubik-Medium", size: geometry.size.height < 600.0 ? 24.0 : 34.0))
                 }
                 return a + Text(b)
             }
@@ -76,46 +77,55 @@ struct QuestionsView: View {
                 VStack {
                     Spacer()
                     HStack {
-                        HighlightedText(self.questions.questions[self.questionID].sectionHeader, matching: self.matching)
+                        HighlightedText(self.questions.questions[self.questionID].sectionHeader, matching: self.matching, geometry: geometry)
                             .font(Font.custom("Rubik-Light", size: geometry.size.height < 600.0 ? 24.0 : 34.0))
                         .foregroundColor(.white)
-                        .padding(.leading, 16.0)
+                            .padding([.leading, .trailing], 10.0)
                         .padding(.top, geometry.size.height < 600.0 ? 15.0 : 60.0)
                     }
+                    
+                    // Rectangle
                     ZStack {
-                    Rectangle().fill(self.colorScheme == .light ? LinearGradient(Color.offWhite, Color.offWhite) : LinearGradient(Color.darkStart, Color.darkEnd))
-                    .cornerRadius(20, corners: [.topLeft, .topRight])
+                        Rectangle().fill(self.colorScheme == .light ? LinearGradient(Color.offWhite, Color.offWhite) : LinearGradient(Color.darkStart, Color.darkEnd))
+                        .cornerRadius(20, corners: [.topLeft, .topRight])
                         
+                        // Information
                         VStack {
-                            Spacer()
-                            ForEach(self.questions.questions[self.questionID].questions.indices) { idx in
+                            VStack {
+                                ForEach(self.questions.questions[self.questionID].questions.indices) { idx in
                                 QuestionAnswerView(question: self.$questions.questions[self.questionID].questions[idx], imageOffset: 5)
-                                    .frame(height: 120)
-                                    .padding(.top, 25.0)
+                                    .padding(.top, geometry.size.height < 600.0 ? 25.0 : 50.0)
                                     .padding([.leading, .trailing], 15.0)
-                                Spacer()
-                            }
-                            
-                            HStack {
-                                Spacer()
-                                if self.shouldShowDoneButton() {
-                                    self.getDoneButton()
-                                    .scaleEffect(geometry.size.height < 600.0 ? 0.7 : 1.0)
-                                    .padding(.trailing, geometry.size.height < 600.0 ? -2.0 : 12.9)
-                                    .padding(.bottom, geometry.size.height < 600.0 ? 0.0 : 24.0)
-                                } else {
-                                    self.advanceButton()
-                                    .scaleEffect(geometry.size.height < 600.0 ? 0.7 : 1.0)
-                                    .padding(.trailing, geometry.size.height < 600.0 ? -2.0 : 12.9)
-                                    .padding(.bottom, geometry.size.height < 600.0 ? 0.0 : 24.0)
                                 }
-                            }
+                                Rectangle()
+                                    .fill(Color.clear)
+                                    .frame(width: geometry.size.width, height: geometry.size.height < 600.0 ? 60.0 : 100.0)
+                                    .padding(.top, geometry.size.height < 600.0 ? 25.0 : 50.0)
+                                    .padding([.leading, .trailing], 15.0)
+                            }.frame(width: geometry.size.width, height: geometry.size.height / (geometry.size.height < 600.0 ? 1.5 : 1.6))
 
                             Spacer()
                         }
+                        
+                        // Button
+                        VStack {
+                            Spacer()
+                            HStack {
+                                Spacer()
+                                Button(action: {
+                                    self.showingQuestion.toggle()
+                                }) {
+                                    Image(systemName: self.shouldShowDoneButton() ? "checkmark" : "arrow.right")
+                                    .foregroundColor(.gray)
+                                    .font(.system(size: 30, weight: .ultraLight))
+                                }.buttonStyle(LightButtonStyle(lightMode: self.colorScheme == .light ? true : false))
+                                .scaleEffect(geometry.size.height < 600.0 ? 0.8 : 1.0)
+                                .padding(.trailing, geometry.size.height < 600.0 ? 6.0 : 12.9)
+                                .padding(.bottom, geometry.size.height < 600.0 ? 35.0 : 50.0)
+                            }
+                        }
                     }
                 }
-                
             }.edgesIgnoringSafeArea(.all)
         }
     }
@@ -151,7 +161,7 @@ struct QuestionsView: View {
             Image(systemName: "checkmark")
             .foregroundColor(.gray)
             .font(.system(size: 30, weight: .ultraLight))
-        }.buttonStyle(LightButtonStyle(lightMode: colorScheme == .light ? true : false)).padding(.bottom, 5).padding(.trailing, -5)
+        }.buttonStyle(LightButtonStyle(lightMode: colorScheme == .light ? true : false))
     }
     
     func advanceButton() -> some View {
@@ -159,7 +169,7 @@ struct QuestionsView: View {
             Image(systemName: "arrow.right")
             .foregroundColor(.gray)
             .font(.system(size: 30, weight: .ultraLight))
-        }.padding(.bottom, 5).padding(.trailing, -5.0).buttonStyle(LightButtonStyle(lightMode: colorScheme == .light ? true : false))
+        }.buttonStyle(LightButtonStyle(lightMode: colorScheme == .light ? true : false))
     }
 }
 
@@ -187,17 +197,15 @@ struct QuestionAnswerView: View {
     @Environment(\.colorScheme) var colorScheme
     let generator = UIImpactFeedbackGenerator(style: .light)
     var body: some View {
-        GeometryReader { geometry in
-            self.infoView(geometry: geometry)
-        }
+        self.infoView()
     }
     
-    func infoView(geometry: GeometryProxy) -> some View {
+    func infoView() -> some View {
         
         return ZStack {
             RoundedRectangle(cornerRadius: 18)
                 .fill(colorScheme == .light ? LinearGradient(Color.offWhite, Color.offWhite) : LinearGradient(Color.darkStart, Color.darkEnd))
-                .frame(width: geometry.size.width, height: 100)
+                .frame(height: 100)
                 .shadow(color: Color("LightShadow"), radius: 8, x: -8, y: -8)
                 .shadow(color: Color("DarkShadow"), radius: 8, x: 8, y: 8)
             HStack {
