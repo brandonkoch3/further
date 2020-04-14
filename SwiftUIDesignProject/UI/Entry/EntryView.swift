@@ -72,6 +72,7 @@ struct HeartView: View {
     // UI Config
     @Environment(\.colorScheme) var colorScheme
     @State private var pulsate = false
+    @State private var showingActionSheet = false
     
     // Person Config
     @ObservedObject var detector: PersonDetectee
@@ -87,6 +88,8 @@ struct HeartView: View {
                 .onAppear() {
                     self.pulsate.toggle()
                 }
+        }.actionSheet(isPresented: $showingActionSheet) {
+            ActionSheet(title: Text("Settings"), message: nil, buttons: [.default(Text("Test"))]) 
         }
     }
 }

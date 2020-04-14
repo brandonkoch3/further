@@ -63,6 +63,8 @@ class StoriesController: ObservableObject {
                 }
             }
         }
+
+        print("STORIES:", self.stories)
         
         self.update() { response in }
         
@@ -105,7 +107,7 @@ class StoriesController: ObservableObject {
         self.downloadData() { response in
             if let data = response {
                 for (index, id) in self.interactions.enumerated() {
-                    if data.contains(where: { $0.id == id.personUUID && ($0.feelingSick || $0.testResult) && !id.hasReceivedNotification }) {
+                    if data.contains(where: { $0.id == id.personUUID && $0.testResult && !id.hasReceivedNotification }) {
                         todayStory.positiveContacts.append(id.personUUID)
                         self.interactions[index].hasReceivedNotification = true
                     }

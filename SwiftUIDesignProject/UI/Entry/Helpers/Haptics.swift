@@ -16,6 +16,7 @@ class Haptics {
     private var engine: CHHapticEngine?
     var player: CHHapticAdvancedPatternPlayer?
     @Published var allowed: Bool = true
+    private var isPlaying = false
     
     // Combine
     var hapticSubscriber: AnyCancellable?
@@ -71,6 +72,7 @@ class Haptics {
     func intenseDetection() {
         guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else { return }
         guard !UserDefaults.standard.bool(forKey: "disableHaptics") else { return }
+        guard !self.isPlaying else { return }
         
         let short1 = CHHapticEvent(eventType: .hapticTransient, parameters: [], relativeTime: 0)
         let short2 = CHHapticEvent(eventType: .hapticTransient, parameters: [], relativeTime: 0.2)
@@ -88,14 +90,17 @@ class Haptics {
             player?.loopEnabled = true
             self.player = player
             try self.player?.start(atTime: 0)
+            self.isPlaying = true
         } catch {
             print("Failed to play pattern: \(error.localizedDescription).")
         }
     }
     
     func cancelHaptics() {
+        guard self.isPlaying else { return }
         do {
             try self.player?.cancel()
+            self.isPlaying = false
         } catch {
             print("Could not cancel haptic playback", error)
         }

@@ -31,8 +31,6 @@ class QuestionsController: ObservableObject {
     
     init() {
         
-        print("INIT!")
-        
         if let myID = UserDefaults.standard.string(forKey: "deviceID") {
             self.myID = myID
         }
@@ -40,7 +38,6 @@ class QuestionsController: ObservableObject {
         #if !os(watchOS)
         if let savedData = keyValStore.object(forKey: "answers") as? Data {
             if let loadedData = try? decoder.decode(CovidModel.self, from: savedData) {
-                print("Set from iCloud")
                 self.answers = loadedData
             }
         }

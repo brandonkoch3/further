@@ -25,7 +25,7 @@ class PersonDetectee: NSObject, ObservableObject {
     // Bluetooth
     var centralManager: CBCentralManager!
     var internalPeripheral:  CBPeripheral!
-    let internalServiceCBUUID = CBUUID(string: "0xFFE0")
+    let internalServiceCBUUID = CBUUID(string: "0xFD6F")
     var txCharacteristic: CBCharacteristic!
     var peripheralManager: CBPeripheralManager!
     
@@ -60,9 +60,7 @@ class PersonDetectee: NSObject, ObservableObject {
             .receive(on: RunLoop.main)
             .sink(receiveValue: { connectors in
                 connectors.count > 0 ? self.startTimer() : self.stopTimer()
-                #if !os(watchOS)
-                connectors.count > 0 ? self.haptics.intenseDetection() : self.haptics.cancelHaptics()
-                #endif
+
             })
         
         #if !os(watchOS)
@@ -88,6 +86,18 @@ class PersonDetectee: NSObject, ObservableObject {
         .sink(receiveValue: { detecting in
             detecting ? self.start() : self.stop()
         })
+        
+        foundSubscriber = $personFound
+            .receive(on: RunLoop.main)
+            .sink(receiveValue: { found in
+                #if !os(watchOS)
+                if found {
+                    self.haptics.intenseDetection()
+                } else {
+                    self.haptics.cancelHaptics()
+                }
+                #endif
+            })
     }
     
     // MARK: Parent BLE Functions
@@ -134,17 +144,14 @@ class PersonDetectee: NSObject, ObservableObject {
         print("Connected to", peerID)
         DispatchQueue.main.async {
             self.activeParticipants.append(newParticipant)
+            self.save(participant: newParticipant)
         }
     }
     
     func peerDisconnected(peerID: String, bleID: String) {
         guard self.activeParticipants.contains(where: { $0.personUUID == peerID }) else { return }
         if let participant = self.activeParticipants.first(where: { $0.personUUID == peerID }) {
-            var myParticipant = participant
-            if Date().timeIntervalSince1970 - myParticipant.connectTime >= 60 {
-                myParticipant.disconnectTime = Date().timeIntervalSince1970
-                self.save(participant: myParticipant)
-            }
+            self.update(participant: participant)
             DispatchQueue.main.async {
                 self.connectedPeriperhals.removeAll(where: { $0.identifier.uuidString == bleID })
                 self.activeParticipants.removeAll(where: { $0.personUUID == peerID })
@@ -155,6 +162,17 @@ class PersonDetectee: NSObject, ObservableObject {
     
     func save(participant: PersonModel) {
         self.savedParticipants.append(participant)
+        self.saveToDisk()
+    }
+    
+    func update(participant: PersonModel) {
+        if let personIndex = self.savedParticipants.firstIndex(where: { $0.personUUID == participant.personUUID }) {
+            self.savedParticipants[personIndex].disconnectTime = Date().timeIntervalSince1970
+            self.saveToDisk()
+        }
+    }
+    
+    func saveToDisk() {
         if let encoded = try? encoder.encode(self.savedParticipants) {
             defaults.set(encoded, forKey: "interactions")
             #if !os(watchOS)
@@ -173,30 +191,10 @@ extension PersonDetectee: CBPeripheralManagerDelegate {
         // Start advertising
         var advertiseData = [String: Any]()
         advertiseData["kCBAdvDataTimestamp"] = Date().timeIntervalSinceReferenceDate
-        advertiseData["kCBAdvDataLocalName"] = "further_\(myID)"
-        advertiseData["kCBAdvDataIsConnectable"] = 1
-        advertiseData["kCBAdvDataServiceUUIDs"] = [CBUUID(string: "FFE0")]
+        advertiseData["kCBAdvDataLocalName"] = "further_app"
+        //advertiseData["kCBAdvDataIsConnectable"] = 1
+        advertiseData["kCBAdvDataServiceUUIDs"] = [CBUUID(string: "0xFD6F"), CBUUID(string: self.myID)]
         peripheralManager.startAdvertising(advertiseData)
-        
-        // Configure services
-        let serviceUUID = CBUUID(string: "FFE0")
-        let service = CBMutableService(type: serviceUUID, primary: true)
-        
-        // Configure characteristics
-        let characteristicUUID = CBUUID(string: "FFE1")
-        let properties = CBCharacteristicProperties([.notify, .write])
-        let permissions: CBAttributePermissions = [.writeable]
-        let characteristic = CBMutableCharacteristic(
-            type: characteristicUUID,
-            properties: properties,
-            value: nil,
-            permissions: permissions)
-        
-        // Add characteristics
-        service.characteristics = [characteristic]
-        
-        // Add service
-        peripheralManager.add(service)
         
         #endif
     }
@@ -233,17 +231,30 @@ extension PersonDetectee: CBCentralManagerDelegate {
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
         guard !advertisementData.isEmpty else { return }
         guard let localName = advertisementData["kCBAdvDataLocalName"] as? String else { return }
-        guard localName.contains("further_") else { return }
+        guard localName.contains("further_app") else { return }
         guard !connectedPeriperhals.contains(where: { $0.identifier == peripheral.identifier }) else { return }
-        let foundUUID = localName.replacingOccurrences(of: "further_", with: "")
-        guard foundUUID != myID else { return }
-
-        let foundPerson = peripheral
-        foundPerson.delegate = self
-        centralManager.registerForConnectionEvents(options: [.peripheralUUIDs: [peripheral.identifier]])
-        connectedPeriperhals.append(peripheral)
-        self.peerConnected(peerID: foundUUID, bleID: peripheral.identifier.uuidString)
-        centralManager.connect(foundPerson)
+        
+        if let serviceUUID = advertisementData["kCBAdvDataServiceUUIDs"] as? [CBUUID] {
+            guard serviceUUID.contains(where: { $0.uuidString == "FD6F" }) else {
+                print("Could not find proper service")
+                return
+            }
+            if let userID = serviceUUID.first(where: { $0 != CBUUID(string: "0xFD6F" )}) {
+                let foundUUID = userID.uuidString
+                print("FOUND UUID:", foundUUID)
+//                guard foundUUID != myID else {
+//                    print("The found ID matches your ID.  No need to continue.")
+//                    return
+//                }
+                let foundPerson = peripheral
+                foundPerson.delegate = self
+                foundPerson.discoverServices([])
+                centralManager.registerForConnectionEvents(options: [.peripheralUUIDs: [peripheral.identifier]])
+                connectedPeriperhals.append(peripheral)
+                self.peerConnected(peerID: foundUUID, bleID: peripheral.identifier.uuidString)
+                centralManager.connect(foundPerson)
+            }
+        }
     }
     
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
@@ -265,10 +276,7 @@ extension PersonDetectee: CBCentralManagerDelegate {
 // MARK: Service/Characteristic Discovery Delegates
 extension PersonDetectee: CBPeripheralDelegate {
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
-        guard let services = peripheral.services else {return}
-        for service in services {
-            peripheral.discoverCharacteristics(nil, for: service)
-        }
+        //
     }
     
     func peripheral(_ peripheral: CBPeripheral, didModifyServices invalidatedServices: [CBService]) {
@@ -276,13 +284,7 @@ extension PersonDetectee: CBPeripheralDelegate {
     }
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
-        guard let characteristics = service.characteristics else {return}
-        for characteristic in characteristics {
-            if characteristic.uuid == CBUUID(string: "FFE1") {
-                peripheral.setNotifyValue(true, for: characteristic)
-                txCharacteristic = characteristic
-            }
-        }
+        //
     }
     
     private func characteristicText(characteristic: CBCharacteristic) -> String? {
@@ -291,6 +293,7 @@ extension PersonDetectee: CBPeripheralDelegate {
     }
     
     func peripheral(_ peripheral: CBPeripheral, didReadRSSI RSSI: NSNumber, error: Error?) {
+        guard peripheral.state == .connected else { return }
         print("RSSI:", RSSI, "ID:", peripheral.identifier, peripheral.state.rawValue)
         self.personFound = (Double(truncating: RSSI) >= -60.0)
     }

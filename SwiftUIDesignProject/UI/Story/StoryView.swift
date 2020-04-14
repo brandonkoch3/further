@@ -19,28 +19,25 @@ struct StoryView: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                if self.colorScheme == .dark {
-                    LinearGradient(Color.darkStart, Color.darkEnd)
-                } else {
-                    Color.offWhite
-                }
+                self.colorScheme == .light ? LinearGradient(Color.offWhite, Color.offWhite) : LinearGradient(Color.darkStart, Color.darkEnd)
                 VStack{
                     ScrollView(.vertical, showsIndicators: true) {
                         HStack {
+                            Spacer()
                             Text((self.storyController.stories.count > 0) ? "Previous Interactions" : "No Previous Interactions")
-                            .font(.largeTitle)
-                            .fontWeight(.semibold)
+                            .font(Font.custom("Rubik-Light", size: 34.0))
                                 .foregroundColor(self.colorScheme == .dark ? .white : .black)
-                                .padding([.leading, .trailing], 10.0)
                             Spacer()
                         }.padding()
                         ForEach(self.storyController.stories.indices) { idx in
-                            StoryItem(story: self.$storyController.stories[idx]).frame(height: 120)
+                            StoryItem(story: self.$storyController.stories[idx])
+                                .frame(height: 120)
+                                .padding([.leading, .trailing], 15.0)
                             Spacer()
                         }
                     }
                     Spacer()
-                }.padding(.top, 70)
+                }.padding(.top, geometry.size.height < 600.0 ? 40.0 : 80.0 )
             }.edgesIgnoringSafeArea(.all)
         }
     }
@@ -48,9 +45,16 @@ struct StoryView: View {
 
 struct StoryView_Previews: PreviewProvider {
     static var previews: some View {
-        StoryView(storyController: StoriesController())
-            .previewDevice("iPhone 11 Pro Max")
+        Group {
+            StoryView(storyController: StoriesController())
+            .previewDevice("iPhone SE")
             .environment(\.colorScheme, .dark)
+            
+            StoryView(storyController: StoriesController())
+            .previewDevice("iPhone 11 Pro Max")
+            .environment(\.colorScheme, .light)
+        }
+        
     }
 }
 
@@ -59,113 +63,37 @@ struct StoryItem: View {
     @Environment(\.colorScheme) var colorScheme
     var body: some View {
         GeometryReader { geometry in
-            if self.colorScheme == .light {
-                self.lightView(geometry: geometry)
-            } else {
-                self.darkView(geometry: geometry)
-            }
+            self.storyView(geometry: geometry)
         }
     }
     
-    func lightView(geometry: GeometryProxy) -> some View {
+    func storyView(geometry: GeometryProxy) -> some View {
         return ZStack {
             RoundedRectangle(cornerRadius: 18)
-                .fill(Color.offWhite)
-                .frame(width: geometry.size.width - 20, height: 100)
+                .fill(colorScheme == .light ? LinearGradient(Color.offWhite, Color.offWhite) : LinearGradient(Color.darkStart, Color.darkEnd))
+                .frame(width: geometry.size.width, height: 100)
                 .shadow(color: Color("LightShadow"), radius: 8, x: -8, y: -8)
                 .shadow(color: Color("DarkShadow"), radius: 8, x: 8, y: 8)
             HStack {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 18)
-                    .fill(Color.offWhite)
-                    .frame(width: 60, height: 60)
-                    .shadow(color: Color("LightShadow"), radius: 8, x: -8, y: -8)
-                    .shadow(color: Color("DarkShadow"), radius: 8, x: 8, y: 8)
-                    .padding(.leading, 6)
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 18)
-                            .fill(Color.offWhite)
-                            .frame(width: 60, height: 60)
-                            .shadow(color: Color("LightShadow"), radius: 8, x: -8, y: -8)
-                            .shadow(color: Color("DarkShadow"), radius: 8, x: 8, y: 8)
-                            .padding(.leading, 6)
-                        
-                        self.warningImage()
-                            .foregroundColor(.gray)
-                            .font(.system(size: 30))
-                            .multilineTextAlignment(.center)
-                            .offset(x: 5, y: 0)
-                    }
-                }
-                
-                VStack(alignment: .leading, spacing: 0) {
-                    Spacer()
+                self.warningImage()
+                VStack(alignment: .leading, spacing: 5.0) {
                     Text(self.readableDate())
-                        .font(.system(size: 25.0))
-                        .fontWeight(.semibold)
-                    Spacer()
-                    Text(self.warningLevel()).font(.subheadline)
-                    Spacer()
-                }.frame(height: 100).padding(.leading, 6.0).padding(.top, 2.0)
+                        .font(Font.custom("Rubik-Medium", size: 23.3))
+                    Text(self.warningLevel())
+                        .font(Font.custom("Rubik-Light", size: 15.5))
+                }
                 Spacer()
             }
-            .padding()
-        }
-    }
-    
-    func darkView(geometry: GeometryProxy) -> some View {
-        return ZStack {
-            RoundedRectangle(cornerRadius: 18)
-                .fill(LinearGradient(Color.darkStart, Color.darkEnd))
-                .frame(width: geometry.size.width - 20, height: 100)
-                .shadow(color: Color.darkStart, radius: 10, x: -10, y: -10)
-                .shadow(color: Color.darkEnd, radius: 10, x: 10, y: 10)
-            HStack {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 18)
-                    .fill(LinearGradient(Color.darkStart, Color.darkEnd))
-                    .frame(width: 60, height: 60)
-                    .shadow(color: Color.darkStart, radius: 10, x: -10, y: -10)
-                    .shadow(color: Color.darkEnd, radius: 10, x: 10, y: 10)
-                    .padding(.leading, 6)
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 18)
-                            .fill(LinearGradient(Color.darkStart, Color.darkEnd))
-                            .frame(width: 60, height: 60)
-                            .shadow(color: Color.darkStart, radius: 10, x: -10, y: -10)
-                            .shadow(color: Color.darkEnd, radius: 10, x: 10, y: 10)
-                            .padding(.leading, 6)
-                        
-                        self.warningImage()
-                            .foregroundColor(.red)
-                            .font(.system(size: 30))
-                            .multilineTextAlignment(.center)
-                            .offset(x: 5, y: 0)
-                    }
-                }
-                
-                VStack(alignment: .leading, spacing: 0) {
-                    Spacer()
-                    Text(self.readableDate())
-                        .font(.system(size: 25.0))
-                        .fontWeight(.semibold)
-                    Spacer()
-                    Text(self.warningLevel()).font(.subheadline)
-                    Spacer()
-                }.frame(height: 100).padding(.leading, 6.0).padding(.top, 2.0)
-                Spacer()
-            }
-            .padding()
         }
     }
     
     func warningImage() -> Image {
         if self.story.positiveContacts.count >= 3 {
-            return Image(systemName: "bed.double")
+            return Image(self.colorScheme == .light ? "light_high_risk" : "dark_high_risk")
         } else if self.story.positiveContacts.count >= 1 {
-            return Image(systemName: "exclamationmark")
+            return Image(self.colorScheme == .light ? "light_medium_risk" : "dark_medium_risk")
         } else {
-            return Image(systemName: "checkmark")
+            return Image(self.colorScheme == .light ? "light_low_risk" : "dark_low_risk")
         }
     }
     
