@@ -155,7 +155,7 @@ struct InformationView: View {
     func infoView(geometry: GeometryProxy) -> some View {
         return ZStack {
             RoundedRectangle(cornerRadius: 18)
-                .fill(colorScheme == .light ? LinearGradient(Color.offWhite, Color.offWhite) : LinearGradient(Color.darkStart, Color.darkEnd))
+                .fill(colorScheme == .light ? LinearGradient(Color.offWhite, Color.offWhite) : LinearGradient(Color.darkStart, Color.darkStart))
                 .frame(width: geometry.size.width, height: 100)
                 .shadow(color: Color("LightShadow"), radius: 8, x: -8, y: -8)
                 .shadow(color: Color("DarkShadow"), radius: 8, x: 8, y: 8)

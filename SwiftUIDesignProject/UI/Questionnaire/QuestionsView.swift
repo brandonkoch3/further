@@ -17,7 +17,7 @@ struct QuestionsView: View {
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.colorScheme) var colorScheme
     @Binding var showingQuestion: Bool
-    @State var matching: [String] = ["symptoms", "professionally", "COVID-19"]
+    @State var matching: [String] = ["symptoms", "professionally", "positive", "COVID-19"]
     
     struct HeaderText: View {
         var body: some View {

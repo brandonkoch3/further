@@ -14,8 +14,8 @@
             filePath = "SwiftUIDesignProject/Code/Core/AppDelegate.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "41"
-            endingLineNumber = "41"
+            startingLineNumber = "34"
+            endingLineNumber = "34"
             landmarkName = "scheduleRefreshTask()"
             landmarkType = "7">
          </BreakpointContent>

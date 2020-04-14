@@ -102,18 +102,18 @@ struct StoryItem: View {
         let dateFormatter = DateFormatter()
         //dateFormatter.locale = NSLocale.current
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        dateFormatter.dateFormat = "MMMM d,yyyy"
+        dateFormatter.dateFormat = "MMMM d, yyyy"
         let strDate = dateFormatter.string(from: date)
         return strDate
     }
     
     func warningLevel() -> String {
         if self.story.positiveContacts.count >= 2 {
-            return "Multiple people nearby on this date reported a positive COVID-19 test."
+            return "Multiple people nearby reported a positive COVID-19 test."
         } else if self.story.positiveContacts.count >= 1 {
-            return "At least one person nearby on this date reported a positive COVID-19 test."
+            return "At least one person nearby reported a positive COVID-19 test."
         } else {
-            return "There were no interactions with any confirmed COVID-19 users on this date."
+            return "No interactions with any confirmed COVID-19 users on this date."
         }
     }
 }

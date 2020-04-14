@@ -63,8 +63,6 @@ class StoriesController: ObservableObject {
                 }
             }
         }
-
-        print("STORIES:", self.stories)
         
         self.update() { response in }
         
@@ -76,13 +74,7 @@ class StoriesController: ObservableObject {
     }
     
     public func update(completion: @escaping (Bool) -> Void) {
-        self.updateStories() { response in
-            if let yesterdayDate = Date().yesterdayCheckDate() {
-                if !self.stories.contains(where: { $0.displayDate == Date().yesterdayAsString() }) {
-                    self.updateStories(date: yesterdayDate) { response in }
-                }
-            }
-        }
+        self.updateStories() { response in }
     }
     
     private func updateStories(date: Date? = Date(), completion: @escaping (Bool) -> Void) {

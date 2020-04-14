@@ -16,7 +16,7 @@ struct CovidModel: Codable, Equatable {
     var lastUpdate: Double
 }
 
-struct CovidStory: Codable, Equatable, Identifiable {
+struct CovidStory: Codable, Equatable, Hashable, Identifiable {
     var id = UUID()
     var displayDate: String
     var dateGathered: Double

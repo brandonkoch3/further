@@ -67,6 +67,31 @@ struct EntryView_Previews: PreviewProvider {
     }
 }
 
+struct NotifierView: View {
+    
+    // Person Config
+    @ObservedObject var detector: PersonDetectee
+    
+    // View
+    var body: some View {
+        HStack {
+            Spacer()
+            
+            Button(action: {
+                detector.haptics.allowed.toggle()
+            }) {
+                Image(systemName: "list.dash")
+                    .foregroundColor(self.colorScheme == .dark ? Color.gray : Color.lairDarkGray)
+                    .font(.system(size: 25, weight: .regular))
+                    .padding()
+            }
+            
+            Spacer()
+        }
+    }
+    
+}
+
 struct HeartView: View {
     
     // UI Config

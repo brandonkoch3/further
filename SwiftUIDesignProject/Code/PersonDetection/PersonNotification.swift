@@ -32,7 +32,7 @@ class PersonNotifications {
         content.title = "Updated Interactions Are Available"
         content.body = "We've updated your app to determine if any nearby contacts have reported a positive COVID-19 test result."
         content.sound = UNNotificationSound.default
-        let identifier = "Further - Updated Contacts"
+        let identifier = "Further - Updated Interactions"
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
         let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
         self.userNotificationCenter.add(request) { (error) in

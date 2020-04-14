@@ -52,10 +52,6 @@
 		CA9A0CB8243F9FB900724394 /* Rubik-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA9A0CA4243F9FB900724394 /* Rubik-Regular.ttf */; };
 		CA9A0CBE243FCAE500724394 /* EntryBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9A0CBD243FCAE500724394 /* EntryBackgroundView.swift */; };
 		CA9A0CBF243FCAE500724394 /* EntryBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9A0CBD243FCAE500724394 /* EntryBackgroundView.swift */; };
-		CA9A0CC1243FCB3200724394 /* HeartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9A0CC0243FCB3200724394 /* HeartView.swift */; };
-		CA9A0CC2243FCB3200724394 /* HeartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9A0CC0243FCB3200724394 /* HeartView.swift */; };
-		CA9A0CC4243FCB9500724394 /* MainTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9A0CC3243FCB9500724394 /* MainTextView.swift */; };
-		CA9A0CC5243FCB9500724394 /* MainTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9A0CC3243FCB9500724394 /* MainTextView.swift */; };
 		CA9A0CC7243FCBCA00724394 /* QuestionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9A0CC6243FCBCA00724394 /* QuestionButton.swift */; };
 		CA9A0CCA243FCD2B00724394 /* StoryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9A0CC9243FCD2B00724394 /* StoryButton.swift */; };
 		CA9D81CF242151AE009625DF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9D81CE242151AE009625DF /* AppDelegate.swift */; };
@@ -160,8 +156,6 @@
 		CA9A0CA3243F9FB900724394 /* Rubik-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rubik-MediumItalic.ttf"; sourceTree = "<group>"; };
 		CA9A0CA4243F9FB900724394 /* Rubik-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rubik-Regular.ttf"; sourceTree = "<group>"; };
 		CA9A0CBD243FCAE500724394 /* EntryBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryBackgroundView.swift; sourceTree = "<group>"; };
-		CA9A0CC0243FCB3200724394 /* HeartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartView.swift; sourceTree = "<group>"; };
-		CA9A0CC3243FCB9500724394 /* MainTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTextView.swift; sourceTree = "<group>"; };
 		CA9A0CC6243FCBCA00724394 /* QuestionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionButton.swift; sourceTree = "<group>"; };
 		CA9A0CC9243FCD2B00724394 /* StoryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryButton.swift; sourceTree = "<group>"; };
 		CA9D81CB242151AE009625DF /* Further.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Further.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -334,8 +328,6 @@
 			isa = PBXGroup;
 			children = (
 				CA9A0CBD243FCAE500724394 /* EntryBackgroundView.swift */,
-				CA9A0CC0243FCB3200724394 /* HeartView.swift */,
-				CA9A0CC3243FCB9500724394 /* MainTextView.swift */,
 				CA9A0CC6243FCBCA00724394 /* QuestionButton.swift */,
 				CA9A0CC9243FCD2B00724394 /* StoryButton.swift */,
 			);
@@ -578,9 +570,7 @@
 				CABD5D0D243C3E5900BB99EB /* QuestionModel.swift in Sources */,
 				CA80E025243C3DA300410CBF /* ContentView.swift in Sources */,
 				CABD5D08243C3E5900BB99EB /* EnvironmentSettings.swift in Sources */,
-				CA9A0CC2243FCB3200724394 /* HeartView.swift in Sources */,
 				CA80E02B243C3DA400410CBF /* NotificationController.swift in Sources */,
-				CA9A0CC5243FCB9500724394 /* MainTextView.swift in Sources */,
 				CABD5D10243C3E5900BB99EB /* StoriesController.swift in Sources */,
 				CABD5D0C243C3E5900BB99EB /* PersonNotification.swift in Sources */,
 				CA9A0CBF243FCAE500724394 /* EntryBackgroundView.swift in Sources */,
@@ -597,7 +587,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CA9A0CC4243FCB9500724394 /* MainTextView.swift in Sources */,
 				CA9A0CCA243FCD2B00724394 /* StoryButton.swift in Sources */,
 				CA9A0CC7243FCBCA00724394 /* QuestionButton.swift in Sources */,
 				CA2D368424351C2900401C84 /* PersonDetectee.swift in Sources */,
@@ -616,7 +605,6 @@
 				CA7544642432EF3C00C45C28 /* Haptics.swift in Sources */,
 				CA9D81D1242151AE009625DF /* SceneDelegate.swift in Sources */,
 				CAC6D132243819B20088B3E4 /* EnvironmentSettings.swift in Sources */,
-				CA9A0CC1243FCB3200724394 /* HeartView.swift in Sources */,
 				CA75446B2433A51F00C45C28 /* QuestionView.swift in Sources */,
 				CA444838243CE0CD005B883C /* IdentificationHelper.swift in Sources */,
 				CA9D81D3242151AE009625DF /* EntryView.swift in Sources */,

@@ -19,8 +19,12 @@ class PersonDetectee: NSObject, ObservableObject {
     // Person config
     var myID: String = ""
     @Published var connectedPeriperhals = [CBPeripheral]()
-    private var activeParticipants = [PersonModel]()
+    private var activeParticipants = [LocalDevice]()
     private var savedParticipants = [PersonModel]()
+    struct LocalDevice {
+        var personUUID: String
+        var bleID: String
+    }
     
     // Bluetooth
     var centralManager: CBCentralManager!
@@ -44,7 +48,7 @@ class PersonDetectee: NSObject, ObservableObject {
     
     #if !os(watchOS)
     var keyValStore = NSUbiquitousKeyValueStore()
-    private var haptics = Haptics()
+    var haptics = Haptics()
     #endif
     
     override init() {
@@ -140,10 +144,11 @@ class PersonDetectee: NSObject, ObservableObject {
     func peerConnected(peerID: String, bleID: String) {
         guard !self.activeParticipants.contains(where: { $0.personUUID == peerID }) else { return }
         guard !self.savedParticipants.contains(where: { $0.personUUID == peerID && $0.hasReceivedNotification }) else { return }
-        let newParticipant = PersonModel(personUUID: peerID, bleUUID: bleID, connectTime: Date().timeIntervalSince1970, disconnectTime: nil, hasReceivedNotification: false)
+        let newParticipant = PersonModel(personUUID: peerID, connectTime: Date().timeIntervalSince1970, disconnectTime: nil, hasReceivedNotification: false)
+        let newDevice = LocalDevice(personUUID: peerID, bleID: bleID)
         print("Connected to", peerID)
         DispatchQueue.main.async {
-            self.activeParticipants.append(newParticipant)
+            self.activeParticipants.append(newDevice)
             self.save(participant: newParticipant)
         }
     }
@@ -165,7 +170,7 @@ class PersonDetectee: NSObject, ObservableObject {
         self.saveToDisk()
     }
     
-    func update(participant: PersonModel) {
+    func update(participant: LocalDevice) {
         if let personIndex = self.savedParticipants.firstIndex(where: { $0.personUUID == participant.personUUID }) {
             self.savedParticipants[personIndex].disconnectTime = Date().timeIntervalSince1970
             self.saveToDisk()
@@ -248,7 +253,6 @@ extension PersonDetectee: CBCentralManagerDelegate {
 //                }
                 let foundPerson = peripheral
                 foundPerson.delegate = self
-                foundPerson.discoverServices([])
                 centralManager.registerForConnectionEvents(options: [.peripheralUUIDs: [peripheral.identifier]])
                 connectedPeriperhals.append(peripheral)
                 self.peerConnected(peerID: foundUUID, bleID: peripheral.identifier.uuidString)
@@ -266,7 +270,7 @@ extension PersonDetectee: CBCentralManagerDelegate {
     }
     
     internal func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
-        if let peer = self.activeParticipants.first(where: { $0.bleUUID == peripheral.identifier.uuidString }) {
+        if let peer = self.activeParticipants.first(where: { $0.bleID == peripheral.identifier.uuidString }) {
             let peerID = peer.personUUID
             self.peerDisconnected(peerID: peerID, bleID: peripheral.identifier.uuidString)
         }

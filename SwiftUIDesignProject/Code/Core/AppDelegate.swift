@@ -19,6 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.bnbmedia.furtherBurstUpdate", using: nil) { (task) in
             self.handleAppBurstTask(task: task as! BGProcessingTask)
         }
+        UIApplication.shared.isIdleTimerDisabled = true
         
         return true
     }
@@ -27,15 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let refreshTask = BGProcessingTaskRequest(identifier: "com.bnbmedia.furtherBurstUpdate")
         refreshTask.requiresExternalPower = false
         refreshTask.requiresNetworkConnectivity = true
-        
-        let now = Date()
-        guard let then = Date().checkDate() else { return }
-        let calendar = Calendar.current
-        let dateComponents = calendar.dateComponents([Calendar.Component.second], from: now, to: then)
-        let seconds = dateComponents.second
-        guard let diff = seconds, diff >= 0 else { return }
-        
-        refreshTask.earliestBeginDate = Date(timeIntervalSinceNow: TimeInterval(diff))
+        refreshTask.earliestBeginDate = Date(timeIntervalSinceNow: 600.0)
         do {
             try BGTaskScheduler.shared.submit(refreshTask)
         } catch {
