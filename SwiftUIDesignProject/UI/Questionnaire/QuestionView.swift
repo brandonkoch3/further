@@ -55,7 +55,7 @@ struct QuestionView: View {
 
                         // Rectangle
                         ZStack {
-                            Rectangle().fill(self.colorScheme == .light ? LinearGradient(Color.offWhite, Color.offWhite) : LinearGradient(Color.darkStart, Color.darkEnd))
+                            Rectangle().fill(self.colorScheme == .light ? LinearGradient(Color.offWhite, Color.offWhite) : LinearGradient(Color(hex: "25282d"), Color(hex: "25282d")))
                             .cornerRadius(20, corners: [.topLeft, .topRight])
                 
                             // Information
@@ -133,7 +133,7 @@ struct QuestionView_Previews: PreviewProvider {
             
             QuestionView(showingQuestionSheet: .constant(true))
             .previewDevice("iPhone XS")
-            .environment(\.colorScheme, .light)
+            .environment(\.colorScheme, .dark)
             .environmentObject(QuestionsController())
         }
     }
@@ -155,10 +155,11 @@ struct InformationView: View {
     func infoView(geometry: GeometryProxy) -> some View {
         return ZStack {
             RoundedRectangle(cornerRadius: 18)
-                .fill(colorScheme == .light ? LinearGradient(Color.offWhite, Color.offWhite) : LinearGradient(Color.darkStart, Color.darkStart))
+                .fill(colorScheme == .light ? LinearGradient(Color.offWhite, Color.offWhite) : LinearGradient(Color(hex: "25282d"), Color(hex: "25282d")))
                 .frame(width: geometry.size.width, height: 100)
-                .shadow(color: Color("LightShadow"), radius: 8, x: -8, y: -8)
-                .shadow(color: Color("DarkShadow"), radius: 8, x: 8, y: 8)
+                .shadow(color: colorScheme == .light ? Color("LightShadow") : Color(hex: "505050"), radius: colorScheme == .light ? 8 : 0.5, x: colorScheme == .light ? -8 : -1, y: colorScheme == .light ? -8 : -1)
+                .shadow(color: colorScheme == .light ? Color("DarkShadow") : .black, radius: 8, x: colorScheme == .light ? 8 : -1, y: colorScheme == .light ? 8 : 1)
+            
             HStack {
                 self.sectionImage
                 VStack(alignment: .leading, spacing: 5.0) {

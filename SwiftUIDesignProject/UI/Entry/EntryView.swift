@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import CoreHaptics
 
 struct EntryView: View {
     
@@ -26,6 +27,7 @@ struct EntryView: View {
         ZStack {
             EntryBackgroundView()
             VStack {
+                NotifierView(detector: detector).padding()
                 Spacer()
                 VStack {
                     VStack {
@@ -55,7 +57,7 @@ struct EntryView_Previews: PreviewProvider {
         Group {
             EntryView()
                 .environmentObject(EnvironmentSettings())
-                .environment(\.colorScheme, .dark)
+                .environment(\.colorScheme, .light)
                 .previewDevice("iPhone 11 Pro Max")
             
             EntryView()
@@ -69,6 +71,10 @@ struct EntryView_Previews: PreviewProvider {
 
 struct NotifierView: View {
     
+    // UI Config
+    @Environment(\.colorScheme) var colorScheme
+    @State private var hapticsEnabled = !UserDefaults.standard.bool(forKey: "disableHaptics")
+    
     // Person Config
     @ObservedObject var detector: PersonDetectee
     
@@ -76,20 +82,20 @@ struct NotifierView: View {
     var body: some View {
         HStack {
             Spacer()
-            
-            Button(action: {
-                detector.haptics.allowed.toggle()
-            }) {
-                Image(systemName: "list.dash")
-                    .foregroundColor(self.colorScheme == .dark ? Color.gray : Color.lairDarkGray)
-                    .font(.system(size: 25, weight: .regular))
-                    .padding()
+            if CHHapticEngine.capabilitiesForHardware().supportsHaptics {
+                Button(action: {
+                    self.hapticsEnabled.toggle()
+                    self.detector.haptics.allowed.toggle()
+                }) {
+                    Image(systemName: hapticsEnabled ? "bell" : "bell.slash")
+                        .foregroundColor(self.colorScheme == .dark ? Color.gray : Color.lairDarkGray)
+                        .font(.system(size: 25, weight: .regular))
+                        .padding()
+                }
             }
-            
             Spacer()
         }
     }
-    
 }
 
 struct HeartView: View {

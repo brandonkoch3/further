@@ -86,7 +86,7 @@ struct QuestionsView: View {
                     
                     // Rectangle
                     ZStack {
-                        Rectangle().fill(self.colorScheme == .light ? LinearGradient(Color.offWhite, Color.offWhite) : LinearGradient(Color.darkStart, Color.darkEnd))
+                        Rectangle().fill(self.colorScheme == .light ? LinearGradient(Color.offWhite, Color.offWhite) : LinearGradient(Color(hex: "25282d"), Color(hex: "25282d")))
                         .cornerRadius(20, corners: [.topLeft, .topRight])
                         
                         // Information
@@ -216,10 +216,10 @@ struct QuestionAnswerView: View {
         
         return ZStack {
             RoundedRectangle(cornerRadius: 18)
-                .fill(colorScheme == .light ? LinearGradient(Color.offWhite, Color.offWhite) : LinearGradient(Color.darkStart, Color.darkEnd))
+                .fill(colorScheme == .light ? LinearGradient(Color.offWhite, Color.offWhite) : LinearGradient(Color(hex: "25282d"), Color(hex: "25282d")))
                 .frame(height: 100)
-                .shadow(color: Color("LightShadow"), radius: 8, x: -8, y: -8)
-                .shadow(color: Color("DarkShadow"), radius: 8, x: 8, y: 8)
+                .shadow(color: colorScheme == .light ? Color("LightShadow") : Color(hex: "505050"), radius: colorScheme == .light ? 8 : 0.5, x: colorScheme == .light ? -8 : -1, y: colorScheme == .light ? -8 : -1)
+                .shadow(color: colorScheme == .light ? Color("DarkShadow") : .black, radius: 8, x: colorScheme == .light ? 8 : -1, y: colorScheme == .light ? 8 : 1)
             HStack {
                 Button(action: {
                     self.generator.impactOccurred()

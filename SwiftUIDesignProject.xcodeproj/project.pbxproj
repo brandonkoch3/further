@@ -447,9 +447,9 @@
 			productReference = CA80E01F243C3DA300410CBF /* Further Extension.appex */;
 			productType = "com.apple.product-type.watchkit2-extension";
 		};
-		CA9D81CA242151AE009625DF /* SwiftUIDesignProject */ = {
+		CA9D81CA242151AE009625DF /* Futher */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CA9D81DF242151AF009625DF /* Build configuration list for PBXNativeTarget "SwiftUIDesignProject" */;
+			buildConfigurationList = CA9D81DF242151AF009625DF /* Build configuration list for PBXNativeTarget "Futher" */;
 			buildPhases = (
 				CA9D81C7242151AE009625DF /* Sources */,
 				CA9D81C8242151AE009625DF /* Frameworks */,
@@ -461,7 +461,7 @@
 			dependencies = (
 				CA80E036243C3DA400410CBF /* PBXTargetDependency */,
 			);
-			name = SwiftUIDesignProject;
+			name = Futher;
 			productName = SwiftUIDesignProject;
 			productReference = CA9D81CB242151AE009625DF /* Further.app */;
 			productType = "com.apple.product-type.application";
@@ -500,7 +500,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				CA9D81CA242151AE009625DF /* SwiftUIDesignProject */,
+				CA9D81CA242151AE009625DF /* Futher */,
 				CA80E012243C3DA000410CBF /* Further */,
 				CA80E01E243C3DA300410CBF /* Further Extension */,
 			);
@@ -933,7 +933,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		CA9D81DF242151AF009625DF /* Build configuration list for PBXNativeTarget "SwiftUIDesignProject" */ = {
+		CA9D81DF242151AF009625DF /* Build configuration list for PBXNativeTarget "Futher" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CA9D81E0242151AF009625DF /* Debug */,

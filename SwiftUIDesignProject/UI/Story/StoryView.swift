@@ -19,7 +19,7 @@ struct StoryView: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                self.colorScheme == .light ? LinearGradient(Color.offWhite, Color.offWhite) : LinearGradient(Color.darkStart, Color.darkEnd)
+                self.colorScheme == .light ? LinearGradient(Color.offWhite, Color.offWhite) : LinearGradient(Color(hex: "25282d"), Color(hex: "25282d"))
                 VStack{
                     ScrollView(.vertical, showsIndicators: true) {
                         HStack {
@@ -70,10 +70,10 @@ struct StoryItem: View {
     func storyView(geometry: GeometryProxy) -> some View {
         return ZStack {
             RoundedRectangle(cornerRadius: 18)
-                .fill(colorScheme == .light ? LinearGradient(Color.offWhite, Color.offWhite) : LinearGradient(Color.darkStart, Color.darkEnd))
+                .fill(colorScheme == .light ? LinearGradient(Color.offWhite, Color.offWhite) : LinearGradient(Color(hex: "25282d"), Color(hex: "25282d")))
                 .frame(width: geometry.size.width, height: 100)
-                .shadow(color: Color("LightShadow"), radius: 8, x: -8, y: -8)
-                .shadow(color: Color("DarkShadow"), radius: 8, x: 8, y: 8)
+                .shadow(color: colorScheme == .light ? Color("LightShadow") : Color(hex: "505050"), radius: colorScheme == .light ? 8 : 0.5, x: colorScheme == .light ? -8 : -1, y: colorScheme == .light ? -8 : -1)
+                .shadow(color: colorScheme == .light ? Color("DarkShadow") : .black, radius: 8, x: colorScheme == .light ? 8 : -1, y: colorScheme == .light ? 8 : 1)
             HStack {
                 self.warningImage()
                 VStack(alignment: .leading, spacing: 5.0) {

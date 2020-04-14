@@ -104,7 +104,7 @@ struct DarkBackground<S: Shape>: View {
                     .shadow(color: Color.darkEnd, radius: 10, x: -5, y: -5)
             } else {
                 shape
-                    .fill(Color.darkEnd)
+                    .fill(Color(hex: "25282d"))
                     .shadow(color: Color.darkStart, radius: 10, x: -10, y: -10)
                     .shadow(color: Color.darkEnd, radius: 10, x: 10, y: 10)
             }

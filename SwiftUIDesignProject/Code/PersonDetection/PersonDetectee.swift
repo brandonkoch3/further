@@ -48,7 +48,7 @@ class PersonDetectee: NSObject, ObservableObject {
     
     #if !os(watchOS)
     var keyValStore = NSUbiquitousKeyValueStore()
-    var haptics = Haptics()
+    public var haptics = Haptics()
     #endif
     
     override init() {
