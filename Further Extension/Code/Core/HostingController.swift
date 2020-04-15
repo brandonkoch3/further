@@ -14,7 +14,7 @@ class HostingController: WKHostingController<AnyView> {
     var detector = PersonDetectee()
     var environmentSettings = EnvironmentSettings()
     override var body: AnyView {
-        return AnyView(ContentView()
+        return AnyView(EntryView()
             .environmentObject(detector)
             .environmentObject(environmentSettings)
         )

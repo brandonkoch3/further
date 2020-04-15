@@ -20,7 +20,7 @@
 		CA80E017243C3DA000410CBF /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA80E015243C3DA000410CBF /* Interface.storyboard */; };
 		CA80E019243C3DA300410CBF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA80E018243C3DA300410CBF /* Assets.xcassets */; };
 		CA80E020243C3DA300410CBF /* Further Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CA80E01F243C3DA300410CBF /* Further Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		CA80E025243C3DA300410CBF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA80E024243C3DA300410CBF /* ContentView.swift */; };
+		CA80E025243C3DA300410CBF /* EntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA80E024243C3DA300410CBF /* EntryView.swift */; };
 		CA80E027243C3DA300410CBF /* HostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA80E026243C3DA300410CBF /* HostingController.swift */; };
 		CA80E029243C3DA300410CBF /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA80E028243C3DA300410CBF /* ExtensionDelegate.swift */; };
 		CA80E02B243C3DA400410CBF /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA80E02A243C3DA300410CBF /* NotificationController.swift */; };
@@ -73,6 +73,7 @@
 		CABD5D0F243C3E5900BB99EB /* CovidModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA0AD0824366321007A9522 /* CovidModel.swift */; };
 		CABD5D10243C3E5900BB99EB /* StoriesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA0AD0B243665CA007A9522 /* StoriesController.swift */; };
 		CABD5D11243C3E5900BB99EB /* SimpleButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA11D50A242ACB920074E024 /* SimpleButtonStyle.swift */; };
+		CAC194CF244686F5009EA27F /* QuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC194CE244686F5009EA27F /* QuestionView.swift */; };
 		CAC6D132243819B20088B3E4 /* EnvironmentSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6D131243819B20088B3E4 /* EnvironmentSettings.swift */; };
 		CACE2A3824356B3D00A8B8D5 /* QuestionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACE2A3724356B3D00A8B8D5 /* QuestionsView.swift */; };
 /* End PBXBuildFile section */
@@ -135,7 +136,7 @@
 		CA80E018243C3DA300410CBF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CA80E01A243C3DA300410CBF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CA80E01F243C3DA300410CBF /* Further Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Further Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
-		CA80E024243C3DA300410CBF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		CA80E024243C3DA300410CBF /* EntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryView.swift; sourceTree = "<group>"; };
 		CA80E026243C3DA300410CBF /* HostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostingController.swift; sourceTree = "<group>"; };
 		CA80E028243C3DA300410CBF /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
 		CA80E02A243C3DA300410CBF /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
@@ -169,6 +170,7 @@
 		CAA0AD0824366321007A9522 /* CovidModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CovidModel.swift; sourceTree = "<group>"; };
 		CAA0AD0B243665CA007A9522 /* StoriesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoriesController.swift; sourceTree = "<group>"; };
 		CAA0AD112436A03C007A9522 /* StoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryView.swift; sourceTree = "<group>"; };
+		CAC194CE244686F5009EA27F /* QuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionView.swift; sourceTree = "<group>"; };
 		CAC6D130243805930088B3E4 /* Further.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Further.entitlements; sourceTree = "<group>"; };
 		CAC6D131243819B20088B3E4 /* EnvironmentSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentSettings.swift; sourceTree = "<group>"; };
 		CACE2A3724356B3D00A8B8D5 /* QuestionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionsView.swift; sourceTree = "<group>"; };
@@ -286,11 +288,8 @@
 		CA80E023243C3DA300410CBF /* Further Extension */ = {
 			isa = PBXGroup;
 			children = (
-				CA80E024243C3DA300410CBF /* ContentView.swift */,
-				CA80E026243C3DA300410CBF /* HostingController.swift */,
-				CA80E028243C3DA300410CBF /* ExtensionDelegate.swift */,
-				CA80E02A243C3DA300410CBF /* NotificationController.swift */,
-				CA80E02C243C3DA400410CBF /* NotificationView.swift */,
+				CAC194CA244685FF009EA27F /* Code */,
+				CAC194C8244685CF009EA27F /* UI */,
 				CA80E02E243C3DA400410CBF /* Assets.xcassets */,
 				CA80E033243C3DA400410CBF /* Info.plist */,
 				CA80E034243C3DA400410CBF /* PushNotificationPayload.apns */,
@@ -408,6 +407,58 @@
 				CA6A81CB2433D22F00E17DC3 /* PersonNotification.swift */,
 			);
 			path = PersonDetection;
+			sourceTree = "<group>";
+		};
+		CAC194C8244685CF009EA27F /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				CAC194CD244686C8009EA27F /* Questionnaire */,
+				CAC194CC24468610009EA27F /* Notification */,
+				CAC194C9244685D6009EA27F /* Entry */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		CAC194C9244685D6009EA27F /* Entry */ = {
+			isa = PBXGroup;
+			children = (
+				CA80E024243C3DA300410CBF /* EntryView.swift */,
+			);
+			path = Entry;
+			sourceTree = "<group>";
+		};
+		CAC194CA244685FF009EA27F /* Code */ = {
+			isa = PBXGroup;
+			children = (
+				CAC194CB24468602009EA27F /* Core */,
+			);
+			path = Code;
+			sourceTree = "<group>";
+		};
+		CAC194CB24468602009EA27F /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				CA80E026243C3DA300410CBF /* HostingController.swift */,
+				CA80E028243C3DA300410CBF /* ExtensionDelegate.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		CAC194CC24468610009EA27F /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+				CA80E02C243C3DA400410CBF /* NotificationView.swift */,
+				CA80E02A243C3DA300410CBF /* NotificationController.swift */,
+			);
+			path = Notification;
+			sourceTree = "<group>";
+		};
+		CAC194CD244686C8009EA27F /* Questionnaire */ = {
+			isa = PBXGroup;
+			children = (
+				CAC194CE244686F5009EA27F /* QuestionView.swift */,
+			);
+			path = Questionnaire;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -568,7 +619,7 @@
 				CABD5D0F243C3E5900BB99EB /* CovidModel.swift in Sources */,
 				CABD5D0A243C3E5900BB99EB /* PersonDetectee.swift in Sources */,
 				CABD5D0D243C3E5900BB99EB /* QuestionModel.swift in Sources */,
-				CA80E025243C3DA300410CBF /* ContentView.swift in Sources */,
+				CA80E025243C3DA300410CBF /* EntryView.swift in Sources */,
 				CABD5D08243C3E5900BB99EB /* EnvironmentSettings.swift in Sources */,
 				CA80E02B243C3DA400410CBF /* NotificationController.swift in Sources */,
 				CABD5D10243C3E5900BB99EB /* StoriesController.swift in Sources */,
@@ -579,6 +630,7 @@
 				CABD5D0B243C3E5900BB99EB /* PersonModel.swift in Sources */,
 				CA80E02D243C3DA400410CBF /* NotificationView.swift in Sources */,
 				CABD5D09243C3E5900BB99EB /* Extensions.swift in Sources */,
+				CAC194CF244686F5009EA27F /* QuestionView.swift in Sources */,
 				CA9A0C97243D10A900724394 /* IdentificationHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

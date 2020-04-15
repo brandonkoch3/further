@@ -113,7 +113,7 @@ struct StoryItem: View {
         } else if self.story.positiveContacts.count >= 1 {
             return "At least one person nearby reported a positive COVID-19 test."
         } else {
-            return "No interactions with any confirmed COVID-19 users on this date."
+            return "No interactions with any confirmed COVID-19 users."
         }
     }
 }

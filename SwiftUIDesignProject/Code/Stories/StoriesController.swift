@@ -46,9 +46,6 @@ class StoriesController: ObservableObject {
             }
         }
         
-        // TEST
-        self.stories = [CovidStory(displayDate: "2020-04-14", dateGathered: 1586890800, positiveContacts: ["test", "test1", "test2"], didSendNotification: true), CovidStory(displayDate: "2020-04-13", dateGathered: 1586804400, positiveContacts: [], didSendNotification: true), CovidStory(displayDate: "2020-04-12", dateGathered: 1586718000, positiveContacts: [], didSendNotification: true), CovidStory(displayDate: "2020-04-11", dateGathered: 1586631600, positiveContacts: ["test3"], didSendNotification: true), CovidStory(displayDate: "2020-04-10", dateGathered: 1586545200, positiveContacts: [], didSendNotification: true), CovidStory(displayDate: "2020-04-09", dateGathered: 1586458800, positiveContacts: [], didSendNotification: true)]
-        
         self.stories.sort(by: { $0.dateGathered > $1.dateGathered })
         
         #if !os(watchOS)
