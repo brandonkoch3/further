@@ -9,6 +9,7 @@
 import Foundation
 import CoreHaptics
 import Combine
+import AVFoundation
 
 class Haptics {
     
@@ -17,6 +18,9 @@ class Haptics {
     var player: CHHapticAdvancedPatternPlayer?
     @Published var allowed: Bool = true
     private var isPlaying = false
+    
+    // Audio
+    private var soundEffect: AVAudioPlayer?
     
     // Combine
     var hapticSubscriber: AnyCancellable?
@@ -49,6 +53,15 @@ class Haptics {
         } catch {
             print("Could not start haptic engine:", error.localizedDescription)
         }
+        
+        // Audio - This is omitted in 1.0.0.  We will introduce audio functionality with approved sound bytes in a later update.
+//        let path = Bundle.main.path(forResource: "backup.m4a", ofType:nil)!
+//        let url = URL(fileURLWithPath: path)
+//        do {
+//            self.soundEffect = try AVAudioPlayer(contentsOf: url)
+//        } catch {
+//            print("Audio error:", error)
+//        }
     }
     
     func detectedHaptics() {
@@ -94,6 +107,12 @@ class Haptics {
         } catch {
             print("Failed to play pattern: \(error.localizedDescription).")
         }
+        
+        // Omitted audio functionality
+//        do {
+//            self.soundEffect?.numberOfLoops = -1
+//            self.soundEffect?.play()
+//        }
     }
     
     func cancelHaptics() {
@@ -104,5 +123,10 @@ class Haptics {
         } catch {
             print("Could not cancel haptic playback", error)
         }
+        
+        // Omitted audio functionality
+//        do {
+//            self.soundEffect?.stop()
+//        }
     }
 }

@@ -22,30 +22,32 @@ struct EntryView: View {
     @ObservedObject var storyController = StoriesController()
     
     var body: some View {
-        ZStack {
-            LinearGradient(Color.darkStart, Color.darkEnd)
-                    VStack {
-                        
-                        HeartView(detector: detector)
-                        
-                        MainTextView(detector: detector).padding(.top, -12.0)
+        VStack {
+            
+            HeartView(detector: detector)
+            
+            Spacer()
+            
+            MainTextView(detector: detector).padding(.top, -12.0)
 
-                    }
-        }.edgesIgnoringSafeArea(.all)
+        }
         .contextMenu(menuItems: {
-            Button(action: {
-                QuestionButton(showingQuestionSheet: self.$showingQuestionSheet)
-                    .environmentObject(self.questionsController)
-            }, label: {
+            NavigationLink(destination: QuestionView(showingQuestionSheet: $showingQuestionSheet)) {
                 VStack{
-                    Image(systemName: "arrow.clockwise")
-                        .font(.title)
-                    Text("Questions")
+                    Image(systemName: "list.dash")
+                        .font(.system(size: 32.0))
+                    Text("Questionnaire")
                 }
-            })
+            }
+            
+            NavigationLink(destination: QuestionView(showingQuestionSheet: $showingQuestionSheet)) {
+                VStack{
+                    Image(systemName: "person.3")
+                        .font(.system(size: 24.0))
+                    Text("Interactions")
+                }
+            }
         })
-
-        
     }
 }
 
@@ -131,22 +133,22 @@ struct HeartView: View {
     var body: some View {
         ZStack(alignment: .center) {
             
-            Image("dark_heart_back")
+            Image("light_heart_back")
                 .resizable()
                 .scaledToFit()
                 .padding()
             
-            Image("dark_heart_middle")
+            Image("light_heart_middle")
                 .resizable()
                 .scaledToFit()
                 .padding()
-                .scaleEffect(0.6)
+                .scaleEffect(0.7)
             
-            Image("dark_heart_\(self.detector.personFound ? "on" : "off")")
+            Image("light_heart_\(self.detector.personFound ? "on" : "off")")
                 .resizable()
                 .scaledToFit()
                 .padding()
-                .scaleEffect(pulsate ? 0.15 : 0.3)
+                .scaleEffect(pulsate ? 0.175 : 0.35)
                 .animation(Animation.easeInOut(duration: 1).delay(0).repeat(while: pulsate))
                 .onAppear() {
                     self.pulsate.toggle()
