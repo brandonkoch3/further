@@ -91,6 +91,8 @@ extension IdentificationHelper: WCSessionDelegate {
         guard self.myID == "" else { return }
         guard activationState == .activated else { return }
         print("Checking paired iPhone for device ID.")
+        self.myID = self.generateUUID()
+        UserDefaults.standard.set(self.myID, forKey: "deviceID")
         self.checkForLocalID() { response in
             if response {
                 print("Received UUID from paired iPhone", self.myID)

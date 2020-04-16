@@ -18,7 +18,8 @@ struct QuestionView: View {
     // Helpers
     @EnvironmentObject var questions: QuestionsController
     
-    @Environment(\.colorScheme) var colorScheme
+    // Questions
+    @State private var currentQuestion = -1
     
     // Header Text
     struct HeaderText: View {
@@ -41,16 +42,57 @@ struct QuestionView: View {
         }
     }
     
+    struct QuestionHeaderText: View {
+        var title: String
+        var body: some View {
+            Text(title)
+                .font(Font.custom("Rubik-Medium", size: 14.0))
+            .foregroundColor(.white)
+        }
+    }
+    
     // Main View
     var body: some View {
         VStack {
             
-            // Header
-            HeaderText()
-
-            // Information
-            self.informationView()
-            
+            if currentQuestion == -1 {
+                
+                Group {
+                    
+                    // Header
+                    HeaderText()
+                    
+                    // Body
+                    self.informationView()
+                }
+                
+            } else if 0...2 ~= self.currentQuestion {
+                
+                Group {
+                    List {
+                        
+                        // Header
+                        QuestionHeaderText(title: self.questions.questions[self.currentQuestion].sectionHeader)
+                        .padding()
+                        .transition(.scale)
+                        
+                        // Body
+                        QuestionAnswer(question: self.$questions.questions[self.currentQuestion].questions[0], questionID: self.$currentQuestion)
+                        
+                        QuestionAnswer(question: self.$questions.questions[0].questions[1], questionID: self.$currentQuestion)
+                    }
+                }
+            } else {
+                Group {
+                    Text("Your responses have been saved.")
+                    
+                    Button(action: {
+                        self.presentationMode.wrappedValue.dismiss()
+                    }) {
+                        Text("Done")
+                    }
+                }
+            }
         }
     }
     
@@ -62,12 +104,8 @@ struct QuestionView: View {
             InformationView(sectionImage: Image("dark_health_icon"), headerTitle: "Health", subTitle: "Answers will help others.")
             
             Button(action: {
-                self.presentationMode.wrappedValue.dismiss()
+                self.currentQuestion += 1
             }) {
-                Text("Test")
-            }
-            
-            NavigationLink(destination: QuestionsView(questionID: 0, showingQuestion: self.$showingQuestion)) {
                 HStack {
                     Spacer()
                     Text("Get Started")
@@ -103,6 +141,31 @@ struct InformationView: View {
                     .font(Font.custom("Rubik-Medium", size: 14))
                 Text(self.subTitle)
                     .font(Font.custom("Rubik-Light", size: 11))
+            }
+        }
+    }
+}
+
+struct QuestionAnswer: View {
+    @Binding var question: Question
+    @EnvironmentObject var questionsController: QuestionsController
+    @Binding var questionID: Int
+    var body: some View {
+        self.infoView()
+    }
+    
+    func infoView() -> some View {
+        
+        return Button(action: {
+            // TODO: HAPTICS
+            self.questionsController.updateAnswers(questionID: self.question.id, response: true)
+            self.questionID += 1
+        }) {
+            HStack {
+                Spacer()
+                Text(question.headline)
+                    .font(Font.custom("Rubik-Medium", size: 14.0))
+                Spacer()
             }
         }
     }

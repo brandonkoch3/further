@@ -163,6 +163,7 @@ class QuestionsController: ObservableObject {
             .compactMap({ $0 as? HTTPURLResponse })
             .eraseToAnyPublisher()
             .sink(receiveCompletion: { completed in
+                print("COMPLETION:", completed)
                 self.updateCancellable?.cancel()
             }, receiveValue: { response in
                 switch response.statusCode {
