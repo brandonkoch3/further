@@ -719,8 +719,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = "100-debug";
+				CURRENT_PROJECT_VERSION = 100;
 				DEVELOPMENT_ASSET_PATHS = "\"Further Extension/Preview Content\"";
 				DEVELOPMENT_TEAM = 8CBEHASXWQ;
 				ENABLE_PREVIEWS = YES;
@@ -733,6 +734,7 @@
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bnbmedia.further.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -745,8 +747,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = "100-debug";
+				CURRENT_PROJECT_VERSION = 100;
 				DEVELOPMENT_ASSET_PATHS = "\"Further Extension/Preview Content\"";
 				DEVELOPMENT_TEAM = 8CBEHASXWQ;
 				ENABLE_PREVIEWS = YES;
@@ -759,6 +762,7 @@
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bnbmedia.further.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -773,7 +777,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = "100-debug";
+				CURRENT_PROJECT_VERSION = 100;
 				DEVELOPMENT_TEAM = 8CBEHASXWQ;
 				IBSC_MODULE = Further_Extension;
 				INFOPLIST_FILE = Further/Info.plist;
@@ -794,7 +798,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = "100-debug";
+				CURRENT_PROJECT_VERSION = 100;
 				DEVELOPMENT_TEAM = 8CBEHASXWQ;
 				IBSC_MODULE = Further_Extension;
 				INFOPLIST_FILE = Further/Info.plist;
@@ -929,7 +933,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = SwiftUIDesignProject/Further.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = "100-debug";
+				CURRENT_PROJECT_VERSION = 100;
 				DEVELOPMENT_ASSET_PATHS = "\"SwiftUIDesignProject/Preview Content\"";
 				DEVELOPMENT_TEAM = 8CBEHASXWQ;
 				ENABLE_PREVIEWS = YES;
@@ -953,7 +957,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = SwiftUIDesignProject/Further.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = "100-debug";
+				CURRENT_PROJECT_VERSION = 100;
 				DEVELOPMENT_ASSET_PATHS = "\"SwiftUIDesignProject/Preview Content\"";
 				DEVELOPMENT_TEAM = 8CBEHASXWQ;
 				ENABLE_PREVIEWS = YES;

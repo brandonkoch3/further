@@ -41,7 +41,8 @@ class IdentificationHelper: NSObject, ObservableObject {
         
         // iOS/iPadOS should check for ID from iCloud, then locally, or allow the newly generated one to be the default
         #if !os(watchOS)
-        print("About to check for device ID.")
+        print("About to check for device ID from iCloud.")
+        keyValStore.synchronize()
         if let myID = keyValStore.string(forKey: "deviceID") {
             self.myID = myID
             print("Set device ID as", self.myID, "from iCloud.")
@@ -49,6 +50,7 @@ class IdentificationHelper: NSObject, ObservableObject {
             self.myID = myID
             print("Set device ID as", self.myID, "from local storage.")
         } else {
+            print("No device ID found.")
             self.myID = self.generateUUID()
             UserDefaults.standard.set(self.myID, forKey: "deviceID")
             keyValStore.set(self.myID, forKey: "deviceID")
