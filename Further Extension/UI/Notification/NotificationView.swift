@@ -10,7 +10,7 @@ import SwiftUI
 
 struct NotificationView: View {
     var body: some View {
-        Text("Hello, World!")
+        Text("Updated interactions are available in the Further app on your iPhone.")
     }
 }
 

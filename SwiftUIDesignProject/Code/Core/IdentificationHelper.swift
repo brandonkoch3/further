@@ -33,6 +33,12 @@ class IdentificationHelper: NSObject, ObservableObject {
     
     private func locateUUID() {
         
+        if (WCSession.isSupported()) {
+            session = WCSession.default
+            session?.delegate = self
+            session?.activate()
+        }
+        
         // iOS/iPadOS should check for ID from iCloud, then locally, or allow the newly generated one to be the default
         #if !os(watchOS)
         print("About to check for device ID.")
@@ -56,17 +62,6 @@ class IdentificationHelper: NSObject, ObservableObject {
         if let myID = UserDefaults.standard.string(forKey: "deviceID") {
             self.myID = myID
             print("Set device ID as", myID, "from local storage.")
-        } else {
-            print("Checking paired iPhone for device ID.")
-            self.checkForLocalID() { response in
-                if response {
-                    print("Received UUID from paired iPhone", self.myID)
-                } else {
-                    self.myID = self.generateUUID()
-                    UserDefaults.standard.set(self.myID, forKey: "deviceID")
-                    print("Apple Watch generated a new UUID", self.myID, "and saved locally.")
-                }
-            }
         }
         #endif
     }
@@ -88,7 +83,22 @@ extension IdentificationHelper: WCSessionDelegate {
     #endif
     
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
-        //
+        #if !os(watchOS)
+        print("watchOS activation session:", activationState.rawValue)
+        #else
+        guard self.myID == "" else { return }
+        guard activationState == .activated else { return }
+        print("Checking paired iPhone for device ID.")
+        self.checkForLocalID() { response in
+            if response {
+                print("Received UUID from paired iPhone", self.myID)
+            } else {
+                self.myID = self.generateUUID()
+                UserDefaults.standard.set(self.myID, forKey: "deviceID")
+                print("Apple Watch generated a new UUID", self.myID, "and saved locally.")
+            }
+        }
+        #endif
     }
     
     func session(_ session: WCSession, didReceiveMessage message: [String : Any], replyHandler: @escaping ([String : Any]) -> Void) {
@@ -98,6 +108,7 @@ extension IdentificationHelper: WCSessionDelegate {
                 print("iPhone has received a request for device ID.")
                 guard self.myID != "" else { return }
                 let data: [String: Any] = ["foundUUID": self.myID]
+                print("Sending response", data)
                 replyHandler(data)
             }
         }

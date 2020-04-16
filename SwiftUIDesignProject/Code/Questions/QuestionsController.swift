@@ -73,6 +73,7 @@ class QuestionsController: ObservableObject {
     }
     
     public func updateAnswers(questionID: Int, response: Bool) {
+        print("Updating:", questionID, "to", response)
         switch questionID {
         case 0:
             self.answers!.feelingSick = true
@@ -141,6 +142,7 @@ class QuestionsController: ObservableObject {
         }
         answerSet.id = self.myID
         answerSet.lastUpdate = Date().timeIntervalSince1970
+        print("About to publish:", answerSet)
         let t = try? encoder.encode(answerSet)
         
         let destination = URL(string: "https://mlv3dsc5tc.execute-api.us-east-1.amazonaws.com/health")!

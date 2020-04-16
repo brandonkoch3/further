@@ -17,6 +17,7 @@ struct EntryView: View {
     @State private var pulsate = false
     @State var showingQuestionSheet = false
     @State var showingStorySheet = false
+    @State private var agreedToDisclaimer = UserDefaults.standard.bool(forKey: "agreedToDisclaimer")
     
     // Detector config
     @ObservedObject var detector = PersonDetectee()
@@ -24,14 +25,26 @@ struct EntryView: View {
     @ObservedObject var storyController = StoriesController()
     
     var body: some View {
-        ZStack {
+        Group {
+            if agreedToDisclaimer {
+                mainView()
+            } else {
+                DisclaimerView(agreed: $agreedToDisclaimer)
+            }
+        }
+    }
+    
+    func mainView() -> some View {
+        return ZStack {
             EntryBackgroundView()
             VStack {
-                NotifierView(detector: detector).padding()
                 Spacer()
                 VStack {
                     VStack {
                         HeartView(detector: detector)
+                            .onTapGesture(perform: {
+                                self.detector.haptics.allowed.toggle()
+                            })
                         Spacer()
                         MainTextView(detector: detector)
                     }.frame(maxHeight: 240)

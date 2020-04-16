@@ -247,10 +247,10 @@ extension PersonDetectee: CBCentralManagerDelegate {
             if let userID = serviceUUID.first(where: { $0 != CBUUID(string: "0xFD6F" )}) {
                 let foundUUID = userID.uuidString
                 print("FOUND UUID:", foundUUID)
-//                guard foundUUID != myID else {
-//                    print("The found ID matches your ID.  No need to continue.")
-//                    return
-//                }
+                guard foundUUID != myID else {
+                    print("The found ID matches your ID.  No need to continue.")
+                    return
+                }
                 let foundPerson = peripheral
                 foundPerson.delegate = self
                 centralManager.registerForConnectionEvents(options: [.peripheralUUIDs: [peripheral.identifier]])

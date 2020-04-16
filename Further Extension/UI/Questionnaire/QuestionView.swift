@@ -13,6 +13,7 @@ struct QuestionView: View {
     // UI
     @Binding var showingQuestionSheet: Bool
     @State private var showingQuestion = false
+    @Environment(\.presentationMode) var presentationMode
     
     // Helpers
     @EnvironmentObject var questions: QuestionsController
@@ -59,13 +60,18 @@ struct QuestionView: View {
             InformationView(sectionImage: Image("dark_hand_icon"), headerTitle: "Privacy", subTitle: "Answers are anonymous.")
             InformationView(sectionImage: Image("dark_people_icon"), headerTitle: "Honesty", subTitle: "Be truthful, please.")
             InformationView(sectionImage: Image("dark_health_icon"), headerTitle: "Health", subTitle: "Answers will help others.")
+            
             Button(action: {
-                
+                self.presentationMode.wrappedValue.dismiss()
             }) {
+                Text("Test")
+            }
+            
+            NavigationLink(destination: QuestionsView(questionID: 0, showingQuestion: self.$showingQuestion)) {
                 HStack {
                     Spacer()
                     Text("Get Started")
-                    .font(Font.custom("Rubik-Medium", size: 14))
+                        .font(Font.custom("Rubik-Medium", size: 14))
                     Spacer()
                 }
             }

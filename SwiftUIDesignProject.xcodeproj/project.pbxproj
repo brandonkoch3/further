@@ -12,6 +12,8 @@
 		CA1AB6032435829400291F3D /* QuestionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA1AB6022435829400291F3D /* QuestionModel.swift */; };
 		CA1AB6052435831000291F3D /* QuestionsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA1AB6042435831000291F3D /* QuestionsController.swift */; };
 		CA2D368424351C2900401C84 /* PersonDetectee.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2D368324351C2900401C84 /* PersonDetectee.swift */; };
+		CA3A4C7C24478E77004D6D7F /* QuestionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3A4C7B24478E77004D6D7F /* QuestionsView.swift */; };
+		CA3A4C7F2447C940004D6D7F /* DisclaimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3A4C7E2447C940004D6D7F /* DisclaimerView.swift */; };
 		CA444838243CE0CD005B883C /* IdentificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA444837243CE0CD005B883C /* IdentificationHelper.swift */; };
 		CA6A81CC2433D22F00E17DC3 /* PersonNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6A81CB2433D22F00E17DC3 /* PersonNotification.swift */; };
 		CA7544612431878300C45C28 /* PersonModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7544602431878300C45C28 /* PersonModel.swift */; };
@@ -126,6 +128,8 @@
 		CA1AB6022435829400291F3D /* QuestionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionModel.swift; sourceTree = "<group>"; };
 		CA1AB6042435831000291F3D /* QuestionsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionsController.swift; sourceTree = "<group>"; };
 		CA2D368324351C2900401C84 /* PersonDetectee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDetectee.swift; sourceTree = "<group>"; };
+		CA3A4C7B24478E77004D6D7F /* QuestionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionsView.swift; sourceTree = "<group>"; };
+		CA3A4C7E2447C940004D6D7F /* DisclaimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclaimerView.swift; sourceTree = "<group>"; };
 		CA444837243CE0CD005B883C /* IdentificationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentificationHelper.swift; sourceTree = "<group>"; };
 		CA6A81CB2433D22F00E17DC3 /* PersonNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonNotification.swift; sourceTree = "<group>"; };
 		CA7544602431878300C45C28 /* PersonModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonModel.swift; sourceTree = "<group>"; };
@@ -208,6 +212,7 @@
 		CA11D503242AC9540074E024 /* Entry */ = {
 			isa = PBXGroup;
 			children = (
+				CA3A4C7D2447C92D004D6D7F /* Disclaimer */,
 				CA9A0CCC243FCF2A00724394 /* Helpers */,
 				CA9A0CB9243FC9BA00724394 /* Components */,
 				CA9D81D2242151AE009625DF /* EntryView.swift */,
@@ -264,6 +269,14 @@
 				CAA0AD0824366321007A9522 /* CovidModel.swift */,
 			);
 			path = Questions;
+			sourceTree = "<group>";
+		};
+		CA3A4C7D2447C92D004D6D7F /* Disclaimer */ = {
+			isa = PBXGroup;
+			children = (
+				CA3A4C7E2447C940004D6D7F /* DisclaimerView.swift */,
+			);
+			path = Disclaimer;
 			sourceTree = "<group>";
 		};
 		CA7544672432F5DB00C45C28 /* Questionnaire */ = {
@@ -457,6 +470,7 @@
 			isa = PBXGroup;
 			children = (
 				CAC194CE244686F5009EA27F /* QuestionView.swift */,
+				CA3A4C7B24478E77004D6D7F /* QuestionsView.swift */,
 			);
 			path = Questionnaire;
 			sourceTree = "<group>";
@@ -617,6 +631,7 @@
 				CABD5D11243C3E5900BB99EB /* SimpleButtonStyle.swift in Sources */,
 				CA80E027243C3DA300410CBF /* HostingController.swift in Sources */,
 				CABD5D0F243C3E5900BB99EB /* CovidModel.swift in Sources */,
+				CA3A4C7C24478E77004D6D7F /* QuestionsView.swift in Sources */,
 				CABD5D0A243C3E5900BB99EB /* PersonDetectee.swift in Sources */,
 				CABD5D0D243C3E5900BB99EB /* QuestionModel.swift in Sources */,
 				CA80E025243C3DA300410CBF /* EntryView.swift in Sources */,
@@ -645,6 +660,7 @@
 				CA11D50B242ACB920074E024 /* SimpleButtonStyle.swift in Sources */,
 				CAA0AD0924366321007A9522 /* CovidModel.swift in Sources */,
 				CAA0AD122436A03C007A9522 /* StoryView.swift in Sources */,
+				CA3A4C7F2447C940004D6D7F /* DisclaimerView.swift in Sources */,
 				CA1AB6052435831000291F3D /* QuestionsController.swift in Sources */,
 				CA9A0CBE243FCAE500724394 /* EntryBackgroundView.swift in Sources */,
 				CAA0AD0C243665CA007A9522 /* StoriesController.swift in Sources */,
