@@ -1,5 +1,5 @@
 //
-//  CovidModel.swift
+//  WellnessModel.swift
 //  SwiftUIDesignProject
 //
 //  Created by Brandon on 4/2/20.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct CovidModel: Codable, Equatable {
+struct WellnessModel: Codable, Equatable {
     var id: String
     var feelingSick: Bool
     var hasBeenTested: Bool
@@ -16,7 +16,7 @@ struct CovidModel: Codable, Equatable {
     var lastUpdate: Double
 }
 
-struct CovidStory: Codable, Equatable, Hashable, Identifiable {
+struct WellnessStory: Codable, Equatable, Hashable, Identifiable {
     var id = UUID()
     var displayDate: String
     var dateGathered: Double

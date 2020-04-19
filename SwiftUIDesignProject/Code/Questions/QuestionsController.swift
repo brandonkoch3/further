@@ -13,7 +13,7 @@ import SwiftUI
 class QuestionsController: ObservableObject {
     
     @Published var questions = [QuestionModel]()
-    @Published var answers: CovidModel?
+    @Published var answers: WellnessModel?
     private var myID: String = ""
     
     // Combine
@@ -37,7 +37,7 @@ class QuestionsController: ObservableObject {
         
         #if !os(watchOS)
         if let savedData = keyValStore.object(forKey: "answers") as? Data {
-            if let loadedData = try? decoder.decode(CovidModel.self, from: savedData) {
+            if let loadedData = try? decoder.decode(WellnessModel.self, from: savedData) {
                 self.answers = loadedData
             }
         }
@@ -45,14 +45,14 @@ class QuestionsController: ObservableObject {
         
         if self.answers == nil {
             if let savedData = defaults.object(forKey: "answers") as? Data {
-                if let loadedData = try? decoder.decode(CovidModel.self, from: savedData) {
+                if let loadedData = try? decoder.decode(WellnessModel.self, from: savedData) {
                     self.answers = loadedData
                 }
             }
         }
         
         if self.answers == nil {
-            self.answers = CovidModel(id: self.myID, feelingSick: false, hasBeenTested: false, testResult: false, lastUpdate: Date().timeIntervalSince1970)
+            self.answers = WellnessModel(id: self.myID, feelingSick: false, hasBeenTested: false, testResult: false, lastUpdate: Date().timeIntervalSince1970)
         }
         
         answerSubscriber = $answers
@@ -107,11 +107,11 @@ class QuestionsController: ObservableObject {
     /// We are manually setting the questions given the simplicity of this app.  In other cases, we may want to download the questions from a server.
     private func setupQuestions() {
         
-        let questionA = QuestionModel(id: 0, sectionHeader: "Are you experiencing symptoms you think may be related to COVID-19?", questions: [Question(id: 0, icon: "checkmark", headline: "Yes", subtitle: "Fever, shortness of breath, and coughing are common symptoms.", response: self.answers!.feelingSick), Question(id: 1, icon: "xmark", headline: "No", subtitle: "No, I am not experiecing symptoms that seem related to COVID-19.", response: !self.answers!.feelingSick)])
+        let questionA = QuestionModel(id: 0, sectionHeader: "Are you feeling unwell or different from how you usually feel?", questions: [Question(id: 0, icon: "checkmark", headline: "Yes", subtitle: "I am not quite feeling like myself these days.", response: self.answers!.feelingSick), Question(id: 1, icon: "xmark", headline: "No", subtitle: "I am feeling just fine.", response: !self.answers!.feelingSick)])
         
-        let questionB = QuestionModel(id: 1, sectionHeader: "Have you been professionally tested using a CDC-approved test for COVID-19?", questions: [Question(id: 2, icon: "checkmark", headline: "Yes", subtitle: "Yes, I have been professionally tested for COVID-19.", response: self.answers!.hasBeenTested), Question(id: 3, icon: "xmark", headline: "No", subtitle: "No, I have not been professionally tested for COVID-19.", response: !self.answers!.hasBeenTested)])
+        let questionB = QuestionModel(id: 1, sectionHeader: "Did you visit a professional for help related to how you are feeling?", questions: [Question(id: 2, icon: "checkmark", headline: "Yes", subtitle: "I visited a professional or specialist.", response: self.answers!.hasBeenTested), Question(id: 3, icon: "xmark", headline: "No", subtitle: "I did not visit a professional or specialist.", response: !self.answers!.hasBeenTested)])
         
-        let questionC = QuestionModel(id: 2, sectionHeader: "Did your test results indicate a positive, confirmed case for COVID-19?", questions: [Question(id: 4, icon: "checkmark", headline: "Yes", subtitle: "Yes, my test was confirmed to show a positive result for COVID-19.", response: self.answers!.testResult), Question(id: 5, icon: "xmark", headline: "No", subtitle: "No, my test did not show a positive result for COVID-19.", response: !self.answers!.testResult)])
+        let questionC = QuestionModel(id: 2, sectionHeader: "Was a professional able to positively confirm why you are feeling ill?", questions: [Question(id: 4, icon: "checkmark", headline: "Yes", subtitle: "A professional confirmed a result/reason for my symptoms.", response: self.answers!.testResult), Question(id: 5, icon: "xmark", headline: "No", subtitle: "A professional did not positively confirm a reason for my symptoms.", response: !self.answers!.testResult)])
         
         questions.append(contentsOf: [questionA, questionB, questionC])
     }
@@ -129,7 +129,7 @@ class QuestionsController: ObservableObject {
             }
         }
         if let savedData = defaults.object(forKey: "answers") as? Data {
-            if let loadedData = try? decoder.decode(CovidModel.self, from: savedData) {
+            if let loadedData = try? decoder.decode(WellnessModel.self, from: savedData) {
                 guard loadedData != myAnswers else { return }
             }
         }
@@ -173,5 +173,11 @@ class QuestionsController: ObservableObject {
                     completion(false)
                 }
             })
+    }
+}
+
+struct QuestionsController_Previews: PreviewProvider {
+    static var previews: some View {
+        /*@START_MENU_TOKEN@*/Text("Hello, World!")/*@END_MENU_TOKEN@*/
     }
 }

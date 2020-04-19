@@ -33,23 +33,23 @@ struct EntryView: View {
         }
         
         
-        .contextMenu(menuItems: {
-            NavigationLink(destination: QuestionView(showingQuestionSheet: $showingQuestionSheet).environmentObject(self.questionsController)) {
-                VStack{
-                    Image(systemName: "list.dash")
-                        .font(.system(size: 32.0))
-                    Text("Questionnaire")
-                }
-            }
-            
-            NavigationLink(destination: QuestionView(showingQuestionSheet: $showingQuestionSheet)) {
-                VStack{
-                    Image(systemName: "person.3")
-                        .font(.system(size: 24.0))
-                    Text("Interactions")
-                }
-            }
-        })
+//        .contextMenu(menuItems: {
+//            NavigationLink(destination: QuestionView(showingQuestionSheet: $showingQuestionSheet).environmentObject(self.questionsController)) {
+//                VStack{
+//                    Image(systemName: "list.dash")
+//                        .font(.system(size: 32.0))
+//                    Text("Questionnaire")
+//                }
+//            }
+//            
+//            NavigationLink(destination: QuestionView(showingQuestionSheet: $showingQuestionSheet)) {
+//                VStack{
+//                    Image(systemName: "person.3")
+//                        .font(.system(size: 24.0))
+//                    Text("Interactions")
+//                }
+//            }
+//        })
     }
 }
 

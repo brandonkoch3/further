@@ -17,13 +17,13 @@ struct QuestionsView: View {
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.colorScheme) var colorScheme
     @Binding var showingQuestion: Bool
-    @State var matching: [String] = ["symptoms", "professionally", "positive", "COVID-19"]
+    @State var matching: [String] = ["unwell", "different", "professional", "positively"]
     
     struct HeaderText: View {
         var body: some View {
             VStack {
                 HStack {
-                    Text("COVID-19")
+                    Text("Wellness")
                     .font(Font.custom("Rubik-Medium", size: 34.0))
                     .foregroundColor(.white)
                     Spacer()
@@ -188,12 +188,12 @@ struct QuestionsView: View {
 struct QuestionsView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            QuestionsView(questionID: 1, showingQuestion: .constant(true))
+            QuestionsView(questionID: 2, showingQuestion: .constant(true))
             .previewDevice("iPhone SE")
             .environmentObject(QuestionsController())
             .environment(\.colorScheme, .light)
             
-            QuestionsView(questionID: 1, showingQuestion: .constant(true))
+            QuestionsView(questionID: 2, showingQuestion: .constant(true))
             .previewDevice("iPhone 11 Pro Max")
             .environmentObject(QuestionsController())
             .environment(\.colorScheme, .light)

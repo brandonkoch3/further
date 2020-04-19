@@ -59,7 +59,7 @@ struct StoryView_Previews: PreviewProvider {
 }
 
 struct StoryItem: View {
-    @Binding var story: CovidStory
+    @Binding var story: WellnessStory
     @Environment(\.colorScheme) var colorScheme
     var body: some View {
         GeometryReader { geometry in
@@ -109,11 +109,11 @@ struct StoryItem: View {
     
     func warningLevel() -> String {
         if self.story.positiveContacts.count >= 2 {
-            return "Multiple people nearby reported a positive COVID-19 test."
+            return "High Risk"
         } else if self.story.positiveContacts.count >= 1 {
-            return "At least one person nearby reported a positive COVID-19 test."
+            return "Medium Risk"
         } else {
-            return "No interactions with any confirmed COVID-19 users."
+            return "Low Risk"
         }
     }
 }

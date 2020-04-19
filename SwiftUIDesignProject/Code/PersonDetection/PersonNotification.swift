@@ -30,7 +30,7 @@ class PersonNotifications {
     func sendNotification() {
         let content = UNMutableNotificationContent()
         content.title = "Updated Interactions Are Available"
-        content.body = "We've updated your app to determine if any nearby contacts have reported a positive COVID-19 test result."
+        content.body = "We've updated your app to determine if any nearby interactions have reported feeling under the weather."
         content.sound = UNNotificationSound.default
         let identifier = "Further - Updated Interactions"
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)

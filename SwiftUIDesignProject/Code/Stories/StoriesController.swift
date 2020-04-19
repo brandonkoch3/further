@@ -12,7 +12,7 @@ import SwiftUI
 
 class StoriesController: ObservableObject {
     
-    @Published var stories = [CovidStory]()
+    @Published var stories = [WellnessStory]()
     private var interactions = [PersonModel]()
     
     // Helpers
@@ -32,7 +32,7 @@ class StoriesController: ObservableObject {
         
         #if !os(watchOS)
         if let savedData = keyValStore.object(forKey: "stories") as? Data {
-            if let loadedData = try? decoder.decode([CovidStory].self, from: savedData) {
+            if let loadedData = try? decoder.decode([WellnessStory].self, from: savedData) {
                 self.stories = loadedData
             }
         }
@@ -40,7 +40,7 @@ class StoriesController: ObservableObject {
         
         if stories.isEmpty {
             if let savedData = defaults.object(forKey: "stories") as? Data {
-                if let loadedData = try? decoder.decode([CovidStory].self, from: savedData) {
+                if let loadedData = try? decoder.decode([WellnessStory].self, from: savedData) {
                     self.stories = loadedData
                 }
             }
@@ -94,7 +94,7 @@ class StoriesController: ObservableObject {
         guard let hourString = Int(dateFormatter.string(from: nowDate)) else { return }
         guard hourString >= 19 else { return }
         
-        var todayStory = CovidStory(id: UUID(), displayDate: strDate, dateGathered: Date().timeIntervalSince1970, positiveContacts: [], didSendNotification: false)
+        var todayStory = WellnessStory(id: UUID(), displayDate: strDate, dateGathered: Date().timeIntervalSince1970, positiveContacts: [], didSendNotification: false)
         
         self.downloadData() { response in
             if let data = response {
@@ -129,7 +129,7 @@ class StoriesController: ObservableObject {
         }
     }
     
-    private func downloadData(completion: @escaping ([CovidModel]?) -> Void) {
+    private func downloadData(completion: @escaping ([WellnessModel]?) -> Void) {
         let destination = URL(string: "https://mlv3dsc5tc.execute-api.us-east-1.amazonaws.com/data")!
         let urlconfig = URLSessionConfiguration.default
         urlconfig.timeoutIntervalForResource = 15.0
@@ -143,7 +143,7 @@ class StoriesController: ObservableObject {
         dataCancellable = session.dataTaskPublisher(for: request)
             .receive(on: RunLoop.main)
             .map({ $0.data })
-            .decode(type: [CovidModel].self, decoder: decoder)
+            .decode(type: [WellnessModel].self, decoder: decoder)
             .eraseToAnyPublisher()
             .sink(receiveCompletion: { completed in
                 print("Status of download data update:", completed)

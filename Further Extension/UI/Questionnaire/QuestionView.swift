@@ -26,7 +26,7 @@ struct QuestionView: View {
         var body: some View {
             VStack {
                 HStack {
-                    Text("COVID-19")
+                    Text("Wellness")
                         .font(Font.custom("Rubik-Medium", size: 17.0))
                     .foregroundColor(.white)
                     Spacer()
