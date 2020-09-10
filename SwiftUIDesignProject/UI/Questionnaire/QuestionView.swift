@@ -24,7 +24,7 @@ struct QuestionView: View {
         var body: some View {
             VStack {
                 HStack {
-                    Text("Wellness")
+                    Text("COVID-19")
                     .font(Font.custom("Rubik-Medium", size: 34.0))
                     .foregroundColor(.white)
                     Spacer()
@@ -55,7 +55,7 @@ struct QuestionView: View {
 
                         // Rectangle
                         ZStack {
-                            Rectangle().fill(self.colorScheme == .light ? LinearGradient(Color.offWhite, Color.offWhite) : LinearGradient(Color(hex: "25282d"), Color(hex: "25282d")))
+                            Rectangle().fill(self.colorScheme == .light ? Color.offWhite : Color(hex: "25282d"))
                             .cornerRadius(20, corners: [.topLeft, .topRight])
                 
                             // Information
@@ -155,7 +155,7 @@ struct InformationView: View {
     func infoView(geometry: GeometryProxy) -> some View {
         return ZStack {
             RoundedRectangle(cornerRadius: 18)
-                .fill(colorScheme == .light ? LinearGradient(Color.offWhite, Color.offWhite) : LinearGradient(Color(hex: "25282d"), Color(hex: "25282d")))
+                .fill(colorScheme == .light ? Color.offWhite : Color(hex: "25282d"))
                 .frame(width: geometry.size.width, height: 100)
                 .shadow(color: colorScheme == .light ? Color("LightShadow") : Color(hex: "505050"), radius: colorScheme == .light ? 8 : 0.5, x: colorScheme == .light ? -8 : -1, y: colorScheme == .light ? -8 : -1)
                 .shadow(color: colorScheme == .light ? Color("DarkShadow") : .black, radius: 8, x: colorScheme == .light ? 8 : -1, y: colorScheme == .light ? 8 : 1)

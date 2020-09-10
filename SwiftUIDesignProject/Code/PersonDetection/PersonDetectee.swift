@@ -10,6 +10,10 @@ import Foundation
 import CoreBluetooth
 import Combine
 
+#if canImport(WidgetKit)
+import WidgetKit
+#endif
+
 class PersonDetectee: NSObject, ObservableObject {
     
     // UI-based config
@@ -183,8 +187,18 @@ class PersonDetectee: NSObject, ObservableObject {
             #if !os(watchOS)
             keyValStore.set(encoded, forKey: "interactions")
             keyValStore.synchronize()
+            if #available(iOS 14, *) {
+                updateWidget()
+            }
             #endif
         }
+    }
+    
+    @available(iOS 14, *)
+    func updateWidget() {
+        #if canImport(WidgetKit)
+        WidgetCenter.shared.reloadTimelines(ofKind: "com.bnbmedia.furtherstats")
+        #endif
     }
 }
 
@@ -197,9 +211,17 @@ extension PersonDetectee: CBPeripheralManagerDelegate {
         var advertiseData = [String: Any]()
         advertiseData["kCBAdvDataTimestamp"] = Date().timeIntervalSinceReferenceDate
         advertiseData["kCBAdvDataLocalName"] = "further_app"
-        //advertiseData["kCBAdvDataIsConnectable"] = 1
-        advertiseData["kCBAdvDataServiceUUIDs"] = [CBUUID(string: "0xFD6F"), CBUUID(string: self.myID)]
+        advertiseData["kCBAdvDataIsConnectable"] = 1
+        advertiseData["kCBAdvDataServiceUUIDs"] = [CBUUID(string: "FFE0"), CBUUID(string: self.myID)]
         peripheralManager.startAdvertising(advertiseData)
+        
+        // Start advertising
+//        var advertiseData = [String: Any]()
+//        advertiseData["kCBAdvDataTimestamp"] = Date().timeIntervalSinceReferenceDate
+//        advertiseData["kCBAdvDataLocalName"] = "further_app"
+//        //advertiseData["kCBAdvDataIsConnectable"] = 1
+//        advertiseData["kCBAdvDataServiceUUIDs"] = [CBUUID(string: "0xFD6F"), CBUUID(string: self.myID)]
+//        peripheralManager.startAdvertising(advertiseData)
         
         #endif
     }
@@ -226,7 +248,7 @@ extension PersonDetectee: CBCentralManagerDelegate {
         case .poweredOff:
             break
         case .poweredOn:
-            centralManager.scanForPeripherals(withServices: [internalServiceCBUUID], options: ["CBCentralManagerScanOptionAllowDuplicatesKey": 1])
+            centralManager.scanForPeripherals(withServices: [CBUUID(string: "FFE0")], options: ["CBCentralManagerScanOptionAllowDuplicatesKey": 1])
         @unknown default:
             print("central.state cannot be understood.")
         }
@@ -236,15 +258,16 @@ extension PersonDetectee: CBCentralManagerDelegate {
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
         guard !advertisementData.isEmpty else { return }
         guard let localName = advertisementData["kCBAdvDataLocalName"] as? String else { return }
+        print("NAME:", localName)
         guard localName.contains("further_app") else { return }
         guard !connectedPeriperhals.contains(where: { $0.identifier == peripheral.identifier }) else { return }
         
         if let serviceUUID = advertisementData["kCBAdvDataServiceUUIDs"] as? [CBUUID] {
-            guard serviceUUID.contains(where: { $0.uuidString == "FD6F" }) else {
+            guard serviceUUID.contains(where: { $0.uuidString == "FFE0" }) else {
                 print("Could not find proper service")
                 return
             }
-            if let userID = serviceUUID.first(where: { $0 != CBUUID(string: "0xFD6F" )}) {
+            if let userID = serviceUUID.first(where: { $0 != CBUUID(string: "FFE0" )}) {
                 let foundUUID = userID.uuidString
                 print("FOUND UUID:", foundUUID)
                 guard foundUUID != myID else {

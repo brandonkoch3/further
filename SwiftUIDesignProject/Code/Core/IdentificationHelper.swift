@@ -45,6 +45,7 @@ class IdentificationHelper: NSObject, ObservableObject {
         keyValStore.synchronize()
         if let myID = keyValStore.string(forKey: "deviceID") {
             self.myID = myID
+            UserDefaults.standard.setValue(self.myID, forKey: "deviceID")
             print("Set device ID as", self.myID, "from iCloud.")
         } else if let myID = UserDefaults.standard.string(forKey: "deviceID") {
             self.myID = myID

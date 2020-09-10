@@ -17,21 +17,36 @@ struct EntryView: View {
     @State private var pulsate = false
     @State var showingQuestionSheet = false
     @State var showingStorySheet = false
-    @State private var agreedToDisclaimer = UserDefaults.standard.bool(forKey: "agreedToDisclaimer")
+    //@State private var agreedToDisclaimer = UserDefaults.standard.bool(forKey: "agreedToDisclaimer")
+    @State private var agreedToDisclaimer = true
     
     // Detector config
     @ObservedObject var detector = PersonDetectee()
     @ObservedObject var questionsController = QuestionsController()
     @ObservedObject var storyController = StoriesController()
     
+    // API
+    
+        // Random ID
+        // Name
+        // Phone
+        // Address
+        // E-mail
+    
+        // Use a shared key to send to server
+    
+    // Main (customer)
+    
+        // Center -> logo
+    
+        // Bottom left -> Person icon (leads to info)
+    
+        // Bottom right -> Camera icon (leads to QR code)
+    
+    // Main (establishment)
+    
     var body: some View {
-        Group {
-            if agreedToDisclaimer {
-                mainView()
-            } else {
-                DisclaimerView(agreed: $agreedToDisclaimer)
-            }
-        }
+        mainView()
     }
     
     func mainView() -> some View {
@@ -75,7 +90,7 @@ struct EntryView_Previews: PreviewProvider {
             
             EntryView()
             .environmentObject(EnvironmentSettings())
-            .environment(\.colorScheme, .light)
+            .environment(\.colorScheme, .dark)
             .previewDevice("iPhone SE")
         }
         
@@ -148,7 +163,7 @@ struct MainTextView: View {
     
     // View
     var body: some View {
-        Text(detector.personFound ? "Someone is nearby!" : "Checking for others")
+        Text(detector.personFound ? "Someone is nearby!" : "Connecting with others")
             .font(Font.custom("Rubik-Regular", size: 26.67))
             .foregroundColor(colorScheme == .light ? Color(UIColor(red: 50.0/255.0, green: 54.0/255.0, blue: 83.0/255.0, alpha: 1.0)) : Color(UIColor(red: 172.0/255.0, green: 178.0/255.0, blue: 181.0/255.0, alpha: 1.0)))
     }

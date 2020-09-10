@@ -17,7 +17,7 @@ struct QuestionsView: View {
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.colorScheme) var colorScheme
     @Binding var showingQuestion: Bool
-    @State var matching: [String] = ["unwell", "different", "professional", "positively"]
+    @State var matching: [String] = ["symptoms", "professionally", "positive", "COVID-19"]
     
     struct HeaderText: View {
         var body: some View {
@@ -86,7 +86,7 @@ struct QuestionsView: View {
                     
                     // Rectangle
                     ZStack {
-                        Rectangle().fill(self.colorScheme == .light ? LinearGradient(Color.offWhite, Color.offWhite) : LinearGradient(Color(hex: "25282d"), Color(hex: "25282d")))
+                        Rectangle().fill(self.colorScheme == .light ? Color.offWhite : Color(hex: "25282d"))
                         .cornerRadius(20, corners: [.topLeft, .topRight])
                         
                         // Information
@@ -216,7 +216,7 @@ struct QuestionAnswerView: View {
         
         return ZStack {
             RoundedRectangle(cornerRadius: 18)
-                .fill(colorScheme == .light ? LinearGradient(Color.offWhite, Color.offWhite) : LinearGradient(Color(hex: "25282d"), Color(hex: "25282d")))
+                .fill(colorScheme == .light ? Color.offWhite : Color(hex: "25282d"))
                 .frame(height: 100)
                 .shadow(color: colorScheme == .light ? Color("LightShadow") : Color(hex: "505050"), radius: colorScheme == .light ? 8 : 0.5, x: colorScheme == .light ? -8 : -1, y: colorScheme == .light ? -8 : -1)
                 .shadow(color: colorScheme == .light ? Color("DarkShadow") : .black, radius: 8, x: colorScheme == .light ? 8 : -1, y: colorScheme == .light ? 8 : 1)

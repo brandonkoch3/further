@@ -77,7 +77,7 @@ class StoriesController: ObservableObject {
         self.updateStories() { response in }
     }
     
-    private func updateStories(date: Date? = Date(), completion: @escaping (Bool) -> Void) {
+    public func updateStories(date: Date? = Date(), completion: @escaping (Bool) -> Void) {
         let nowDate = date!
         let dateFormatter = DateFormatter()
         //dateFormatter.locale = NSLocale.current

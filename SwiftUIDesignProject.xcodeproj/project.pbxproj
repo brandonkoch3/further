@@ -65,6 +65,9 @@
 		CAA0AD0924366321007A9522 /* CovidModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA0AD0824366321007A9522 /* CovidModel.swift */; };
 		CAA0AD0C243665CA007A9522 /* StoriesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA0AD0B243665CA007A9522 /* StoriesController.swift */; };
 		CAA0AD122436A03C007A9522 /* StoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA0AD112436A03C007A9522 /* StoryView.swift */; };
+		CAA222F124BE656C0089C099 /* StoriesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA0AD0B243665CA007A9522 /* StoriesController.swift */; };
+		CAA222F224BE67450089C099 /* CovidModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA0AD0824366321007A9522 /* CovidModel.swift */; };
+		CAA222F324BE67500089C099 /* PersonNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6A81CB2433D22F00E17DC3 /* PersonNotification.swift */; };
 		CABD5D08243C3E5900BB99EB /* EnvironmentSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6D131243819B20088B3E4 /* EnvironmentSettings.swift */; };
 		CABD5D09243C3E5900BB99EB /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA11D508242ACAE10074E024 /* Extensions.swift */; };
 		CABD5D0A243C3E5900BB99EB /* PersonDetectee.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2D368324351C2900401C84 /* PersonDetectee.swift */; };
@@ -75,6 +78,26 @@
 		CABD5D0F243C3E5900BB99EB /* CovidModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA0AD0824366321007A9522 /* CovidModel.swift */; };
 		CABD5D10243C3E5900BB99EB /* StoriesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA0AD0B243665CA007A9522 /* StoriesController.swift */; };
 		CABD5D11243C3E5900BB99EB /* SimpleButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA11D50A242ACB920074E024 /* SimpleButtonStyle.swift */; };
+		CAC0873324BE26CC0098A342 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CAC0873224BE26CC0098A342 /* WidgetKit.framework */; };
+		CAC0873524BE26CC0098A342 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CAC0873424BE26CC0098A342 /* SwiftUI.framework */; };
+		CAC0873824BE26CC0098A342 /* FurtherWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC0873724BE26CC0098A342 /* FurtherWidget.swift */; };
+		CAC0873A24BE26CD0098A342 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CAC0873924BE26CD0098A342 /* Assets.xcassets */; };
+		CAC0873E24BE26CD0098A342 /* FurtherWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CAC0873024BE26CC0098A342 /* FurtherWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		CAC0874324BE286E0098A342 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA11D508242ACAE10074E024 /* Extensions.swift */; };
+		CAC0874424BE29BE0098A342 /* EntryBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9A0CBD243FCAE500724394 /* EntryBackgroundView.swift */; };
+		CAC0874524BE29EA0098A342 /* EnvironmentSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6D131243819B20088B3E4 /* EnvironmentSettings.swift */; };
+		CAC0874624BE2C350098A342 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA9D81D4242151AF009625DF /* Assets.xcassets */; };
+		CAC0874724BE2D4E0098A342 /* Rubik-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA9A0CA4243F9FB900724394 /* Rubik-Regular.ttf */; };
+		CAC0874824BE2D4E0098A342 /* Rubik-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA9A0C9E243F9FB800724394 /* Rubik-BlackItalic.ttf */; };
+		CAC0874924BE2D4E0098A342 /* Rubik-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA9A0CA2243F9FB800724394 /* Rubik-Italic.ttf */; };
+		CAC0874A24BE2D4E0098A342 /* Rubik-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA9A0CA1243F9FB800724394 /* Rubik-Black.ttf */; };
+		CAC0874B24BE2D4E0098A342 /* Rubik-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA9A0C9C243F9FB800724394 /* Rubik-Light.ttf */; };
+		CAC0874C24BE2D4E0098A342 /* Rubik-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA9A0C9F243F9FB800724394 /* Rubik-BoldItalic.ttf */; };
+		CAC0874D24BE2D4E0098A342 /* Rubik-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA9A0CA0243F9FB800724394 /* Rubik-Medium.ttf */; };
+		CAC0874E24BE2D4E0098A342 /* Rubik-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA9A0CA3243F9FB900724394 /* Rubik-MediumItalic.ttf */; };
+		CAC0874F24BE2D4E0098A342 /* Rubik-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA9A0C9B243F9FB800724394 /* Rubik-Bold.ttf */; };
+		CAC0875024BE2D4E0098A342 /* Rubik-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA9A0C9D243F9FB800724394 /* Rubik-LightItalic.ttf */; };
+		CAC0875124BE34C90098A342 /* PersonModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7544602431878300C45C28 /* PersonModel.swift */; };
 		CAC194CF244686F5009EA27F /* QuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC194CE244686F5009EA27F /* QuestionView.swift */; };
 		CAC6D132243819B20088B3E4 /* EnvironmentSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6D131243819B20088B3E4 /* EnvironmentSettings.swift */; };
 		CACE2A3824356B3D00A8B8D5 /* QuestionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACE2A3724356B3D00A8B8D5 /* QuestionsView.swift */; };
@@ -94,6 +117,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = CA80E012243C3DA000410CBF;
 			remoteInfo = Further;
+		};
+		CAC0873C24BE26CD0098A342 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CA9D81C3242151AE009625DF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CAC0872F24BE26CC0098A342;
+			remoteInfo = FurtherWidgetExtension;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -118,6 +148,17 @@
 				CA80E037243C3DA400410CBF /* Further.app in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CAC0873F24BE26CD0098A342 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				CAC0873E24BE26CD0098A342 /* FurtherWidgetExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -174,6 +215,12 @@
 		CAA0AD0824366321007A9522 /* CovidModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CovidModel.swift; sourceTree = "<group>"; };
 		CAA0AD0B243665CA007A9522 /* StoriesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoriesController.swift; sourceTree = "<group>"; };
 		CAA0AD112436A03C007A9522 /* StoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryView.swift; sourceTree = "<group>"; };
+		CAC0873024BE26CC0098A342 /* FurtherWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FurtherWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		CAC0873224BE26CC0098A342 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		CAC0873424BE26CC0098A342 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		CAC0873724BE26CC0098A342 /* FurtherWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FurtherWidget.swift; sourceTree = "<group>"; };
+		CAC0873924BE26CD0098A342 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CAC0873B24BE26CD0098A342 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CAC194CE244686F5009EA27F /* QuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionView.swift; sourceTree = "<group>"; };
 		CAC6D130243805930088B3E4 /* Further.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Further.entitlements; sourceTree = "<group>"; };
 		CAC6D131243819B20088B3E4 /* EnvironmentSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentSettings.swift; sourceTree = "<group>"; };
@@ -192,6 +239,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CAC0872D24BE26CC0098A342 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CAC0873524BE26CC0098A342 /* SwiftUI.framework in Frameworks */,
+				CAC0873324BE26CC0098A342 /* WidgetKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -360,6 +416,8 @@
 				CA9D81CD242151AE009625DF /* SwiftUIDesignProject */,
 				CA80E014243C3DA000410CBF /* Further */,
 				CA80E023243C3DA300410CBF /* Further Extension */,
+				CAC0873624BE26CC0098A342 /* FurtherWidget */,
+				CAC0873124BE26CC0098A342 /* Frameworks */,
 				CA9D81CC242151AE009625DF /* Products */,
 			);
 			sourceTree = "<group>";
@@ -370,6 +428,7 @@
 				CA9D81CB242151AE009625DF /* Further.app */,
 				CA80E013243C3DA000410CBF /* Further.app */,
 				CA80E01F243C3DA300410CBF /* Further Extension.appex */,
+				CAC0873024BE26CC0098A342 /* FurtherWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -420,6 +479,25 @@
 				CA6A81CB2433D22F00E17DC3 /* PersonNotification.swift */,
 			);
 			path = PersonDetection;
+			sourceTree = "<group>";
+		};
+		CAC0873124BE26CC0098A342 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CAC0873224BE26CC0098A342 /* WidgetKit.framework */,
+				CAC0873424BE26CC0098A342 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CAC0873624BE26CC0098A342 /* FurtherWidget */ = {
+			isa = PBXGroup;
+			children = (
+				CAC0873724BE26CC0098A342 /* FurtherWidget.swift */,
+				CAC0873924BE26CD0098A342 /* Assets.xcassets */,
+				CAC0873B24BE26CD0098A342 /* Info.plist */,
+			);
+			path = FurtherWidget;
 			sourceTree = "<group>";
 		};
 		CAC194C8244685CF009EA27F /* UI */ = {
@@ -520,16 +598,35 @@
 				CA9D81C8242151AE009625DF /* Frameworks */,
 				CA9D81C9242151AE009625DF /* Resources */,
 				CA80E03F243C3DA400410CBF /* Embed Watch Content */,
+				CAC0873F24BE26CD0098A342 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				CA80E036243C3DA400410CBF /* PBXTargetDependency */,
+				CAC0873D24BE26CD0098A342 /* PBXTargetDependency */,
 			);
 			name = Futher;
 			productName = SwiftUIDesignProject;
 			productReference = CA9D81CB242151AE009625DF /* Further.app */;
 			productType = "com.apple.product-type.application";
+		};
+		CAC0872F24BE26CC0098A342 /* FurtherWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CAC0874224BE26CD0098A342 /* Build configuration list for PBXNativeTarget "FurtherWidgetExtension" */;
+			buildPhases = (
+				CAC0872C24BE26CC0098A342 /* Sources */,
+				CAC0872D24BE26CC0098A342 /* Frameworks */,
+				CAC0872E24BE26CC0098A342 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FurtherWidgetExtension;
+			productName = FurtherWidgetExtension;
+			productReference = CAC0873024BE26CC0098A342 /* FurtherWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -537,8 +634,8 @@
 		CA9D81C3242151AE009625DF /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1140;
-				LastUpgradeCheck = 1130;
+				LastSwiftUpdateCheck = 1200;
+				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = Brandon;
 				TargetAttributes = {
 					CA80E012243C3DA000410CBF = {
@@ -549,6 +646,9 @@
 					};
 					CA9D81CA242151AE009625DF = {
 						CreatedOnToolsVersion = 11.3.1;
+					};
+					CAC0872F24BE26CC0098A342 = {
+						CreatedOnToolsVersion = 12.0;
 					};
 				};
 			};
@@ -568,6 +668,7 @@
 				CA9D81CA242151AE009625DF /* Futher */,
 				CA80E012243C3DA000410CBF /* Further */,
 				CA80E01E243C3DA300410CBF /* Further Extension */,
+				CAC0872F24BE26CC0098A342 /* FurtherWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -618,6 +719,25 @@
 				CA9A0CB7243F9FB900724394 /* Rubik-Regular.ttf in Resources */,
 				CA9A0CB1243F9FB900724394 /* Rubik-Black.ttf in Resources */,
 				CA9D81D5242151AF009625DF /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CAC0872E24BE26CC0098A342 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CAC0874F24BE2D4E0098A342 /* Rubik-Bold.ttf in Resources */,
+				CAC0874A24BE2D4E0098A342 /* Rubik-Black.ttf in Resources */,
+				CAC0874C24BE2D4E0098A342 /* Rubik-BoldItalic.ttf in Resources */,
+				CAC0874624BE2C350098A342 /* Assets.xcassets in Resources */,
+				CAC0874924BE2D4E0098A342 /* Rubik-Italic.ttf in Resources */,
+				CAC0874724BE2D4E0098A342 /* Rubik-Regular.ttf in Resources */,
+				CAC0874824BE2D4E0098A342 /* Rubik-BlackItalic.ttf in Resources */,
+				CAC0874D24BE2D4E0098A342 /* Rubik-Medium.ttf in Resources */,
+				CAC0874E24BE2D4E0098A342 /* Rubik-MediumItalic.ttf in Resources */,
+				CAC0875024BE2D4E0098A342 /* Rubik-LightItalic.ttf in Resources */,
+				CAC0874B24BE2D4E0098A342 /* Rubik-Light.ttf in Resources */,
+				CAC0873A24BE26CD0098A342 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -680,6 +800,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CAC0872C24BE26CC0098A342 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CAC0873824BE26CC0098A342 /* FurtherWidget.swift in Sources */,
+				CAA222F324BE67500089C099 /* PersonNotification.swift in Sources */,
+				CAC0874424BE29BE0098A342 /* EntryBackgroundView.swift in Sources */,
+				CAA222F224BE67450089C099 /* CovidModel.swift in Sources */,
+				CAC0875124BE34C90098A342 /* PersonModel.swift in Sources */,
+				CAC0874524BE29EA0098A342 /* EnvironmentSettings.swift in Sources */,
+				CAC0874324BE286E0098A342 /* Extensions.swift in Sources */,
+				CAA222F124BE656C0089C099 /* StoriesController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -692,6 +827,11 @@
 			isa = PBXTargetDependency;
 			target = CA80E012243C3DA000410CBF /* Further */;
 			targetProxy = CA80E035243C3DA400410CBF /* PBXContainerItemProxy */;
+		};
+		CAC0873D24BE26CD0098A342 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CAC0872F24BE26CC0098A342 /* FurtherWidgetExtension */;
+			targetProxy = CAC0873C24BE26CD0098A342 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -721,7 +861,7 @@
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 101;
+				CURRENT_PROJECT_VERSION = 102;
 				DEVELOPMENT_ASSET_PATHS = "\"Further Extension/Preview Content\"";
 				DEVELOPMENT_TEAM = 8CBEHASXWQ;
 				ENABLE_PREVIEWS = YES;
@@ -749,7 +889,7 @@
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 101;
+				CURRENT_PROJECT_VERSION = 102;
 				DEVELOPMENT_ASSET_PATHS = "\"Further Extension/Preview Content\"";
 				DEVELOPMENT_TEAM = 8CBEHASXWQ;
 				ENABLE_PREVIEWS = YES;
@@ -777,7 +917,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 101;
+				CURRENT_PROJECT_VERSION = 102;
 				DEVELOPMENT_TEAM = 8CBEHASXWQ;
 				IBSC_MODULE = Further_Extension;
 				INFOPLIST_FILE = Further/Info.plist;
@@ -798,7 +938,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 101;
+				CURRENT_PROJECT_VERSION = 102;
 				DEVELOPMENT_TEAM = 8CBEHASXWQ;
 				IBSC_MODULE = Further_Extension;
 				INFOPLIST_FILE = Further/Info.plist;
@@ -839,6 +979,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -899,6 +1040,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -930,10 +1072,11 @@
 		CA9D81E0242151AF009625DF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = SwiftUIDesignProject/Further.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 101;
+				CURRENT_PROJECT_VERSION = 102;
 				DEVELOPMENT_ASSET_PATHS = "\"SwiftUIDesignProject/Preview Content\"";
 				DEVELOPMENT_TEAM = 8CBEHASXWQ;
 				ENABLE_PREVIEWS = YES;
@@ -954,10 +1097,11 @@
 		CA9D81E1242151AF009625DF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = SwiftUIDesignProject/Further.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 101;
+				CURRENT_PROJECT_VERSION = 102;
 				DEVELOPMENT_ASSET_PATHS = "\"SwiftUIDesignProject/Preview Content\"";
 				DEVELOPMENT_TEAM = 8CBEHASXWQ;
 				ENABLE_PREVIEWS = YES;
@@ -970,6 +1114,56 @@
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bnbmedia.further;
 				PRODUCT_NAME = Further;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		CAC0874024BE26CD0098A342 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 102;
+				DEVELOPMENT_TEAM = 8CBEHASXWQ;
+				INFOPLIST_FILE = FurtherWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bnbmedia.further.FurtherWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CAC0874124BE26CD0098A342 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 102;
+				DEVELOPMENT_TEAM = 8CBEHASXWQ;
+				INFOPLIST_FILE = FurtherWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bnbmedia.further.FurtherWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1010,6 +1204,15 @@
 			buildConfigurations = (
 				CA9D81E0242151AF009625DF /* Debug */,
 				CA9D81E1242151AF009625DF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CAC0874224BE26CD0098A342 /* Build configuration list for PBXNativeTarget "FurtherWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CAC0874024BE26CD0098A342 /* Debug */,
+				CAC0874124BE26CD0098A342 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
