@@ -14,40 +14,50 @@ struct EntryView: View {
     // UI Config
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var environmentSettings: EnvironmentSettings
+
     @State private var pulsate = false
     @State var showingQuestionSheet = false
     @State var showingStorySheet = false
-    //@State private var agreedToDisclaimer = UserDefaults.standard.bool(forKey: "agreedToDisclaimer")
     @State private var agreedToDisclaimer = true
+    @State private var showTypeSelection = true
+    
+    // Person config
+    @StateObject var personController = PersonInfoController()
     
     // Detector config
     @ObservedObject var detector = PersonDetectee()
     @ObservedObject var questionsController = QuestionsController()
     @ObservedObject var storyController = StoriesController()
     
-    // API
-    
-        // Random ID
-        // Name
-        // Phone
-        // Address
-        // E-mail
-    
-        // Use a shared key to send to server
-    
-    // Main (customer)
-    
-        // Center -> logo
-    
-        // Bottom left -> Person icon (leads to info)
-    
-        // Bottom right -> Camera icon (leads to QR code)
-    
-    // Main (establishment)
-    
     var body: some View {
-        mainView()
+        if environmentSettings.appType == .unknown {
+            appTypeSelection()
+        } else {
+            mainView()
+        }
     }
+    
+    func appTypeSelection() -> some View {
+        return VStack {
+            Spacer()
+            Text("Choose your type")
+            Spacer()
+        }.actionSheet(isPresented: $showTypeSelection) {
+            ActionSheet(title: Text("Who are you?"), message: Text("A person, a restaurant, or a kiosk?"), buttons: [
+                .default(Text("Person"), action: {
+                    environmentSettings.appType = .user
+                    personController.generateQRCode() }),
+                .default(Text("Establishment"), action: {
+                    environmentSettings.appType = .establishmentClient
+                    personController.generateQRCode() }),
+                .default(Text("Establishment (Kisok)"), action: {
+                    environmentSettings.appType = .establishmentKiosk
+                    personController.generateQRCode()
+                })
+            ])
+        }
+    }
+    
     
     func mainView() -> some View {
         return ZStack {
@@ -56,23 +66,16 @@ struct EntryView: View {
                 Spacer()
                 VStack {
                     VStack {
-                        HeartView(detector: detector)
-                            .onTapGesture(perform: {
-                                self.detector.haptics.allowed.toggle()
-                            })
+                        HeartView(image: $personController.qrCode)
                         Spacer()
                         MainTextView(detector: detector)
                     }.frame(maxHeight: 240)
                 }
                 Spacer()
                 HStack {
-                    if environmentSettings.env.allowQuestions {
-                        QuestionButton(showingQuestionSheet: $showingQuestionSheet).environmentObject(self.questionsController)
-                    }
+                    QuestionButton(showingQuestionSheet: $showingQuestionSheet).environmentObject(self.questionsController)
                     Spacer()
-                    if environmentSettings.env.allowStories {
-                        StoryButton(showingStorySheet: $showingStorySheet, storiesController: self.storyController)
-                    }
+                    StoryButton(showingStorySheet: $showingStorySheet, storiesController: self.storyController)
                 }
             }.padding()
         }
@@ -91,38 +94,9 @@ struct EntryView_Previews: PreviewProvider {
             EntryView()
             .environmentObject(EnvironmentSettings())
             .environment(\.colorScheme, .dark)
-            .previewDevice("iPhone SE")
+                .previewDevice("iPhone SE (2nd generation)")
         }
         
-    }
-}
-
-struct NotifierView: View {
-    
-    // UI Config
-    @Environment(\.colorScheme) var colorScheme
-    @State private var hapticsEnabled = !UserDefaults.standard.bool(forKey: "disableHaptics")
-    
-    // Person Config
-    @ObservedObject var detector: PersonDetectee
-    
-    // View
-    var body: some View {
-        HStack {
-            Spacer()
-            if CHHapticEngine.capabilitiesForHardware().supportsHaptics {
-                Button(action: {
-                    self.hapticsEnabled.toggle()
-                    self.detector.haptics.allowed.toggle()
-                }) {
-                    Image(systemName: hapticsEnabled ? "bell" : "bell.slash")
-                        .foregroundColor(self.colorScheme == .dark ? Color.gray : Color.lairDarkGray)
-                        .font(.system(size: 25, weight: .regular))
-                        .padding()
-                }
-            }
-            Spacer()
-        }
     }
 }
 
@@ -131,24 +105,28 @@ struct HeartView: View {
     // UI Config
     @Environment(\.colorScheme) var colorScheme
     @State private var pulsate = false
-    @State private var showingActionSheet = false
     
-    // Person Config
-    @ObservedObject var detector: PersonDetectee
+    // Image config
+    @Binding var image: UIImage
     
     // View
     var body: some View {
         ZStack {
             Image(colorScheme == .light ? "light_heart_back" : "dark_heart_back")
-            Image(colorScheme == .light ? "light_heart_middle" : "dark_heart_middle")
-            Image(colorScheme == .light ? "light_heart_\(self.detector.personFound ? "on" : "off")" : "dark_heart_\(self.detector.personFound ? "on" : "off")")
-            .scaleEffect(pulsate ? 0.5 : 1)
-                .animation(Animation.easeInOut(duration: 1).delay(0).repeat(while: pulsate))
-                .onAppear() {
-                    self.pulsate.toggle()
-                }
-        }.actionSheet(isPresented: $showingActionSheet) {
-            ActionSheet(title: Text("Settings"), message: nil, buttons: [.default(Text("Test"))]) 
+            ZStack {
+                Image(colorScheme == .light ? "light_heart_middle" : "dark_heart_middle")
+                Image(uiImage: image)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 80, height: 80)
+//                    .shadow(radius: 5)
+                    .offset(x: 0, y: -5)
+                .scaleEffect(pulsate ? 0.95 : 1)
+                    .animation(Animation.easeInOut(duration: 1).delay(0).repeat(while: pulsate))
+                    .onAppear() {
+                        self.pulsate.toggle()
+                    }
+            }
         }
     }
 }
@@ -163,8 +141,8 @@ struct MainTextView: View {
     
     // View
     var body: some View {
-        Text(detector.personFound ? "Someone is nearby!" : "Connecting with others")
-            .font(Font.custom("Rubik-Regular", size: 26.67))
+        Text("Scan your QR code to check in")
+            .font(.custom("Rubik-Regular", size: 26.67, relativeTo: .headline))
             .foregroundColor(colorScheme == .light ? Color(UIColor(red: 50.0/255.0, green: 54.0/255.0, blue: 83.0/255.0, alpha: 1.0)) : Color(UIColor(red: 172.0/255.0, green: 178.0/255.0, blue: 181.0/255.0, alpha: 1.0)))
     }
 }

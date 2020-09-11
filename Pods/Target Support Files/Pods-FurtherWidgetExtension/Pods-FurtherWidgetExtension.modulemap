@@ -1,0 +1,6 @@
+framework module Pods_FurtherWidgetExtension {
+  umbrella header "Pods-FurtherWidgetExtension-umbrella.h"
+
+  export *
+  module * { export * }
+}

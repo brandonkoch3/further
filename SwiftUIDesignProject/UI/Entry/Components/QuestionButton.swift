@@ -21,7 +21,7 @@ struct QuestionButton: View {
         Button(action: {
             self.showingQuestionSheet.toggle()
         }) {
-            Image(systemName: "list.dash")
+            Image(systemName: "person")
                 .foregroundColor(self.colorScheme == .dark ? Color.gray : Color.lairDarkGray)
                 .font(.system(size: 25, weight: .regular))
                 .padding()

@@ -1,0 +1,6 @@
+framework module Pods_Further {
+  umbrella header "Pods-Further-umbrella.h"
+
+  export *
+  module * { export * }
+}

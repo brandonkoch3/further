@@ -37,6 +37,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func handleAppBurstTask(task: BGProcessingTask) {
+        
+        // TODO: Implement check to see if our information was pulled
+        
         let storiesController = StoriesController()
         storiesController.update() { response in }
         task.expirationHandler = {

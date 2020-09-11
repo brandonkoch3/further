@@ -10,59 +10,24 @@ import Foundation
 import SwiftUI
 import Combine
 
-class EnvironmentSettings: NSObject, ObservableObject {
+class EnvironmentSettings: ObservableObject {
     
-    // Config
-    @Published var env = environmentModel(allowDetection: true, allowQuestions: true, allowStories: true)
-    
-    // Helpers
-    let decoder = JSONDecoder()
-    let defaults = UserDefaults.standard
-    
-    // Models
-    struct environmentModel: Codable {
-        var allowDetection: Bool
-        var allowQuestions: Bool
-        var allowStories: Bool
+    // MARK: Config
+    enum appType: Int, Codable {
+        case user
+        case establishmentClient
+        case establishmentKiosk
+        case cityEntity
+        case unknown
     }
     
-    // Combine
-    var updateCancellable: AnyCancellable?
+    // MARK: App Type
+    @AppStorage("appType") var appType: appType = .unknown
     
-    override init() {
-        super.init()
-        
-        if let savedData = defaults.object(forKey: "answers") as? Data {
-            if let loadedData = try? decoder.decode(environmentModel.self, from: savedData) {
-                self.env = loadedData
-            }
-        }
-        
-        updateEnvironment() { response in }
-    }
+    // MARK: API
+    @AppStorage("baseURL") var baseURL: String = "https://further-app.com/connect/"
     
-    private func updateEnvironment(completion: @escaping (Bool) -> Void) {
-        let destination = URL(string: "https://mlv3dsc5tc.execute-api.us-east-1.amazonaws.com/features")!
-        let urlconfig = URLSessionConfiguration.default
-        urlconfig.timeoutIntervalForResource = 15.0
-        urlconfig.timeoutIntervalForRequest = 15.0
-        let session = URLSession(configuration: urlconfig)
-        
-        var request = URLRequest(url: destination)
-        request.httpMethod = "GET"
-        request.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        updateCancellable = session.dataTaskPublisher(for: request)
-            .receive(on: RunLoop.main)
-            .map({ $0.data })
-            .decode(type: environmentModel.self, decoder: decoder)
-            .replaceError(with: self.env)
-            .eraseToAnyPublisher()
-            .sink(receiveCompletion: { completed in
-                self.updateCancellable?.cancel()
-            }, receiveValue: { response in
-                self.env = response
-            })
+    init() {
+        baseURL = "https://further-app.com/connect/"
     }
 }

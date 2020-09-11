@@ -22,7 +22,7 @@ struct StoryButton: View {
         Button(action: {
             self.showingStorySheet.toggle()
         }) {
-            Image(systemName: "person.3")
+            Image(systemName: "qrcode.viewfinder")
                 .foregroundColor(self.colorScheme == .dark ? Color.gray : Color.lairDarkGray)
                 .font(.system(size: 25, weight: .regular))
         }.sheet(isPresented: $showingStorySheet) {
