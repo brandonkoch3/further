@@ -8,6 +8,8 @@
 
 import UIKit
 import SwiftUI
+import Combine
+import UIKit
 
 extension UIColor {
     public class var lairDarkGray: UIColor {
@@ -113,6 +115,57 @@ extension Date {
     }
 }
 
+extension CGFloat {
+    var native: CGFloat {
+        get {
+            #if targetEnvironment(macCatalyst)
+            return self
+            #else
+            return self * 1.0/0.77
+            #endif
+        }
+    }
+    
+    var scaledForDevice: CGFloat {
+        get {
+            #if !os(watchOS)
+            let screenSize = UIScreen.main.bounds
+            var baseLine = CGFloat(414.0)
+            if UIDevice.current.orientation == .landscapeLeft || UIDevice.current.orientation == .landscapeRight {
+                baseLine = baseLine * 2.1642512077
+            }
+            if screenSize.width < baseLine {
+                let scale = screenSize.width / baseLine
+                return self * scale
+            }
+            return self
+            #else
+            return self
+            #endif
+        }
+    }
+}
 
+#if !os(watchOS)
+extension Publishers {
+    // 1.
+    static var keyboardHeight: AnyPublisher<CGFloat, Never> {
+        // 2.
+        let willShow = NotificationCenter.default.publisher(for: UIApplication.keyboardWillShowNotification)
+            .map { $0.keyboardHeight }
+        
+        let willHide = NotificationCenter.default.publisher(for: UIApplication.keyboardWillHideNotification)
+            .map { _ in CGFloat(0) }
+        
+        // 3.
+        return MergeMany(willShow, willHide)
+            .eraseToAnyPublisher()
+    }
+}
 
-
+extension Notification {
+    var keyboardHeight: CGFloat {
+        return (userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect)?.height ?? 0
+    }
+}
+#endif

@@ -70,11 +70,11 @@ class QRCodeGenerator {
         if let darkImage = EFQRCode.generate(
             content: data,
             size: EFIntSize(width: 300, height: 300),
-            backgroundColor: UIColor(red: 36.0/255.0, green: 40.0/255.0, blue: 46.0/255.0, alpha: 1.0).cgColor,
+            backgroundColor: UIColor(red: 225.0/255.0, green: 225.0/255.0, blue: 236.0/255.0, alpha: 1.0).cgColor,
             watermark: UIImage(named: "dark_heart_on")?.cgImage
         ) {
             darkUIImage = UIImage(cgImage: darkImage)
-            print("created light image!")
+            print("created dark image!")
         }
         
         if let light = lightUIImage, let dark = darkUIImage {
@@ -128,7 +128,9 @@ class QRCodeGenerator {
     private func saveQRCode(image: UIImage, fileName: String? = nil) -> URL? {
         if let data = image.pngData() {
             let filename = getDocumentsDirectory().appendingPathComponent(fileName ?? "qrcode.png")
+            let containerFileName = getSharedContainerURL().appendingPathComponent(fileName ?? "qrcode.png")
             try? data.write(to: filename)
+            try? data.write(to: containerFileName)
             print("Wrote QR Code to", filename)
             return filename
         }
@@ -159,5 +161,9 @@ class QRCodeGenerator {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let documentsDirectory = paths[0]
         return documentsDirectory
+    }
+    
+    private func getSharedContainerURL() -> URL {
+        return FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.bnbmedia.further.contents")!
     }
 }

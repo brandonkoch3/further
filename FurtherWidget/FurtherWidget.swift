@@ -10,88 +10,64 @@ import WidgetKit
 import SwiftUI
 
 struct Provider: TimelineProvider {
-    func getSnapshot(in context: Context, completion: @escaping (FurtherEntry) -> Void) {
-        let entry = FurtherEntry(date: Date(), partipicantsCount: 25, positiveContactsCount: 0, isPlaceholder: false)
-        completion(entry)
-    }
-    
-    func getTimeline(in context: Context, completion: @escaping (Timeline<FurtherEntry>) -> Void) {
-        print("called to update widget!")
-        var savedParticipants = [PersonModel]()
-        var participantsCount = 0
-        let storiesController = StoriesController()
-        
-        if let savedData = keyValStore.object(forKey: "interactions") as? Data {
-            if let loadedData = try? decoder.decode([PersonModel].self, from: savedData) {
-                savedParticipants = loadedData
-            }
-        }
-        
-        if savedParticipants.isEmpty {
-            if let savedData = defaults.object(forKey: "interactions") as? Data {
-                if let loadedData = try? decoder.decode([PersonModel].self, from: savedData) {
-                    savedParticipants = loadedData
-                }
-            }
-        }
-        
-        print("Participants:", participantsCount)
-        
-        if let earliestDate = Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of: Date()) {
-            let todayPartipicants = savedParticipants.filter({ $0.connectTime >= earliestDate.timeIntervalSince1970 })
-            participantsCount = todayPartipicants.count
-            print("participants counts:", participantsCount)
-        }
-        
-        storiesController.updateStories() { response in
-            print("updating story!")
-            if response {
-                let nowDate = Date()
-                let dateFormatter = DateFormatter()
-                dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-                dateFormatter.dateFormat = "yyyy-MM-dd"
-                let strDate = dateFormatter.string(from: nowDate)
-                
-                if let todayStory = storiesController.stories.first(where: { $0.displayDate == strDate }) {
-                    let positiveCount = todayStory.positiveContacts.count
-                    
-                    let timeline = Timeline(entries: [FurtherEntry(date: Date(), partipicantsCount: participantsCount, positiveContactsCount: positiveCount, isPlaceholder: false)], policy: .atEnd)
-                    completion(timeline)
-                    return
-                }
-            }
-        }
-        
-        let entry = FurtherEntry(date: Date(), partipicantsCount: participantsCount, positiveContactsCount: 0, isPlaceholder: false)
-        let timeline = Timeline(entries: [entry], policy: .atEnd)
-        completion(timeline)
-    }
     
     public typealias Entry = FurtherEntry
     
     // Helpers
-    let encoder = JSONEncoder()
-    let decoder = JSONDecoder()
     let defaults = UserDefaults.standard
     
     #if !os(watchOS)
     var keyValStore = NSUbiquitousKeyValueStore()
     #endif
     
+    func getSnapshot(in context: Context, completion: @escaping (FurtherEntry) -> Void) {
+        let entry = FurtherEntry(date: Date(), lastUsed: Date(), isPlaceholder: false)
+        print("Snapshot")
+        completion(entry)
+    }
+    
+    func getTimeline(in context: Context, completion: @escaping (Timeline<FurtherEntry>) -> Void) {
+        
+        print("Timeline")
+        
+        // Determine the last used date
+        var lastUsedDate: Date?
+        let lastUsed = defaults.integer(forKey: "lastScanned")
+        if lastUsed == 0 {
+            lastUsedDate = Date(timeIntervalSince1970: 0)
+        } else {
+            lastUsedDate = Date(timeIntervalSince1970: TimeInterval(lastUsed))
+        }
+        
+        let entry = FurtherEntry(date: Date(), lastUsed: lastUsedDate!, isPlaceholder: false)
+        let timeline = Timeline(entries: [entry], policy: .atEnd)
+        completion(timeline)
+    }
+    
     public func placeholder(in with: Context) -> FurtherEntry {
-        let entry = FurtherEntry(date: Date(), partipicantsCount: 25, positiveContactsCount: 0, isPlaceholder: true)
+        let entry = FurtherEntry(date: Date(), lastUsed: Date(), isPlaceholder: true)
         return entry
     }
 }
 
 struct FurtherEntry: TimelineEntry {
     public let date: Date
-    var partipicantsCount: Int
-    var positiveContactsCount: Int
+    var lastUsed: Date
     var isPlaceholder: Bool
 }
 
 struct WidgetHelper {
+    func qrImage(colorScheme: ColorScheme) -> Image {
+        print("image?")
+        let paths = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.bnbmedia.further.contents")!
+        let file = paths.appendingPathComponent("qrcode_\(colorScheme == .light ? "light" : "dark").png")
+        if let qrImage = UIImage(contentsOfFile: file.path) {
+            return Image(uiImage: qrImage)
+        }
+        
+        return Image(colorScheme == .light ? "light_low_risk" : "dark_low_risk")
+    }
+    
     func warningImage(positiveContacts: Int, colorScheme: ColorScheme) -> Image {
         if positiveContacts >= 3 {
             return Image(colorScheme == .light ? "light_high_risk" : "dark_high_risk")
@@ -152,36 +128,35 @@ struct FurtherStatsWidgetViewSmall: View {
     var body: some View {
         VStack {
             HStack {
-                helper.warningImage(positiveContacts: entry.positiveContactsCount, colorScheme: colorScheme)
-                    .frame(width: 80.0, height: 80.0)
+                Spacer()
+                helper.qrImage(colorScheme: colorScheme)
+                    .resizable()
+                    .frame(width: 100.0, height: 100.0)
                     .aspectRatio(contentMode: .fit)
-                    .padding([.top, .leading, .trailing], 8.0)
-                if entry.isPlaceholder {
-                    Text("Low Risk For")
-                        .padding([.top], 7.0)
-                        .redacted(reason: .placeholder)
-                } else {
-                    Text(helper.warningLevel(positiveContacts: entry.positiveContactsCount))
-                        .font(.custom("Rubik-Medium", size: 23.3, relativeTo: .headline))
-                        .padding([.top], 7.0)
-                }
+                    .padding([.top], 18.0)
                 
                 Spacer()
             }
             
             Spacer()
             
-            HStack {
-                Spacer()
+            VStack {
                 if entry.isPlaceholder {
-                    Text("Interactions")
+                    Text("Last Used")
                         .redacted(reason: .placeholder)
                 } else {
-                    Text("Interactions: \(entry.partipicantsCount)")
-                        .font(Font.custom("Rubik-Light", size: 15.5))
+                    Text("Last Scanned:")
+                        .font(Font.custom("Rubik-Light", size: 13))
+                    if entry.lastUsed == Date(timeIntervalSince1970: 0) {
+                        Text("Never")
+                            .font(Font.custom("Rubik-Light", size: 13))
+                    } else {
+                        Text(entry.lastUsed, style: .date)
+                            .font(Font.custom("Rubik-Light", size: 13))
+                    }
                 }
                 Spacer()
-            }.padding()
+            }
             
             Spacer()
         }
@@ -197,20 +172,30 @@ struct FurtherStatsWidgetViewMedium: View {
     var body: some View {
         VStack {
             HStack {
-                helper.warningImage(positiveContacts: entry.positiveContactsCount, colorScheme: colorScheme)
-                    
-                VStack(alignment: .leading) {
-                    Text(helper.warningLevel(positiveContacts: entry.positiveContactsCount))
-                        .font(Font.custom("Rubik-Medium", size: 23.3))
-                    Text("Interactions: \(entry.partipicantsCount)")
-                }
+                helper.qrImage(colorScheme: colorScheme)
+                    .resizable()
+                    .frame(width: 110, height: 110)
+                    .padding([.leading], 12.0)
+                    .padding([.top], 12.0)
+                Spacer()
+                Text("Scan To Share")
+                    .font(Font.custom("Rubik-Medium", size: 18))
                 Spacer()
             }
             
-            HStack {
-                Text(helper.warningDetail(positiveContacts: entry.positiveContactsCount))
-                    .font(Font.custom("Rubik-Light", size: 15.5))
-            }.padding()
+            
+            if entry.isPlaceholder {
+                Text("Last Scanned: September 30, 2020")
+                    .redacted(reason: .placeholder)
+            } else {
+                if entry.lastUsed == Date(timeIntervalSince1970: 0) {
+                    Text("Last Scanned: Never")
+                        .font(Font.custom("Rubik-Light", size: 15.5))
+                } else {
+                    Text("Last Scanned: \(entry.lastUsed, style: .date))")
+                        .font(Font.custom("Rubik-Light", size: 15.5))
+                }
+            }
             
             Spacer()
         }
@@ -227,18 +212,18 @@ struct FurtherWidget: Widget {
         }
         .configurationDisplayName("Further Interactions")
         .description("Number of nearby users and risk level.")
-        .supportedFamilies([.systemSmall, .systemMedium])
+        .supportedFamilies([.systemSmall])
     }
 }
 
 struct FurtherWidget_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            FurtherWidgetEntryView(entry: FurtherEntry(date: Date(), partipicantsCount: 10, positiveContactsCount: 0, isPlaceholder: true))
+            FurtherWidgetEntryView(entry: FurtherEntry(date: Date(), lastUsed: Date(), isPlaceholder: false))
                 .previewContext(WidgetPreviewContext(family: .systemSmall))
                 .environment(\.colorScheme, .light)
             
-            FurtherWidgetEntryView(entry: FurtherEntry(date: Date(), partipicantsCount: 50, positiveContactsCount: 5, isPlaceholder: false))
+            FurtherWidgetEntryView(entry: FurtherEntry(date: Date(), lastUsed: Date(), isPlaceholder: false))
                 .previewContext(WidgetPreviewContext(family: .systemMedium))
                 .environment(\.colorScheme, .dark)
         }

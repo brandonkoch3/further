@@ -16,9 +16,15 @@ import WidgetKit
 class PersonInfoController: ObservableObject {
     
     // MARK: Data
-    var personInfo: PersonInfoModel?
+    @Published var personInfo: PersonInfoModel?
     var baseURL: String?
     var appType: EnvironmentSettings.appType?
+    
+    // MARK: Editable Data
+    @Published var name: String = ""
+    @Published var phone: String = ""
+    @Published var email: String = ""
+    @Published var address: String = ""
     
     // MARK: Helpers
     let decoder = JSONDecoder()
@@ -35,6 +41,7 @@ class PersonInfoController: ObservableObject {
     
     // MARK: Combine
     var qrCancellable: AnyCancellable?
+    var editorCancellables = Set<AnyCancellable>()
     
     init() {
         
@@ -52,6 +59,8 @@ class PersonInfoController: ObservableObject {
             // Save locally
             savePersonInfo(data: self.personInfo!)
             
+            print("need to generate QR Code")
+            
             // Setup listener
             qrCancellable = qrGenerator.qrCompletionPublisher
                 .receive(on: RunLoop.main)
@@ -60,8 +69,46 @@ class PersonInfoController: ObservableObject {
                         self.qrCode = qr
                     }
                 })
-            
         }
+        
+        // Setup listener
+            $name
+            .receive(on: RunLoop.main)
+            .sink { (n) in
+                guard self.personInfo != nil else { return }
+                self.personInfo!.name = n
+                self.savePersonInfo(data: self.personInfo!)
+            }
+            .store(in: &editorCancellables)
+        
+            $phone
+            .receive(on: RunLoop.main)
+            .sink { (p) in
+                guard self.personInfo != nil else { return }
+                self.personInfo!.phone = p
+                self.savePersonInfo(data: self.personInfo!)
+            }
+            .store(in: &editorCancellables)
+        
+            $email
+            .receive(on: RunLoop.main)
+            .sink { (e) in
+                guard self.personInfo != nil else { return }
+                self.personInfo!.email = e
+                self.savePersonInfo(data: self.personInfo!)
+            }
+            .store(in: &editorCancellables)
+        
+            $address
+            .receive(on: RunLoop.main)
+            .sink { (a) in
+                guard self.personInfo != nil else { return }
+                self.personInfo!.address = a
+                self.savePersonInfo(data: self.personInfo!)
+            }
+            .store(in: &editorCancellables)
+        
+            
     }
     
     public func generateQRCode() {

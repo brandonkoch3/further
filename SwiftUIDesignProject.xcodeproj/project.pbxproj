@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -191,6 +191,7 @@
 		CA42DFAD250AB9BE006C0125 /* PersonInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonInfoModel.swift; sourceTree = "<group>"; };
 		CA42DFAF250ABA56006C0125 /* QRCodeGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeGenerator.swift; sourceTree = "<group>"; };
 		CA42DFB1250AC5CA006C0125 /* PersonInfoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonInfoController.swift; sourceTree = "<group>"; };
+		CA42DFB6250C3E57006C0125 /* FurtherWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FurtherWidgetExtension.entitlements; sourceTree = "<group>"; };
 		CA444837243CE0CD005B883C /* IdentificationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentificationHelper.swift; sourceTree = "<group>"; };
 		CA6A81CB2433D22F00E17DC3 /* PersonNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonNotification.swift; sourceTree = "<group>"; };
 		CA7544602431878300C45C28 /* PersonModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonModel.swift; sourceTree = "<group>"; };
@@ -457,6 +458,7 @@
 		CA9D81C2242151AE009625DF = {
 			isa = PBXGroup;
 			children = (
+				CA42DFB6250C3E57006C0125 /* FurtherWidgetExtension.entitlements */,
 				CA9D81CD242151AE009625DF /* SwiftUIDesignProject */,
 				CA80E014243C3DA000410CBF /* Further */,
 				CA80E023243C3DA300410CBF /* Further Extension */,
@@ -614,7 +616,6 @@
 				9F9C2C8C984FCD5C44D506DE /* Pods-Futher.debug.xcconfig */,
 				B79703030267FDE0C37AFD49 /* Pods-Futher.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -1314,6 +1315,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_ENTITLEMENTS = FurtherWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 102;
 				DEVELOPMENT_TEAM = 8CBEHASXWQ;
@@ -1340,6 +1342,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_ENTITLEMENTS = FurtherWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 102;
 				DEVELOPMENT_TEAM = 8CBEHASXWQ;
