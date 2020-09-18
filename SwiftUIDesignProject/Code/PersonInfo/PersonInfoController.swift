@@ -29,7 +29,7 @@ class PersonInfoController: ObservableObject {
     // MARK: Helpers
     let decoder = JSONDecoder()
     let encoder = JSONEncoder()
-    let defaults = UserDefaults.standard
+    let defaults = UserDefaults(suiteName: "group.com.bnbmedia.further.contents")
     let qrGenerator = QRCodeGenerator()
     
     // MARK: QR Code
@@ -58,8 +58,6 @@ class PersonInfoController: ObservableObject {
             
             // Save locally
             savePersonInfo(data: self.personInfo!)
-            
-            print("need to generate QR Code")
             
             // Setup listener
             qrCancellable = qrGenerator.qrCompletionPublisher
@@ -123,10 +121,10 @@ class PersonInfoController: ObservableObject {
     }
     
     private func loadEnvironmentInfo() {
-        if let base = defaults.string(forKey: "baseURL") {
+        if let base = defaults!.string(forKey: "baseURL") {
             self.baseURL = base
         }
-        if let savedData = defaults.object(forKey: "appType") as? Int {
+        if let savedData = defaults!.object(forKey: "appType") as? Int {
             if let appType = EnvironmentSettings.appType(rawValue: savedData) {
                 self.appType = appType
             }
@@ -146,7 +144,7 @@ class PersonInfoController: ObservableObject {
         
         // Check local storage for person info
         if self.personInfo == nil {
-            if let savedData = defaults.object(forKey: "personInfoModel") as? Data {
+            if let savedData = defaults!.object(forKey: "personInfoModel") as? Data {
                 if let loadedData = try? decoder.decode(PersonInfoModel.self, from: savedData) {
                     return loadedData
                 }
@@ -168,7 +166,7 @@ class PersonInfoController: ObservableObject {
     
     private func savePersonInfoLocally(data: PersonInfoModel) {
         if let encoded = try? encoder.encode(data) {
-            defaults.set(encoded, forKey: "personInfoModel")
+            defaults!.set(encoded, forKey: "personInfoModel")
             #if !os(watchOS)
             keyValStore.set(encoded, forKey: "personInfoModel")
             keyValStore.synchronize()

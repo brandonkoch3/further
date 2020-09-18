@@ -33,3 +33,12 @@ target 'Futher' do
   pod 'EFQRCode', '~> 5.1.6'
 
 end
+
+target 'Further App Clip' do
+# Comment the next line if you don't want to use modular headers
+  use_modular_headers!
+
+# Pods for Futher App Clip
+  pod 'EFQRCode', '~> 5.1.6'
+
+end

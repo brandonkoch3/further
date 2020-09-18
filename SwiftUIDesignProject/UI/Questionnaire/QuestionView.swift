@@ -21,8 +21,6 @@ struct QuestionView: View {
     
     @Environment(\.colorScheme) var colorScheme
     
-    @State private var keyboardHeight: CGFloat = 0
-    
     // Header Text
     struct HeaderText: View {
         var body: some View {
@@ -182,89 +180,5 @@ struct InformationView: View {
         default:
             return .name
         }
-    }
-}
-
-struct ButtonView: View {
-    @Binding var showingQuestionSheet: Bool
-    @EnvironmentObject var questions: QuestionsController
-    @Environment(\.colorScheme) var colorScheme
-    
-    var body: some View {
-        GeometryReader { geometry in
-            VStack {
-                Spacer()
-                HStack {
-                    Spacer()
-                    NavigationLink(destination: QuestionsView(questionID: 0, showingQuestion: self.$showingQuestionSheet).environmentObject(self.questions)) {
-                        Image(systemName: "arrow.right")
-                            .foregroundColor(.gray)
-                            .font(.system(size: 30, weight: .ultraLight))
-                    }
-                    .buttonStyle(LightButtonStyle(lightMode: self.colorScheme == .light ? true : false))
-                    .scaleEffect(geometry.size.height < 600.0 ? 0.8 : 1.0)
-                    .padding(.trailing, geometry.size.height < 600.0 ? 6.0 : 12.9)
-                    .padding(.bottom, geometry.size.height < 600.0 ? 35.0 : 50.0)
-                }
-            }
-        }
-    }
-}
-
-struct TextFieldTyped: UIViewRepresentable {
-    let keyboardType: UIKeyboardType
-    let returnVal: UIReturnKeyType
-    let contentType: UITextContentType
-    let tag: Int
-    @Binding var text: String
-    @Binding var isfocusAble: [Bool]
-
-    func makeUIView(context: Context) -> UITextField {
-        let textField = UITextField(frame: .zero)
-        textField.keyboardType = self.keyboardType
-        textField.returnKeyType = self.returnVal
-        textField.tag = self.tag
-        textField.delegate = context.coordinator
-        textField.autocorrectionType = .no
-
-        return textField
-    }
-
-    func updateUIView(_ uiView: UITextField, context: Context) {
-        if isfocusAble[tag] {
-            uiView.becomeFirstResponder()
-        } else {
-            uiView.resignFirstResponder()
-        }
-    }
-
-    func makeCoordinator() -> Coordinator {
-        Coordinator(self)
-    }
-
-    class Coordinator: NSObject, UITextFieldDelegate {
-        var parent: TextFieldTyped
-
-        init(_ textField: TextFieldTyped) {
-            self.parent = textField
-        }
-
-        func updatefocus(textfield: UITextField) {
-            textfield.becomeFirstResponder()
-        }
-
-func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-
-            if parent.tag == 0 {
-                parent.isfocusAble = [false, true]
-                parent.text = textField.text ?? ""
-                NotificationCenter.default.post(name: Notification.Name("keyboardDidClose"), object: nil, userInfo: ["tag": 0])
-            } else if parent.tag == 1 {
-                parent.isfocusAble = [false, false]
-                parent.text = textField.text ?? ""
-         }
-        return true
-        }
-
     }
 }

@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F0BFE1C3010F3D7D54C3C39B9E1733F0"
-               BuildableName = "Pods_Further.framework"
-               BlueprintName = "Pods-Further"
+               BlueprintIdentifier = "88E7D1082BD7C96FF4540D1D0E4794A5"
+               BuildableName = "EFQRCode.framework"
+               BlueprintName = "EFQRCode-framework"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

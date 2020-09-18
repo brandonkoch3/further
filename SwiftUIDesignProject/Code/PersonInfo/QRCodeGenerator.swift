@@ -127,30 +127,28 @@ class QRCodeGenerator {
     
     private func saveQRCode(image: UIImage, fileName: String? = nil) -> URL? {
         if let data = image.pngData() {
-            let filename = getDocumentsDirectory().appendingPathComponent(fileName ?? "qrcode.png")
             let containerFileName = getSharedContainerURL().appendingPathComponent(fileName ?? "qrcode.png")
-            try? data.write(to: filename)
             try? data.write(to: containerFileName)
-            print("Wrote QR Code to", filename)
-            return filename
+            print("Wrote QR Code to", containerFileName)
+            return containerFileName
         }
         return nil
     }
     
     public func userQRCode() -> UIImage? {
         if UITraitCollection.current.userInterfaceStyle == .light {
-            let filename = getDocumentsDirectory().appendingPathComponent("qrcode_light.png")
+            let filename = getSharedContainerURL().appendingPathComponent("qrcode_light.png")
             if let png = UIImage(contentsOfFile: filename.path) {
                 return png
             }
         } else {
-            let filename = getDocumentsDirectory().appendingPathComponent("qrcode_dark.png")
+            let filename = getSharedContainerURL().appendingPathComponent("qrcode_dark.png")
             if let png = UIImage(contentsOfFile: filename.path) {
                 return png
             }
         }
         
-        let filename = getDocumentsDirectory().appendingPathComponent("qrcode.png")
+        let filename = getSharedContainerURL().appendingPathComponent("qrcode.png")
         if let png = UIImage(contentsOfFile: filename.path) {
             return png
         }
