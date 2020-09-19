@@ -16,6 +16,8 @@
 		CA1AB6032435829400291F3D /* QuestionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA1AB6022435829400291F3D /* QuestionModel.swift */; };
 		CA1AB6052435831000291F3D /* QuestionsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA1AB6042435831000291F3D /* QuestionsController.swift */; };
 		CA2D368424351C2900401C84 /* PersonDetectee.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2D368324351C2900401C84 /* PersonDetectee.swift */; };
+		CA30396525153EFE00BE4082 /* MapHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA30396425153EFE00BE4082 /* MapHelper.swift */; };
+		CA3039702515405A00BE4082 /* MapHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA30396425153EFE00BE4082 /* MapHelper.swift */; };
 		CA3A4C7C24478E77004D6D7F /* QuestionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3A4C7B24478E77004D6D7F /* QuestionsView.swift */; };
 		CA3A4C7F2447C940004D6D7F /* DisclaimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3A4C7E2447C940004D6D7F /* DisclaimerView.swift */; };
 		CA42DFAE250AB9BE006C0125 /* PersonInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA42DFAD250AB9BE006C0125 /* PersonInfoModel.swift */; };
@@ -56,6 +58,10 @@
 		CA7544612431878300C45C28 /* PersonModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7544602431878300C45C28 /* PersonModel.swift */; };
 		CA7544642432EF3C00C45C28 /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7544632432EF3C00C45C28 /* Haptics.swift */; };
 		CA75446B2433A51F00C45C28 /* QuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA75446A2433A51F00C45C28 /* QuestionView.swift */; };
+		CA80630525147BBB004B73B0 /* AuthenticationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA80630425147BBB004B73B0 /* AuthenticationHelper.swift */; };
+		CA80631025147BC4004B73B0 /* AuthenticationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA80630425147BBB004B73B0 /* AuthenticationHelper.swift */; };
+		CA80631825147FCF004B73B0 /* FurtherLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA80631725147FCF004B73B0 /* FurtherLogger.swift */; };
+		CA80631E25148063004B73B0 /* FurtherLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA80631725147FCF004B73B0 /* FurtherLogger.swift */; };
 		CA80E017243C3DA000410CBF /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA80E015243C3DA000410CBF /* Interface.storyboard */; };
 		CA80E019243C3DA300410CBF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA80E018243C3DA300410CBF /* Assets.xcassets */; };
 		CA80E020243C3DA300410CBF /* Further Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CA80E01F243C3DA300410CBF /* Further Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -238,6 +244,7 @@
 		CA1AB6022435829400291F3D /* QuestionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionModel.swift; sourceTree = "<group>"; };
 		CA1AB6042435831000291F3D /* QuestionsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionsController.swift; sourceTree = "<group>"; };
 		CA2D368324351C2900401C84 /* PersonDetectee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDetectee.swift; sourceTree = "<group>"; };
+		CA30396425153EFE00BE4082 /* MapHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapHelper.swift; sourceTree = "<group>"; };
 		CA3A4C7B24478E77004D6D7F /* QuestionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionsView.swift; sourceTree = "<group>"; };
 		CA3A4C7E2447C940004D6D7F /* DisclaimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclaimerView.swift; sourceTree = "<group>"; };
 		CA42DFAD250AB9BE006C0125 /* PersonInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonInfoModel.swift; sourceTree = "<group>"; };
@@ -257,6 +264,8 @@
 		CA7544602431878300C45C28 /* PersonModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonModel.swift; sourceTree = "<group>"; };
 		CA7544632432EF3C00C45C28 /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
 		CA75446A2433A51F00C45C28 /* QuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionView.swift; sourceTree = "<group>"; };
+		CA80630425147BBB004B73B0 /* AuthenticationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationHelper.swift; sourceTree = "<group>"; };
+		CA80631725147FCF004B73B0 /* FurtherLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FurtherLogger.swift; sourceTree = "<group>"; };
 		CA80E013243C3DA000410CBF /* Further.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Further.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA80E016243C3DA000410CBF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
 		CA80E018243C3DA300410CBF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -383,6 +392,7 @@
 		CA11D504242AC9C50074E024 /* Code */ = {
 			isa = PBXGroup;
 			children = (
+				CA30396325153EF000BE4082 /* Map */,
 				CA42DFAC250AB9B1006C0125 /* PersonInfo */,
 				CA11D505242AC9C90074E024 /* Core */,
 				CA11D507242ACAD90074E024 /* Extensions */,
@@ -432,6 +442,14 @@
 			path = Questions;
 			sourceTree = "<group>";
 		};
+		CA30396325153EF000BE4082 /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				CA30396425153EFE00BE4082 /* MapHelper.swift */,
+			);
+			path = Map;
+			sourceTree = "<group>";
+		};
 		CA3A4C7D2447C92D004D6D7F /* Disclaimer */ = {
 			isa = PBXGroup;
 			children = (
@@ -476,6 +494,8 @@
 		CA68797F2513DC32008B6937 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				CA80631625147FC6004B73B0 /* Logger */,
+				CA80630325147BAD004B73B0 /* Authentication */,
 				CA6879802513DC40008B6937 /* SharedAssets.xcassets */,
 			);
 			path = Shared;
@@ -488,6 +508,22 @@
 				CACE2A3724356B3D00A8B8D5 /* QuestionsView.swift */,
 			);
 			path = Questionnaire;
+			sourceTree = "<group>";
+		};
+		CA80630325147BAD004B73B0 /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				CA80630425147BBB004B73B0 /* AuthenticationHelper.swift */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
+		CA80631625147FC6004B73B0 /* Logger */ = {
+			isa = PBXGroup;
+			children = (
+				CA80631725147FCF004B73B0 /* FurtherLogger.swift */,
+			);
+			path = Logger;
 			sourceTree = "<group>";
 		};
 		CA80E014243C3DA000410CBF /* Further */ = {
@@ -1123,6 +1159,8 @@
 				CA6879BD2513DD22008B6937 /* PersonInfoModel.swift in Sources */,
 				CA6879D02513DD37008B6937 /* QuestionsController.swift in Sources */,
 				CA6879BC2513DD22008B6937 /* PersonInfoController.swift in Sources */,
+				CA3039702515405A00BE4082 /* MapHelper.swift in Sources */,
+				CA80631025147BC4004B73B0 /* AuthenticationHelper.swift in Sources */,
 				CA68798D2513DCF4008B6937 /* SimpleButtonStyle.swift in Sources */,
 				CA6879C42513DD28008B6937 /* EnvironmentSettings.swift in Sources */,
 				CA68796B2513DB33008B6937 /* ContentView.swift in Sources */,
@@ -1130,6 +1168,7 @@
 				CABAAD5825140AA500961080 /* LocationAuthenticator.swift in Sources */,
 				CA6879AA2513DD09008B6937 /* EntryBackgroundView.swift in Sources */,
 				CA6879D22513DD37008B6937 /* QuestionModel.swift in Sources */,
+				CA80631E25148063004B73B0 /* FurtherLogger.swift in Sources */,
 				CA6879692513DB33008B6937 /* Further_App_ClipApp.swift in Sources */,
 				CA6879B62513DD0F008B6937 /* QuestionView.swift in Sources */,
 				CA6879CA2513DD2F008B6937 /* Extensions.swift in Sources */,
@@ -1168,9 +1207,11 @@
 			files = (
 				CA9A0CCA243FCD2B00724394 /* StoryButton.swift in Sources */,
 				CA9A0CC7243FCBCA00724394 /* QuestionButton.swift in Sources */,
+				CA80631825147FCF004B73B0 /* FurtherLogger.swift in Sources */,
 				CA2D368424351C2900401C84 /* PersonDetectee.swift in Sources */,
 				CA11D50B242ACB920074E024 /* SimpleButtonStyle.swift in Sources */,
 				CAA0AD0924366321007A9522 /* CovidModel.swift in Sources */,
+				CA80630525147BBB004B73B0 /* AuthenticationHelper.swift in Sources */,
 				CA42DFB0250ABA56006C0125 /* QRCodeGenerator.swift in Sources */,
 				CAA0AD122436A03C007A9522 /* StoryView.swift in Sources */,
 				CA3A4C7F2447C940004D6D7F /* DisclaimerView.swift in Sources */,
@@ -1188,6 +1229,7 @@
 				CA9D81D1242151AE009625DF /* SceneDelegate.swift in Sources */,
 				CAC6D132243819B20088B3E4 /* EnvironmentSettings.swift in Sources */,
 				CA75446B2433A51F00C45C28 /* QuestionView.swift in Sources */,
+				CA30396525153EFE00BE4082 /* MapHelper.swift in Sources */,
 				CA444838243CE0CD005B883C /* IdentificationHelper.swift in Sources */,
 				CA9D81D3242151AE009625DF /* EntryView.swift in Sources */,
 				CA42DFAE250AB9BE006C0125 /* PersonInfoModel.swift in Sources */,

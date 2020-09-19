@@ -14,5 +14,6 @@ struct PersonInfoModel: Identifiable, Codable {
     var email: String?
     var phone: String?
     var address: String?
+    var addressZip: String?
     var qrCodePath: URL?
 }

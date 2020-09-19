@@ -17,7 +17,7 @@ struct Further_App_ClipApp: App {
     
     // MARK: UI Config
     @State private var inRegion = false
-    @State private var establishmentName = "this establishment."
+    @State private var establishmentName = "this establishment"
     
     // MARK: TEST
     @State private var receivedURL = ""

@@ -56,8 +56,10 @@
       allowLocationSimulation = "YES"
       launchAutomaticallySubstyle = "8"
       notificationPayloadFile = "Further Extension/PushNotificationPayload.apns">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <RemoteRunnable
+         runnableDebuggingMode = "2"
+         BundleIdentifier = "com.apple.Carousel"
+         RemotePath = "/Further">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "CA80E012243C3DA000410CBF"
@@ -65,7 +67,7 @@
             BlueprintName = "Further"
             ReferencedContainer = "container:SwiftUIDesignProject.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </RemoteRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -75,8 +77,10 @@
       debugDocumentVersioning = "YES"
       launchAutomaticallySubstyle = "8"
       notificationPayloadFile = "Further Extension/PushNotificationPayload.apns">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <RemoteRunnable
+         runnableDebuggingMode = "2"
+         BundleIdentifier = "com.apple.Carousel"
+         RemotePath = "/Further">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "CA80E012243C3DA000410CBF"
@@ -84,7 +88,16 @@
             BlueprintName = "Further"
             ReferencedContainer = "container:SwiftUIDesignProject.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </RemoteRunnable>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "CA80E012243C3DA000410CBF"
+            BuildableName = "Further.app"
+            BlueprintName = "Further"
+            ReferencedContainer = "container:SwiftUIDesignProject.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

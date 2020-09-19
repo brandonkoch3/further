@@ -31,9 +31,11 @@ class QRCodeGenerator {
     }
     
     public func buildQRCode(appType: EnvironmentSettings.appType, uniqueID: String, baseURL: String) {
+        print("About to build QR CODE")
         if let codeImage = generateCoolQRCode(appType: appType, uniqueID: uniqueID, baseURL: baseURL) {
             if let lightURL = saveQRCode(image: codeImage.0, fileName: "qrcode_light.png"), let darkURL = saveQRCode(image: codeImage.1, fileName: "qrcode_dark.png") {
                 _ = darkURL
+                print("DONE WITH QR CODE")
                 qrCompletionSender.send(lightURL)
             }
         }

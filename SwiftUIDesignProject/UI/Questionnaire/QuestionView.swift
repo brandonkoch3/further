@@ -15,7 +15,7 @@ struct QuestionView: View {
     @Binding var showingQuestionSheet: Bool
     @State private var showingQuestion = false
     
-    // Helpers
+    // MARK: Helpers
     @EnvironmentObject var questions: QuestionsController
     @EnvironmentObject var personController: PersonInfoController
     
@@ -71,9 +71,9 @@ struct QuestionView: View {
     func informationView() -> some View {
         return VStack {
             InformationView(sectionImage: Image("\(colorScheme == .light ? "light" : "dark")_hand_icon"), headerTitle: "Name", subTitle: "Your Name")
-            InformationView(sectionImage: Image("\(colorScheme == .light ? "light" : "dark")_people_icon"), headerTitle: "Phone", subTitle: "Phone Number")
-            InformationView(sectionImage: Image("\(colorScheme == .light ? "light" : "dark")_health_icon"), headerTitle: "Address", subTitle: "Local Address")
-            InformationView(sectionImage: Image("\(colorScheme == .light ? "light" : "dark")_health_icon"), headerTitle: "Email", subTitle: "An e-mail you check")
+//            InformationView(sectionImage: Image("\(colorScheme == .light ? "light" : "dark")_people_icon"), headerTitle: "Phone", subTitle: "Phone Number")
+//            InformationView(sectionImage: Image("\(colorScheme == .light ? "light" : "dark")_health_icon"), headerTitle: "Address", subTitle: "Local Address")
+//            InformationView(sectionImage: Image("\(colorScheme == .light ? "light" : "dark")_health_icon"), headerTitle: "Email", subTitle: "An e-mail you check")
             Spacer()
         }
     }
@@ -105,11 +105,13 @@ struct QuestionView_Previews: PreviewProvider {
                 .previewDevice("iPhone SE (2nd generation)")
                 .environment(\.colorScheme, .dark)
                 .environmentObject(QuestionsController())
+                .environmentObject(PersonInfoController())
             
             QuestionView(showingQuestionSheet: .constant(true))
                 .previewDevice("iPhone 11 Pro Max")
             .environment(\.colorScheme, .light)
             .environmentObject(QuestionsController())
+            .environmentObject(PersonInfoController())
         }
     }
 }
@@ -123,34 +125,140 @@ struct InformationView: View {
     var imageOffset: CGFloat? = 0
     @Environment(\.colorScheme) var colorScheme
     
+    @EnvironmentObject var personController: PersonInfoController
+    
     @State var test = ""
     
     var body: some View {
         GeometryReader { geometry in
-            self.infoView(geometry: geometry)
-        }
-    }
-    
-    func infoView(geometry: GeometryProxy) -> some View {
-        return ZStack {
-            RoundedRectangle(cornerRadius: 18)
-                .fill(colorScheme == .light ? Color.offWhite : Color(hex: "25282d"))
-                .frame(width: geometry.size.width, height: 100)
-                .shadow(color: colorScheme == .light ? Color("LightShadow") : Color(hex: "505050"), radius: colorScheme == .light ? 8 : 0.5, x: colorScheme == .light ? -8 : -1, y: colorScheme == .light ? -8 : -1)
-                .shadow(color: colorScheme == .light ? Color("DarkShadow") : .black, radius: 8, x: colorScheme == .light ? 8 : -1, y: colorScheme == .light ? 8 : 1)
-            
-            HStack {
-                self.sectionImage
-                VStack(alignment: .leading, spacing: 5.0) {
-                    Text(self.headerTitle)
-                        .font(Font.custom("Rubik-Medium", size: 23.3))
-                    TextField(subTitle, text: $test)
-                        .font(Font.custom("Rubik-Light", size: 15.5))
-                        .keyboardType(keyboardType())
-                        .textContentType(contentType())
+            VStack(spacing: 20.0) {
+                
+                if personController.mapHelper.results.isEmpty {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 18)
+                        .fill(colorScheme == .light ? Color.offWhite : Color(hex: "25282d"))
+                        .frame(width: geometry.size.width, height: geometry.size.height * 0.16)
+                        .shadow(color: colorScheme == .light ? Color("LightShadow") : Color(hex: "505050"), radius: colorScheme == .light ? 8 : 0.5, x: colorScheme == .light ? -8 : -1, y: colorScheme == .light ? -8 : -1)
+                        .shadow(color: colorScheme == .light ? Color("DarkShadow") : .black, radius: 8, x: colorScheme == .light ? 8 : -1, y: colorScheme == .light ? 8 : 1)
+                    
+                    HStack {
+                        self.sectionImage
+                        VStack(alignment: .leading, spacing: 5.0) {
+                            Text("Name")
+                                .font(Font.custom("Rubik-Medium", size: 23.3))
+                            TextField("First Last", text: $personController.name)
+                                .font(Font.custom("Rubik-Light", size: 15.5))
+                                .keyboardType(keyboardType())
+                                .textContentType(contentType())
+                        }
+                        Spacer()
+                    }
                 }
+                
+                ZStack {
+                    RoundedRectangle(cornerRadius: 18)
+                        .fill(colorScheme == .light ? Color.offWhite : Color(hex: "25282d"))
+                        .frame(width: geometry.size.width, height: geometry.size.height * 0.16)
+                        .shadow(color: colorScheme == .light ? Color("LightShadow") : Color(hex: "505050"), radius: colorScheme == .light ? 8 : 0.5, x: colorScheme == .light ? -8 : -1, y: colorScheme == .light ? -8 : -1)
+                        .shadow(color: colorScheme == .light ? Color("DarkShadow") : .black, radius: 8, x: colorScheme == .light ? 8 : -1, y: colorScheme == .light ? 8 : 1)
+                    
+                    HStack {
+                        self.sectionImage
+                        VStack(alignment: .leading, spacing: 5.0) {
+                            Text("Phone Number")
+                                .font(Font.custom("Rubik-Medium", size: 23.3))
+                            TextField("A number you'll answer", text: $personController.phone)
+                                .font(Font.custom("Rubik-Light", size: 15.5))
+                                .keyboardType(keyboardType())
+                                .textContentType(contentType())
+                        }
+                        Spacer()
+                    }
+                }
+                
+                ZStack {
+                    RoundedRectangle(cornerRadius: 18)
+                        .fill(colorScheme == .light ? Color.offWhite : Color(hex: "25282d"))
+                        .frame(width: geometry.size.width, height: geometry.size.height * 0.16)
+                        .shadow(color: colorScheme == .light ? Color("LightShadow") : Color(hex: "505050"), radius: colorScheme == .light ? 8 : 0.5, x: colorScheme == .light ? -8 : -1, y: colorScheme == .light ? -8 : -1)
+                        .shadow(color: colorScheme == .light ? Color("DarkShadow") : .black, radius: 8, x: colorScheme == .light ? 8 : -1, y: colorScheme == .light ? 8 : 1)
+                    
+                    HStack {
+                        self.sectionImage
+                        VStack(alignment: .leading, spacing: 5.0) {
+                            Text("E-mail")
+                                .font(Font.custom("Rubik-Medium", size: 23.3))
+                            TextField("An e-mail you check", text: $personController.email)
+                                .font(Font.custom("Rubik-Light", size: 15.5))
+                                .keyboardType(keyboardType())
+                                .textContentType(contentType())
+                        }
+                        Spacer()
+                    }
+                }
+                    
+                }
+                
+                ZStack {
+                    RoundedRectangle(cornerRadius: 18)
+                        .fill(colorScheme == .light ? Color.offWhite : Color(hex: "25282d"))
+                        .frame(width: geometry.size.width, height: geometry.size.height * 0.16)
+                        .shadow(color: colorScheme == .light ? Color("LightShadow") : Color(hex: "505050"), radius: colorScheme == .light ? 8 : 0.5, x: colorScheme == .light ? -8 : -1, y: colorScheme == .light ? -8 : -1)
+                        .shadow(color: colorScheme == .light ? Color("DarkShadow") : .black, radius: 8, x: colorScheme == .light ? 8 : -1, y: colorScheme == .light ? 8 : 1)
+                    
+                    HStack {
+                        self.sectionImage
+                        VStack(alignment: .leading, spacing: 5.0) {
+                            Text("Local Address")
+                                .font(Font.custom("Rubik-Medium", size: 23.3))
+                            TextField("Address", text: $personController.address)
+                                .font(Font.custom("Rubik-Light", size: 15.5))
+                                .keyboardType(keyboardType())
+                                .textContentType(contentType())
+                            TextField("Zip", text: $personController.addressZip)
+                                .font(Font.custom("Rubik-Light", size: 15.5))
+                                .keyboardType(keyboardType())
+                                .textContentType(contentType())
+                        }
+                        Spacer()
+                    }
+                }
+                
+                
+                if !personController.mapHelper.results.isEmpty {
+                    List {
+                        ForEach(personController.mapHelper.results) { item in
+                            VStack(alignment: .leading) {
+                                Text(item.title)
+                                Text(item.subtitle)
+                                    .foregroundColor(.gray)
+                                    .font(.system(size: 8.0))
+                            }
+                        }
+                    }.frame(height: 250.0)
+                    .background(Color.clear)
+                }
+                
                 Spacer()
+                
+                Button(action: {
+                    //
+                }, label: {
+                    Text("Share Securely")
+                        .fontWeight(.bold)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 50.0)
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(40)
+                        .padding()
+                })
             }
+            
+            
+            
+            
+            
         }
     }
     

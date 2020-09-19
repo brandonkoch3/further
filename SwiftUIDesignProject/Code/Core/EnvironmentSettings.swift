@@ -22,10 +22,10 @@ class EnvironmentSettings: ObservableObject {
     }
     
     // MARK: App Type
-    @AppStorage("appType") var appType: appType = .unknown
+    @AppStorage("appType", store: UserDefaults(suiteName: "group.com.bnbmedia.further.contents")) var appType: appType = .unknown
     
     // MARK: API
-    @AppStorage("baseURL") var baseURL: String = "https://further-app.com/connect/"
+    @AppStorage("baseURL", store: UserDefaults(suiteName: "group.com.bnbmedia.further.contents")) var baseURL: String = "https://further-app.com/connect/"
     
     init() {
         baseURL = "https://further-app.com/connect/"

@@ -25,12 +25,14 @@ class PersonInfoController: ObservableObject {
     @Published var phone: String = ""
     @Published var email: String = ""
     @Published var address: String = ""
+    @Published var addressZip: String = ""
     
     // MARK: Helpers
     let decoder = JSONDecoder()
     let encoder = JSONEncoder()
     let defaults = UserDefaults(suiteName: "group.com.bnbmedia.further.contents")
     let qrGenerator = QRCodeGenerator()
+    let mapHelper = MapHelper()
     
     // MARK: QR Code
     @Published public var qrCode: UIImage = UIImage(systemName: "plus.viewfinder")!
@@ -54,7 +56,7 @@ class PersonInfoController: ObservableObject {
         } else {
             
             // Generate person info
-            self.personInfo = PersonInfoModel(id: UUID().uuidString, name: nil, email: nil, phone: nil, address: nil, qrCodePath: nil)
+            self.personInfo = PersonInfoModel(id: UUID().uuidString, name: nil, email: nil, phone: nil, address: nil, addressZip: nil, qrCodePath: nil)
             
             // Save locally
             savePersonInfo(data: self.personInfo!)
@@ -103,6 +105,16 @@ class PersonInfoController: ObservableObject {
                 guard self.personInfo != nil else { return }
                 self.personInfo!.address = a
                 self.savePersonInfo(data: self.personInfo!)
+                self.mapHelper.search(for: a)
+            }
+            .store(in: &editorCancellables)
+        
+            $addressZip
+            .receive(on: RunLoop.main)
+            .sink { (a) in
+                guard self.personInfo != nil else { return }
+                self.personInfo!.addressZip = a
+                self.savePersonInfo(data: self.personInfo!)
             }
             .store(in: &editorCancellables)
         
@@ -111,12 +123,17 @@ class PersonInfoController: ObservableObject {
     
     public func generateQRCode() {
         
+        print("You chose!")
+        
         // Load environmental data
         loadEnvironmentInfo()
-        print("loaded environment data")
         
         // Generate QR Code
-        guard let type = self.appType, let url = baseURL, let id = self.personInfo?.id else { return }
+        guard let type = self.appType, let url = baseURL, let id = self.personInfo?.id else {
+            print("Problem!!!!!")
+            return
+            
+        }
         qrGenerator.buildQRCode(appType: type, uniqueID: id, baseURL: url)
     }
     

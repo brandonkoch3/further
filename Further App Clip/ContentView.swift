@@ -13,6 +13,9 @@ struct ContentView: View {
     // MARK: Configuration
     @AppStorage("hasSeenDisclaimer", store: UserDefaults(suiteName: "group.com.bnbmedia.further.contents")) var hasSeenDisclaimer: Bool = false
     
+    // MARK: Helpers
+    
+    
     // MARK: UI Config
     @Binding var isInRegion: Bool
     @Binding var establishmentName: String
@@ -24,7 +27,7 @@ struct ContentView: View {
     var body: some View {
         QuestionView(showingQuestionSheet: .constant(true))
             .sheet(isPresented: $showingDisclaimer) {
-                Disclaimer(establishmentName: $establishmentName, isInRegion: $isInRegion, receivedURL: $receivedURL)
+                Disclaimer(establishmentName: $establishmentName, isShowingDisclaimer: $showingDisclaimer, isInRegion: $isInRegion, receivedURL: $receivedURL)
             }
         
     }
@@ -37,6 +40,7 @@ struct Disclaimer: View {
     
     // MARK: UI Configuration
     @Binding var establishmentName: String
+    @Binding var isShowingDisclaimer: Bool
     
     // MARK: Test
     @Binding var isInRegion: Bool
@@ -107,7 +111,7 @@ struct Disclaimer: View {
                         .foregroundColor(.gray)
                         .padding()
                     Button(action: {
-                        //
+                        self.isShowingDisclaimer.toggle()
                     }, label: {
                         Text("Get Started")
                             .fontWeight(.bold)
