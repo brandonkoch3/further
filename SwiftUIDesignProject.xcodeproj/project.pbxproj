@@ -794,6 +794,8 @@
 			dependencies = (
 			);
 			name = "Further App Clip";
+			packageProductDependencies = (
+			);
 			productName = "Further App Clip";
 			productReference = CA6879662513DB32008B6937 /* Further App Clip.app */;
 			productType = "com.apple.product-type.application.on-demand-install-capable";
@@ -856,6 +858,8 @@
 				CA6879742513DB34008B6937 /* PBXTargetDependency */,
 			);
 			name = Futher;
+			packageProductDependencies = (
+			);
 			productName = SwiftUIDesignProject;
 			productReference = CA9D81CB242151AE009625DF /* Further.app */;
 			productType = "com.apple.product-type.application";
@@ -914,6 +918,8 @@
 				Base,
 			);
 			mainGroup = CA9D81C2242151AE009625DF;
+			packageReferences = (
+			);
 			productRefGroup = CA9D81CC242151AE009625DF /* Products */;
 			projectDirPath = "";
 			projectRoot = "";

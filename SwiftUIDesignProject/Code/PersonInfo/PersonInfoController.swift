@@ -9,6 +9,7 @@
 import Foundation
 import SwiftUI
 import Combine
+import MapKit
 #if canImport(WidgetKit)
 import WidgetKit
 #endif
@@ -16,16 +17,9 @@ import WidgetKit
 class PersonInfoController: ObservableObject {
     
     // MARK: Data
-    @Published var personInfo: PersonInfoModel?
+    @Published var personInfo: PersonInfoModel!
     var baseURL: String?
     var appType: EnvironmentSettings.appType?
-    
-    // MARK: Editable Data
-    @Published var name: String = ""
-    @Published var phone: String = ""
-    @Published var email: String = ""
-    @Published var address: String = ""
-    @Published var addressZip: String = ""
     
     // MARK: Helpers
     let decoder = JSONDecoder()
@@ -43,7 +37,9 @@ class PersonInfoController: ObservableObject {
     
     // MARK: Combine
     var qrCancellable: AnyCancellable?
-    var editorCancellables = Set<AnyCancellable>()
+    var mapCancellable: AnyCancellable?
+    var editorCancellable: AnyCancellable?
+    var addressCancellable: AnyCancellable?
     
     init() {
         
@@ -53,84 +49,75 @@ class PersonInfoController: ObservableObject {
             if let qr = self.qrGenerator.userQRCode() {
                 self.qrCode = qr
             }
+            self.setupListeners()
         } else {
             
             // Generate person info
-            self.personInfo = PersonInfoModel(id: UUID().uuidString, name: nil, email: nil, phone: nil, address: nil, addressZip: nil, qrCodePath: nil)
+            self.personInfo = PersonInfoModel(id: UUID().uuidString, name: "", email: "", phone: "", address: "", unit: "", addressZip: "")
             
             // Save locally
             savePersonInfo(data: self.personInfo!)
             
-            // Setup listener
-            qrCancellable = qrGenerator.qrCompletionPublisher
-                .receive(on: RunLoop.main)
-                .sink(receiveValue: { (qrURL) in
-                    if let qr = self.qrGenerator.userQRCode() {
-                        self.qrCode = qr
-                    }
-                })
+            // Setup listeners
+            self.setupListeners()
         }
+    }
+    
+    private func setupListeners() {
         
-        // Setup listener
-            $name
+        // Editor Listener
+        editorCancellable = $personInfo
             .receive(on: RunLoop.main)
-            .sink { (n) in
-                guard self.personInfo != nil else { return }
-                self.personInfo!.name = n
-                self.savePersonInfo(data: self.personInfo!)
-            }
-            .store(in: &editorCancellables)
+            .sink(receiveValue: { (person) in
+                self.savePersonInfo(data: person!)
+            })
         
-            $phone
+        addressCancellable = $personInfo
             .receive(on: RunLoop.main)
-            .sink { (p) in
-                guard self.personInfo != nil else { return }
-                self.personInfo!.phone = p
-                self.savePersonInfo(data: self.personInfo!)
-            }
-            .store(in: &editorCancellables)
+            .filter{ $0?.address != "" }
+            .compactMap { $0?.address }
+            .sink(receiveValue: { (address) in
+                self.mapHelper.search(for: address)
+            })
         
-            $email
+        // QR Code Listener
+        qrCancellable = qrGenerator.qrCompletionPublisher
             .receive(on: RunLoop.main)
-            .sink { (e) in
-                guard self.personInfo != nil else { return }
-                self.personInfo!.email = e
-                self.savePersonInfo(data: self.personInfo!)
-            }
-            .store(in: &editorCancellables)
+            .sink(receiveValue: { (qrURL) in
+                if let qr = self.qrGenerator.userQRCode() {
+                    self.qrCode = qr
+                }
+            })
         
-            $address
+        // Map Listener
+        mapCancellable = mapHelper.$selectedItem
             .receive(on: RunLoop.main)
-            .sink { (a) in
-                guard self.personInfo != nil else { return }
-                self.personInfo!.address = a
-                self.savePersonInfo(data: self.personInfo!)
-                self.mapHelper.search(for: a)
-            }
-            .store(in: &editorCancellables)
+            .sink(receiveValue: { [self] (item) in
+                if let addressOne = item?.thoroughfare {
+                    self.personInfo.address = addressOne
+                    if let addressTwo = item?.subThoroughfare {
+                        self.personInfo.address = addressTwo + " " + addressOne
+                    }
+                }
+                if let zip = item?.postalCode {
+                    self.personInfo.addressZip = zip
+                    if let city = item?.locality {
+                        if let state = item?.administrativeArea {
+                            self.personInfo.addressZip = city + ", " + state + " " + zip
+                        }
+                    }
+                }
+            })
         
-            $addressZip
-            .receive(on: RunLoop.main)
-            .sink { (a) in
-                guard self.personInfo != nil else { return }
-                self.personInfo!.addressZip = a
-                self.savePersonInfo(data: self.personInfo!)
-            }
-            .store(in: &editorCancellables)
-        
-            
     }
     
     public func generateQRCode() {
-        
-        print("You chose!")
         
         // Load environmental data
         loadEnvironmentInfo()
         
         // Generate QR Code
         guard let type = self.appType, let url = baseURL, let id = self.personInfo?.id else {
-            print("Problem!!!!!")
             return
             
         }
@@ -150,10 +137,13 @@ class PersonInfoController: ObservableObject {
     
     private func loadPersonInfo() -> PersonInfoModel? {
         
+        print("Check person info")
+        
         // Check Key-Value Storage for person info
         #if !os(watchOS)
         if let savedData = keyValStore.object(forKey: "personInfoModel") as? Data {
             if let loadedData = try? decoder.decode(PersonInfoModel.self, from: savedData) {
+                print("Returning person info", loadedData)
                 return loadedData
             }
         }
@@ -167,7 +157,6 @@ class PersonInfoController: ObservableObject {
                 }
             }
         }
-        
         return nil
     }
     
@@ -177,8 +166,21 @@ class PersonInfoController: ObservableObject {
         savePersonInfoRemotely(data: data) { (response) in
             //
         }
-        guard data.qrCodePath != nil else { return }
         updateWidget()
+    }
+    
+    public func saveAndValidate(data: PersonInfoModel) -> Bool {
+        guard data.name != "",
+              data.phone != "",
+              data.phone.isValidPhone(),
+              data.email != "",
+              data.email.isValidEmail(),
+              data.address != "",
+              data.addressZip != ""
+              
+        else { return false }
+        
+        return true
     }
     
     private func savePersonInfoLocally(data: PersonInfoModel) {

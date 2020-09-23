@@ -169,3 +169,40 @@ extension Notification {
     }
 }
 #endif
+
+// MARK: Formatting
+extension String {
+    func applyPatternOnNumbers(pattern: String, replacmentCharacter: Character) -> String {
+        var pureNumber = self.replacingOccurrences( of: "[^0-9]", with: "", options: .regularExpression)
+        for index in 0 ..< pattern.count {
+            guard index < pureNumber.count else { return pureNumber }
+            let stringIndex = String.Index(utf16Offset: index, in: pureNumber)
+            //let stringIndex = String.Index(encodedOffset: index)
+            let patternCharacter = pattern[stringIndex]
+            guard patternCharacter != replacmentCharacter else { continue }
+            pureNumber.insert(patternCharacter, at: stringIndex)
+        }
+        if pureNumber.count > pattern.count {
+            let index = pureNumber.index(pureNumber.startIndex, offsetBy: pattern.count)
+            let pure = pureNumber[..<index]
+            return String(pure)
+        }
+        return pureNumber
+    }
+}
+
+// MARK: Data Validation
+extension String {
+    func isValidEmail() -> Bool {
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+
+        let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailPred.evaluate(with: self)
+    }
+    func isValidPhone() -> Bool {
+        let phoneRegex = "^[0-9+]{0,1}+[0-9]{5,16}$"
+        let phoneTest = NSPredicate(format: "SELF MATCHES %@", phoneRegex)
+        return phoneTest.evaluate(with: self)
+    }
+}
+

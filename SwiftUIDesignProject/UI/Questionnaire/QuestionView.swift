@@ -8,6 +8,7 @@
 
 import SwiftUI
 import Combine
+import UIKit
 
 struct QuestionView: View {
     
@@ -45,6 +46,9 @@ struct QuestionView: View {
                 ZStack {
                     Image(self.colorScheme == .light ? "day_graident" : "night_graident").resizable()
                     VStack {
+                        
+                        
+
                         
                         // Header
                         HeaderText()
@@ -121,128 +125,77 @@ struct InformationView: View {
     var sectionImage: Image
     var headerTitle: String
     var subTitle: String
-    //@Binding var textField: String
     var imageOffset: CGFloat? = 0
     @Environment(\.colorScheme) var colorScheme
     
     @EnvironmentObject var personController: PersonInfoController
     
-    @State var test = ""
+    @State private var showList = false
+    
+    // MARK: Animation
+    @Namespace private var animation
     
     var body: some View {
         GeometryReader { geometry in
             VStack(spacing: 20.0) {
                 
-                if personController.mapHelper.results.isEmpty {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 18)
-                        .fill(colorScheme == .light ? Color.offWhite : Color(hex: "25282d"))
-                        .frame(width: geometry.size.width, height: geometry.size.height * 0.16)
-                        .shadow(color: colorScheme == .light ? Color("LightShadow") : Color(hex: "505050"), radius: colorScheme == .light ? 8 : 0.5, x: colorScheme == .light ? -8 : -1, y: colorScheme == .light ? -8 : -1)
-                        .shadow(color: colorScheme == .light ? Color("DarkShadow") : .black, radius: 8, x: colorScheme == .light ? 8 : -1, y: colorScheme == .light ? 8 : 1)
-                    
-                    HStack {
-                        self.sectionImage
-                        VStack(alignment: .leading, spacing: 5.0) {
-                            Text("Name")
-                                .font(Font.custom("Rubik-Medium", size: 23.3))
-                            TextField("First Last", text: $personController.name)
-                                .font(Font.custom("Rubik-Light", size: 15.5))
-                                .keyboardType(keyboardType())
-                                .textContentType(contentType())
-                        }
-                        Spacer()
+                if !showList {
+                    Group {
+                        EntryField(geometry: geometry, sectionImage: self.sectionImage, keyboardType: "name", headerText: "Name", subtitle: "First Last", fieldBinding: $personController.personInfo.name)
+                        
+                        EntryField(geometry: geometry, sectionImage: self.sectionImage, keyboardType: "phone", headerText: "Phone Number", subtitle: "A number you'll answer", fieldBinding: $personController.personInfo.phone)
+                        
+                        EntryField(geometry: geometry, sectionImage: self.sectionImage, keyboardType: "email", headerText: "E-mail", subtitle: "An e-mail you check", fieldBinding: $personController.personInfo.email)
                     }
                 }
                 
+                // Address Field
                 ZStack {
-                    RoundedRectangle(cornerRadius: 18)
-                        .fill(colorScheme == .light ? Color.offWhite : Color(hex: "25282d"))
-                        .frame(width: geometry.size.width, height: geometry.size.height * 0.16)
-                        .shadow(color: colorScheme == .light ? Color("LightShadow") : Color(hex: "505050"), radius: colorScheme == .light ? 8 : 0.5, x: colorScheme == .light ? -8 : -1, y: colorScheme == .light ? -8 : -1)
-                        .shadow(color: colorScheme == .light ? Color("DarkShadow") : .black, radius: 8, x: colorScheme == .light ? 8 : -1, y: colorScheme == .light ? 8 : 1)
-                    
-                    HStack {
-                        self.sectionImage
-                        VStack(alignment: .leading, spacing: 5.0) {
-                            Text("Phone Number")
-                                .font(Font.custom("Rubik-Medium", size: 23.3))
-                            TextField("A number you'll answer", text: $personController.phone)
-                                .font(Font.custom("Rubik-Light", size: 15.5))
-                                .keyboardType(keyboardType())
-                                .textContentType(contentType())
-                        }
-                        Spacer()
-                    }
-                }
-                
-                ZStack {
-                    RoundedRectangle(cornerRadius: 18)
-                        .fill(colorScheme == .light ? Color.offWhite : Color(hex: "25282d"))
-                        .frame(width: geometry.size.width, height: geometry.size.height * 0.16)
-                        .shadow(color: colorScheme == .light ? Color("LightShadow") : Color(hex: "505050"), radius: colorScheme == .light ? 8 : 0.5, x: colorScheme == .light ? -8 : -1, y: colorScheme == .light ? -8 : -1)
-                        .shadow(color: colorScheme == .light ? Color("DarkShadow") : .black, radius: 8, x: colorScheme == .light ? 8 : -1, y: colorScheme == .light ? 8 : 1)
-                    
-                    HStack {
-                        self.sectionImage
-                        VStack(alignment: .leading, spacing: 5.0) {
-                            Text("E-mail")
-                                .font(Font.custom("Rubik-Medium", size: 23.3))
-                            TextField("An e-mail you check", text: $personController.email)
-                                .font(Font.custom("Rubik-Light", size: 15.5))
-                                .keyboardType(keyboardType())
-                                .textContentType(contentType())
-                        }
-                        Spacer()
-                    }
-                }
-                    
-                }
-                
-                ZStack {
-                    RoundedRectangle(cornerRadius: 18)
-                        .fill(colorScheme == .light ? Color.offWhite : Color(hex: "25282d"))
-                        .frame(width: geometry.size.width, height: geometry.size.height * 0.16)
-                        .shadow(color: colorScheme == .light ? Color("LightShadow") : Color(hex: "505050"), radius: colorScheme == .light ? 8 : 0.5, x: colorScheme == .light ? -8 : -1, y: colorScheme == .light ? -8 : -1)
-                        .shadow(color: colorScheme == .light ? Color("DarkShadow") : .black, radius: 8, x: colorScheme == .light ? 8 : -1, y: colorScheme == .light ? 8 : 1)
-                    
+                    RectView(geometry: geometry)
+
                     HStack {
                         self.sectionImage
                         VStack(alignment: .leading, spacing: 5.0) {
                             Text("Local Address")
                                 .font(Font.custom("Rubik-Medium", size: 23.3))
-                            TextField("Address", text: $personController.address)
-                                .font(Font.custom("Rubik-Light", size: 15.5))
-                                .keyboardType(keyboardType())
-                                .textContentType(contentType())
-                            TextField("Zip", text: $personController.addressZip)
-                                .font(Font.custom("Rubik-Light", size: 15.5))
-                                .keyboardType(keyboardType())
-                                .textContentType(contentType())
+                            HStack {
+                                TextField("Address", text: $personController.personInfo.address) { (changed) in
+                                    withAnimation {
+                                        if changed { showList = true } else { showList = false }
+                                    }
+                                }
+                                .keyboardConfigured(for: "address")
+
+                                
+                                if !showList {
+                                    Spacer()
+                                    TextField("Apt/Suite", text: $personController.personInfo.unit)
+                                    .keyboardConfigured(for: "unit")
+                                    .frame(width: 75.0)
+                                    .padding([.trailing], 12.0)
+                                }
+                            }
+                            
+                            TextField("Zip", text: $personController.personInfo.addressZip)
+                                .keyboardConfigured(for: "locale")
                         }
                         Spacer()
                     }
                 }
-                
-                
-                if !personController.mapHelper.results.isEmpty {
-                    List {
-                        ForEach(personController.mapHelper.results) { item in
-                            VStack(alignment: .leading) {
-                                Text(item.title)
-                                Text(item.subtitle)
-                                    .foregroundColor(.gray)
-                                    .font(.system(size: 8.0))
-                            }
-                        }
-                    }.frame(height: 250.0)
-                    .background(Color.clear)
+
+                // Search List
+                if showList {
+                    SearchView(showList: $showList)
                 }
-                
+
                 Spacer()
-                
+
                 Button(action: {
-                    //
+                    if self.personController.saveAndValidate(data: personController.personInfo) {
+                        print("We did it!")
+                    } else {
+                        print("Something is wrong")
+                    }
                 }, label: {
                     Text("Share Securely")
                         .fontWeight(.bold)
@@ -254,39 +207,132 @@ struct InformationView: View {
                         .padding()
                 })
             }
-            
-            
-            
-            
-            
         }
     }
+}
+
+struct TextFieldConfigured: ViewModifier {
+    var type: String
     
-    func keyboardType() -> UIKeyboardType {
-        switch headerTitle {
-        case "Name":
+    func body(content: Content) -> some View {
+        content
+            .font(Font.custom("Rubik-Light", size: 15.5))
+            .keyboardType(keyboardType())
+            .textContentType(contentType())
+    }
+    
+    private func keyboardType() -> UIKeyboardType {
+        switch type {
+        case "name":
             return .namePhonePad
-        case "Phone":
-            return .namePhonePad
-        case "Email":
+        case "phone":
+            return .phonePad
+        case "email":
             return .emailAddress
+        case "address":
+            return .numbersAndPunctuation
+        case "unit":
+            return .numbersAndPunctuation
         default:
             return .default
         }
     }
     
-    func contentType() -> UITextContentType {
-        switch headerTitle {
-        case "Name":
+    private func contentType() -> UITextContentType {
+        switch type {
+        case "name":
             return .name
-        case "Phone":
+        case "phone":
             return .telephoneNumber
-        case "Email":
+        case "email":
             return .emailAddress
-        case "Address":
+        case "address":
             return .streetAddressLine1
+        case "unit":
+            return .streetAddressLine2
+        case "locale":
+            return .postalCode
         default:
             return .name
+        }
+    }
+}
+extension View {
+    func keyboardConfigured(for type: String) -> some View {
+        self.modifier(TextFieldConfigured(type: type))
+    }
+}
+
+struct SearchView: View {
+    
+    @EnvironmentObject var personController: PersonInfoController
+    @Environment(\.colorScheme) var colorScheme
+    @Binding var showList: Bool
+    
+    var body: some View {
+        ScrollView(showsIndicators: true) {
+            VStack(alignment: .leading, spacing: 8.0) {
+                ForEach(personController.mapHelper.results) { item in
+                    HStack {
+                        VStack(alignment: .leading) {
+                            Text(item.title)
+                            Text(item.subtitle)
+                                .foregroundColor(.gray)
+                                .font(.system(size: 9.0))
+                        }.onTapGesture {
+                            personController.mapHelper.itemSelected(selection: item)
+                            self.showList = false
+                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                        }
+                        Spacer()
+                    }
+                }
+            }
+        }
+    }
+}
+
+struct RectView: View {
+    var geometry: GeometryProxy
+    @Environment(\.colorScheme) var colorScheme
+    var body: some View {
+        RoundedRectangle(cornerRadius: 18)
+            .fill(colorScheme == .light ? Color.offWhite : Color(hex: "25282d"))
+            .frame(width: geometry.size.width, height: geometry.size.height * 0.16)
+            .shadow(color: colorScheme == .light ? Color("LightShadow") : Color(hex: "505050"), radius: colorScheme == .light ? 8 : 0.5, x: colorScheme == .light ? -8 : -1, y: colorScheme == .light ? -8 : -1)
+            .shadow(color: colorScheme == .light ? Color("DarkShadow") : .black, radius: 8, x: colorScheme == .light ? 8 : -1, y: colorScheme == .light ? 8 : 1)
+    }
+}
+
+struct EntryField: View {
+    
+    // MARK: Helpers
+    var geometry: GeometryProxy
+    var sectionImage: Image
+    var keyboardType: String
+    
+    // MARK: Environment
+    @EnvironmentObject var personController: PersonInfoController
+    
+    // MARK: Config
+    var headerText: String
+    var subtitle: String
+    @Binding var fieldBinding: String
+    
+    var body: some View {
+        ZStack {
+            RectView(geometry: geometry)
+            
+            HStack {
+                self.sectionImage
+                VStack(alignment: .leading, spacing: 5.0) {
+                    Text(headerText)
+                        .font(Font.custom("Rubik-Medium", size: 23.3))
+                    TextField(subtitle, text: $fieldBinding)
+                        .keyboardConfigured(for: keyboardType)
+                }
+                Spacer()
+            }
         }
     }
 }

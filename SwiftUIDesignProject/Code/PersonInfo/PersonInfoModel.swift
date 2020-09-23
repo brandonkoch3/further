@@ -7,13 +7,20 @@
 //
 
 import Foundation
+import SwiftUI
 
 struct PersonInfoModel: Identifiable, Codable {
     var id: String
-    var name: String?
-    var email: String?
-    var phone: String?
-    var address: String?
-    var addressZip: String?
-    var qrCodePath: URL?
+    var name: String
+    var email: String
+    var phone: String {
+        didSet {
+            if phone.first != "+" {
+                phone = phone.applyPatternOnNumbers(pattern: "(###) ###-####", replacmentCharacter: "#")
+            }
+        }
+    }
+    var address: String
+    var unit: String
+    var addressZip: String
 }

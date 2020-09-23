@@ -12,21 +12,16 @@ import SwiftUI
 
 class MapHelper: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
     
-    // MARK: Setup
-    struct MapResults: Identifiable {
-        var id: UUID
-        var title: String
-        var subtitle: String
-    }
-    
-    @State private var test = ""
-    
     var searchCompleter = MKLocalSearchCompleter()
-    @Published var results = [MapResults]()
+    @Published var results = [MKLocalSearchCompletion]()
+    
+    @Published var selectedItem: CLPlacemark?
     
     override init() {
         super.init()
         searchCompleter.delegate = self
+        searchCompleter.resultTypes = [.address, .pointOfInterest]
+        
     }
     
     public func search(for query: String) {
@@ -35,10 +30,27 @@ class MapHelper: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
     }
     
     func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
-        self.results = completer.results.compactMap { MapResults(id: UUID(), title: $0.title, subtitle: $0.subtitle) }
+        self.results = completer.results
     }
     
     func completer(_ completer: MKLocalSearchCompleter, didFailWithError error: Error) {
         //
     }
+    
+    public func itemSelected(selection: MKLocalSearchCompletion) {
+        let request = MKLocalSearch.Request(completion: selection)
+        let search = MKLocalSearch(request: request)
+        search.start { (response, error) in
+            guard let response = response else {
+                return
+            }
+            if let item = response.mapItems.first {
+                let placemark = item.placemark
+                let pl = CLPlacemark(placemark: placemark)
+                self.selectedItem = pl
+            }
+        }
+    }
 }
+
+extension MKLocalSearchCompletion: Identifiable {}
