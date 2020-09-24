@@ -24,6 +24,7 @@
 		CA42DFB0250ABA56006C0125 /* QRCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA42DFAF250ABA56006C0125 /* QRCodeGenerator.swift */; };
 		CA42DFB2250AC5CA006C0125 /* PersonInfoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA42DFB1250AC5CA006C0125 /* PersonInfoController.swift */; };
 		CA444838243CE0CD005B883C /* IdentificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA444837243CE0CD005B883C /* IdentificationHelper.swift */; };
+		CA4AD792251BC5AC00AD9BC6 /* FormattedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7C9EBD251BA898009EC2B6 /* FormattedTextField.swift */; };
 		CA6879692513DB33008B6937 /* Further_App_ClipApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6879682513DB33008B6937 /* Further_App_ClipApp.swift */; };
 		CA68796B2513DB33008B6937 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA68796A2513DB33008B6937 /* ContentView.swift */; };
 		CA68796D2513DB34008B6937 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA68796C2513DB34008B6937 /* Assets.xcassets */; };
@@ -58,6 +59,7 @@
 		CA7544612431878300C45C28 /* PersonModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7544602431878300C45C28 /* PersonModel.swift */; };
 		CA7544642432EF3C00C45C28 /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7544632432EF3C00C45C28 /* Haptics.swift */; };
 		CA75446B2433A51F00C45C28 /* QuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA75446A2433A51F00C45C28 /* QuestionView.swift */; };
+		CA7C9EBE251BA898009EC2B6 /* FormattedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7C9EBD251BA898009EC2B6 /* FormattedTextField.swift */; };
 		CA80630525147BBB004B73B0 /* AuthenticationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA80630425147BBB004B73B0 /* AuthenticationHelper.swift */; };
 		CA80631025147BC4004B73B0 /* AuthenticationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA80630425147BBB004B73B0 /* AuthenticationHelper.swift */; };
 		CA80631825147FCF004B73B0 /* FurtherLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA80631725147FCF004B73B0 /* FurtherLogger.swift */; };
@@ -264,6 +266,7 @@
 		CA7544602431878300C45C28 /* PersonModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonModel.swift; sourceTree = "<group>"; };
 		CA7544632432EF3C00C45C28 /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
 		CA75446A2433A51F00C45C28 /* QuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionView.swift; sourceTree = "<group>"; };
+		CA7C9EBD251BA898009EC2B6 /* FormattedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormattedTextField.swift; sourceTree = "<group>"; };
 		CA80630425147BBB004B73B0 /* AuthenticationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationHelper.swift; sourceTree = "<group>"; };
 		CA80631725147FCF004B73B0 /* FurtherLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FurtherLogger.swift; sourceTree = "<group>"; };
 		CA80E013243C3DA000410CBF /* Further.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Further.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -505,6 +508,7 @@
 			isa = PBXGroup;
 			children = (
 				CA75446A2433A51F00C45C28 /* QuestionView.swift */,
+				CA7C9EBD251BA898009EC2B6 /* FormattedTextField.swift */,
 				CACE2A3724356B3D00A8B8D5 /* QuestionsView.swift */,
 			);
 			path = Questionnaire;
@@ -1165,6 +1169,7 @@
 				CA6879BD2513DD22008B6937 /* PersonInfoModel.swift in Sources */,
 				CA6879D02513DD37008B6937 /* QuestionsController.swift in Sources */,
 				CA6879BC2513DD22008B6937 /* PersonInfoController.swift in Sources */,
+				CA4AD792251BC5AC00AD9BC6 /* FormattedTextField.swift in Sources */,
 				CA3039702515405A00BE4082 /* MapHelper.swift in Sources */,
 				CA80631025147BC4004B73B0 /* AuthenticationHelper.swift in Sources */,
 				CA68798D2513DCF4008B6937 /* SimpleButtonStyle.swift in Sources */,
@@ -1217,6 +1222,7 @@
 				CA2D368424351C2900401C84 /* PersonDetectee.swift in Sources */,
 				CA11D50B242ACB920074E024 /* SimpleButtonStyle.swift in Sources */,
 				CAA0AD0924366321007A9522 /* CovidModel.swift in Sources */,
+				CA7C9EBE251BA898009EC2B6 /* FormattedTextField.swift in Sources */,
 				CA80630525147BBB004B73B0 /* AuthenticationHelper.swift in Sources */,
 				CA42DFB0250ABA56006C0125 /* QRCodeGenerator.swift in Sources */,
 				CAA0AD122436A03C007A9522 /* StoryView.swift in Sources */,

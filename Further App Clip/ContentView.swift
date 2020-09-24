@@ -19,7 +19,7 @@ struct ContentView: View {
     // MARK: UI Config
     @Binding var isInRegion: Bool
     @Binding var establishmentName: String
-    @State private var showingDisclaimer = true
+    @State private var showingDisclaimer = false
     
     // MARK: Test
     @Binding var receivedURL: String
@@ -28,6 +28,9 @@ struct ContentView: View {
         QuestionView(showingQuestionSheet: .constant(true))
             .sheet(isPresented: $showingDisclaimer) {
                 Disclaimer(establishmentName: $establishmentName, isShowingDisclaimer: $showingDisclaimer, isInRegion: $isInRegion, receivedURL: $receivedURL)
+            }
+            .onAppear() {
+                self.showingDisclaimer = !hasSeenDisclaimer
             }
         
     }
@@ -111,6 +114,7 @@ struct Disclaimer: View {
                         .foregroundColor(.gray)
                         .padding()
                     Button(action: {
+                        self.hasSeenDisclaimer = true
                         self.isShowingDisclaimer.toggle()
                     }, label: {
                         Text("Get Started")
@@ -138,5 +142,6 @@ struct Disclaimer: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView(isInRegion: .constant(true), establishmentName: .constant("poop"), receivedURL: .constant(""))
+            .environmentObject(PersonInfoController())
     }
 }

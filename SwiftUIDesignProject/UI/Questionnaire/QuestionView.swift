@@ -74,7 +74,7 @@ struct QuestionView: View {
     // Information View
     func informationView() -> some View {
         return VStack {
-            InformationView(sectionImage: Image("\(colorScheme == .light ? "light" : "dark")_hand_icon"), headerTitle: "Name", subTitle: "Your Name")
+            InformationView(sectionImage: Image("\(colorScheme == .light ? "light" : "dark")_hand_icon"), headerTitle: "Name", subTitle: "Your Name", showingQuestionSheet: $showingQuestionSheet)
 //            InformationView(sectionImage: Image("\(colorScheme == .light ? "light" : "dark")_people_icon"), headerTitle: "Phone", subTitle: "Phone Number")
 //            InformationView(sectionImage: Image("\(colorScheme == .light ? "light" : "dark")_health_icon"), headerTitle: "Address", subTitle: "Local Address")
 //            InformationView(sectionImage: Image("\(colorScheme == .light ? "light" : "dark")_health_icon"), headerTitle: "Email", subTitle: "An e-mail you check")
@@ -135,17 +135,28 @@ struct InformationView: View {
     // MARK: Animation
     @Namespace private var animation
     
+    // MARK: Text
+    @State private var activeTag = 0
+    
+    // MARK: Validation
+    @State private var isValidating = false
+    @State private var submitted = false
+    @State private var submitText = "Share Securely"
+    
+    // MARK: Navigation
+    @Binding var showingQuestionSheet: Bool
+    
     var body: some View {
         GeometryReader { geometry in
             VStack(spacing: 20.0) {
                 
                 if !showList {
                     Group {
-                        EntryField(geometry: geometry, sectionImage: self.sectionImage, keyboardType: "name", headerText: "Name", subtitle: "First Last", fieldBinding: $personController.personInfo.name)
+                        EntryField(geometry: geometry, sectionImage: self.sectionImage, keyboardType: "name", headerText: "Name", subtitle: "First Last", fieldBinding: $personController.personInfo.name, tag: 0, activeTag: $activeTag, isValid: $personController.validName, isInValidationMode: $isValidating)
                         
-                        EntryField(geometry: geometry, sectionImage: self.sectionImage, keyboardType: "phone", headerText: "Phone Number", subtitle: "A number you'll answer", fieldBinding: $personController.personInfo.phone)
+                        EntryField(geometry: geometry, sectionImage: self.sectionImage, keyboardType: "phone", headerText: "Phone Number", subtitle: "A number you'll answer", fieldBinding: $personController.personInfo.phone, tag: 1, activeTag: $activeTag, isValid: $personController.validPhone, isInValidationMode: $isValidating)
                         
-                        EntryField(geometry: geometry, sectionImage: self.sectionImage, keyboardType: "email", headerText: "E-mail", subtitle: "An e-mail you check", fieldBinding: $personController.personInfo.email)
+                        EntryField(geometry: geometry, sectionImage: self.sectionImage, keyboardType: "email", headerText: "E-mail", subtitle: "An e-mail you check", fieldBinding: $personController.personInfo.email, tag: 2, activeTag: $activeTag, isValid: $personController.validEmail, isInValidationMode: $isValidating)
                     }
                 }
                 
@@ -159,25 +170,42 @@ struct InformationView: View {
                             Text("Local Address")
                                 .font(Font.custom("Rubik-Medium", size: 23.3))
                             HStack {
-                                TextField("Address", text: $personController.personInfo.address) { (changed) in
-                                    withAnimation {
-                                        if changed { showList = true } else { showList = false }
+                                
+                                FormattedTextField(text: $personController.personInfo.address, placeholder: "Address", type: "address", isValid: $personController.validAddress, isInValidationMode: $isValidating, isFirstResponder: .constant(false), activeTag: $activeTag, tag: 3)
+                                    .frame(height: 25.0)
+                                    .animation(Animation.easeInOut)
+                                    .onChange(of: personController.personInfo.address) { value in
+                                        if activeTag == 3 {
+                                            showList = true
+                                        } else {
+                                            showList = false
+                                        }
                                     }
-                                }
-                                .keyboardConfigured(for: "address")
+                                
+//                                TextField("Address", text: $personController.personInfo.address) { (changed) in
+//                                    withAnimation {
+//                                        if changed { showList = true } else { showList = false }
+//                                    }
+//                                }
+//                                .keyboardConfigured(for: "address")
 
                                 
                                 if !showList {
                                     Spacer()
-                                    TextField("Apt/Suite", text: $personController.personInfo.unit)
-                                    .keyboardConfigured(for: "unit")
+//                                    TextField("Apt/Suite", text: $personController.personInfo.unit)
+//                                    .keyboardConfigured(for: "unit")
+                                    FormattedTextField(text: $personController.personInfo.unit, placeholder: "Apt/Suite", type: "unit", isValid: .constant(true), isInValidationMode: $isValidating, isFirstResponder: .constant(false), activeTag: $activeTag, tag: 4)
+                                    .frame(height: 25.0)
                                     .frame(width: 75.0)
                                     .padding([.trailing], 12.0)
                                 }
                             }
                             
-                            TextField("Zip", text: $personController.personInfo.addressZip)
-                                .keyboardConfigured(for: "locale")
+                            FormattedTextField(text: $personController.personInfo.addressZip, placeholder: "Zip", type: "locale", isValid: $personController.validAddress, isInValidationMode: $isValidating, isFirstResponder: .constant(false), activeTag: $activeTag, tag: 5)
+                                .frame(height: 25.0)
+                            
+//                            TextField("Zip", text: $personController.personInfo.addressZip)
+//                                .keyboardConfigured(for: "locale")
                         }
                         Spacer()
                     }
@@ -185,26 +213,49 @@ struct InformationView: View {
 
                 // Search List
                 if showList {
-                    SearchView(showList: $showList)
+                    SearchView(showList: $showList, activeTag: $activeTag)
                 }
 
                 Spacer()
 
                 Button(action: {
-                    if self.personController.saveAndValidate(data: personController.personInfo) {
-                        print("We did it!")
-                    } else {
-                        print("Something is wrong")
+                    self.isValidating = true
+                    self.activeTag = 99
+                    if self.personController.validate() {
+                        self.submitText = "Sharing..."
+                        self.personController.test() { response in
+                            self.submitted = response
+                            if response {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
+                                    self.showingQuestionSheet.toggle()
+                                }
+                            }
+                        }
                     }
                 }, label: {
-                    Text("Share Securely")
-                        .fontWeight(.bold)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 50.0)
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(40)
-                        .padding()
+                    if submitted {
+                        ZStack {
+                            Circle()
+                                .fill(Color.blue)
+                                .frame(width: 50, height: 50)
+                            Image(systemName: "checkmark")
+                                .foregroundColor(.white)
+                                .font(.system(size: 18.0))
+                        }
+                        .animation(.easeInOut)
+                        .matchedGeometryEffect(id: "complete", in: animation)
+                        
+                    } else {
+                        Text(submitText)
+                            .fontWeight(.bold)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 50.0)
+                            .background(Color.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(40)
+                            .padding()
+                            .matchedGeometryEffect(id: "complete", in: animation)
+                    }
                 })
             }
         }
@@ -268,6 +319,7 @@ struct SearchView: View {
     @EnvironmentObject var personController: PersonInfoController
     @Environment(\.colorScheme) var colorScheme
     @Binding var showList: Bool
+    @Binding var activeTag: Int
     
     var body: some View {
         ScrollView(showsIndicators: true) {
@@ -281,6 +333,7 @@ struct SearchView: View {
                                 .font(.system(size: 9.0))
                         }.onTapGesture {
                             personController.mapHelper.itemSelected(selection: item)
+                            self.activeTag = 7
                             self.showList = false
                             UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                         }
@@ -318,6 +371,11 @@ struct EntryField: View {
     var headerText: String
     var subtitle: String
     @Binding var fieldBinding: String
+    var tag: Int
+    @State private var isResponder = false
+    @Binding var activeTag: Int
+    @Binding var isValid: Bool
+    @Binding var isInValidationMode: Bool
     
     var body: some View {
         ZStack {
@@ -328,8 +386,8 @@ struct EntryField: View {
                 VStack(alignment: .leading, spacing: 5.0) {
                     Text(headerText)
                         .font(Font.custom("Rubik-Medium", size: 23.3))
-                    TextField(subtitle, text: $fieldBinding)
-                        .keyboardConfigured(for: keyboardType)
+                    FormattedTextField(text: $fieldBinding, placeholder: subtitle, type: keyboardType, isValid: $isValid, isInValidationMode: $isInValidationMode, isFirstResponder: $isResponder, activeTag: $activeTag, tag: tag)
+                        .frame(height: 25.0)
                 }
                 Spacer()
             }

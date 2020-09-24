@@ -18,6 +18,7 @@ class PersonInfoController: ObservableObject {
     
     // MARK: Data
     @Published var personInfo: PersonInfoModel!
+    
     var baseURL: String?
     var appType: EnvironmentSettings.appType?
     
@@ -41,6 +42,13 @@ class PersonInfoController: ObservableObject {
     var editorCancellable: AnyCancellable?
     var addressCancellable: AnyCancellable?
     
+    // MARK: Validators
+    @Published var validName = false
+    @Published var validPhone = false
+    @Published var validEmail = false
+    @Published var validAddress = false
+    @Published var validated = false
+    
     init() {
         
         // Load person info
@@ -49,7 +57,6 @@ class PersonInfoController: ObservableObject {
             if let qr = self.qrGenerator.userQRCode() {
                 self.qrCode = qr
             }
-            self.setupListeners()
         } else {
             
             // Generate person info
@@ -57,10 +64,10 @@ class PersonInfoController: ObservableObject {
             
             // Save locally
             savePersonInfo(data: self.personInfo!)
-            
-            // Setup listeners
-            self.setupListeners()
         }
+        
+        // Setup listeners
+        self.setupListeners()
     }
     
     private func setupListeners() {
@@ -108,7 +115,6 @@ class PersonInfoController: ObservableObject {
                     }
                 }
             })
-        
     }
     
     public func generateQRCode() {
@@ -133,6 +139,15 @@ class PersonInfoController: ObservableObject {
                 self.appType = appType
             }
         }
+    }
+    
+    public func validate() -> Bool {
+        self.validName = self.personInfo.name.isValidName()
+        self.validPhone = self.personInfo.phone.isValidPhone()
+        self.validEmail = self.personInfo.email.isValidEmail()
+        self.validAddress = self.personInfo.address != "" && self.personInfo.addressZip != ""
+        self.validated = self.validName && self.validPhone && self.validEmail && self.validAddress
+        return self.validated
     }
     
     private func loadPersonInfo() -> PersonInfoModel? {
@@ -169,20 +184,6 @@ class PersonInfoController: ObservableObject {
         updateWidget()
     }
     
-    public func saveAndValidate(data: PersonInfoModel) -> Bool {
-        guard data.name != "",
-              data.phone != "",
-              data.phone.isValidPhone(),
-              data.email != "",
-              data.email.isValidEmail(),
-              data.address != "",
-              data.addressZip != ""
-              
-        else { return false }
-        
-        return true
-    }
-    
     private func savePersonInfoLocally(data: PersonInfoModel) {
         if let encoded = try? encoder.encode(data) {
             defaults!.set(encoded, forKey: "personInfoModel")
@@ -190,6 +191,12 @@ class PersonInfoController: ObservableObject {
             keyValStore.set(encoded, forKey: "personInfoModel")
             keyValStore.synchronize()
             #endif
+        }
+    }
+    
+    public func test(completion: @escaping (Bool) -> Void) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            completion(true)
         }
     }
     
