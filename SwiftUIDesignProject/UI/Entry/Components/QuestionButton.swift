@@ -14,6 +14,9 @@ struct QuestionButton: View {
     @Binding var showingQuestionSheet: Bool
     @Environment(\.colorScheme) var colorScheme
     
+    // MARK: Sharing
+    @Binding var isSharingData: Bool
+    
     var body: some View {
         Button(action: {
             self.showingQuestionSheet.toggle()
@@ -23,7 +26,7 @@ struct QuestionButton: View {
                 .font(.system(size: 25, weight: .regular))
                 .padding()
         }.sheet(isPresented: $showingQuestionSheet) {
-            QuestionView(showingQuestionSheet: self.$showingQuestionSheet)
+            QuestionView(showingQuestionSheet: self.$showingQuestionSheet, isSharingData: $isSharingData)
         }
     }
 }
@@ -31,12 +34,12 @@ struct QuestionButton: View {
 struct QuestionButton_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            QuestionButton(showingQuestionSheet: .constant(false))
+            QuestionButton(showingQuestionSheet: .constant(false), isSharingData: .constant(false))
                 .environmentObject(EnvironmentSettings())
                 .environment(\.colorScheme, .light)
                 .previewDevice("iPhone 11 Pro Max")
             
-            QuestionButton(showingQuestionSheet: .constant(false))
+            QuestionButton(showingQuestionSheet: .constant(false), isSharingData: .constant(false))
                 .environmentObject(EnvironmentSettings())
                 .environment(\.colorScheme, .light)
                 .previewDevice("iPhone SE")

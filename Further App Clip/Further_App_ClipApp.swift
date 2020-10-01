@@ -14,39 +14,58 @@ struct Further_App_ClipApp: App {
     
     // MARK: Helpers
     let locationAuthenticator = LocationAuthenticator()
+    var environmentSettings = EnvironmentSettings()
     
     // MARK: UI Config
     @State private var inRegion = false
-    @State private var establishmentName = "this establishment"
     
     // MARK: TEST
     @State private var receivedURL = ""
+    @State private var isSharingData = false
     
     var body: some Scene {
         WindowGroup {
-            ContentView(isInRegion: $inRegion, establishmentName: $establishmentName, receivedURL: $receivedURL)
+            ContentView(isInRegion: $inRegion, isSharingData: $isSharingData, receivedURL: $receivedURL)
                 .environmentObject(PersonInfoController())
+                .environmentObject(environmentSettings)
                 .onContinueUserActivity(NSUserActivityTypeBrowsingWeb, perform: { userActivity in
-                    guard let url = userActivity.webpageURL else {
-                        fatalError("BROKEN")
+                    
+                    // Verify we truly have activity
+                    guard userActivity.webpageURL != nil else {
+                        return
                     }
                     
+                    // Set that data is being shared
+                    self.isSharingData = true
+                    
+                    // Parse the incoming URL
                     guard let incomingURL = userActivity.webpageURL,
                           let components = NSURLComponents(url: incomingURL, resolvingAgainstBaseURL: true),
                           let queryItems = components.queryItems
                     else { return }
                     
-                    print("Components:", components)
-                    
+                    // Set our received URL (for debug)
                     self.receivedURL = incomingURL.absoluteString
+                    
+                    print("Components:", components)
                     
                     // Get the path component
                     guard let path = components.path else { return }
                     
-                    // Find the vendor ID, if it exists
-                    if let vendorID = queryItems.first(where: { $0.name == "vendorID" }) {
-                        print("The vendor id is", vendorID.value)
+                    // Find the vendor ID, or exit
+                    guard let vendorID = queryItems.first(where: { $0.name == "vendorID" }), let id = vendorID.value else {
+                        return
                     }
+                    environmentSettings.establishmentID = id
+                    
+                    // Find the vendor name, if it exists
+                    if let vendorName = queryItems.first(where: { $0.name == "vendorName" }) {
+                        if let name = vendorName.value {
+                            environmentSettings.establishmentName = name.capitalized
+                        }
+                    }
+                    
+                    print("PATH:", path)
                     
                     // Handle configurations
                     switch path {
@@ -54,11 +73,13 @@ struct Further_App_ClipApp: App {
                             self.inRegion = true
                         case "/dine":
                             self.inRegion = true
+                        case "/user/pair":
+                            self.inRegion = true
+                        case "/vendor/checkin":
+                            self.inRegion = false
                         default:
                             break
                     }
-                    
-                    print("Items:", queryItems)
                     
                     // Handle location check, as needed
                     guard !inRegion else { return }
@@ -67,24 +88,16 @@ struct Further_App_ClipApp: App {
                         // Get the coordinates, and display name, if they exist
                         guard let longitude = queryItems.first(where: { $0.name == "longitude" }),
                         let latitude = queryItems.first(where: { $0.name == "latitude" }),
-                        let vendorName = queryItems.first(where: { $0.name == "vendorName" }),
                         let longitudeCoords = longitude.value,
                         let latitudeCoords = latitude.value,
-                        let displayName = vendorName.value,
                         let long = Double(longitudeCoords),
                         let lat = Double(latitudeCoords) else {
                             print("Problem")
                             return
                         }
                         
-                        print("Lat:", lat)
-                        print("Lon:", long)
-                        print("Name:", displayName)
-                        
-                        self.establishmentName = displayName.capitalized
-                        
                         // Perform region check
-                        locationAuthenticator.verify(payload: payload, longitude: long, latitude: lat, name: displayName) { (inRegion, error) in
+                        locationAuthenticator.verify(payload: payload, longitude: long, latitude: lat, name: environmentSettings.establishmentName) { (inRegion, error) in
                             if let e = error {
                                 print("There was an error verifying region: ", e.localizedDescription)
                             }

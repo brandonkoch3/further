@@ -30,7 +30,7 @@ class AuthenticationHelper: ObservableObject {
     private var credentialCancellable: AnyCancellable?
     
     init() {
-        
+        self.getCredentialState()
     }
     
     public func getCredentialState()  {

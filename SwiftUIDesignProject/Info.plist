@@ -30,6 +30,8 @@
 	<string>Uses Bluetooth to detect nearby users.</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>Uses Bluetooth to detect nearby users.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Uses your camera to scan QR codes for checkin.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Rubik-Black.ttf</string>

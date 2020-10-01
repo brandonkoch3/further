@@ -22,16 +22,20 @@ class EnvironmentSettings: ObservableObject {
     }
     
     // MARK: App Type
-    #if APPCLIP
-    @AppStorage("appType", store: UserDefaults(suiteName: "group.com.bnbmedia.further.contents")) var appType: appType = .user
-    #else
     @AppStorage("appType", store: UserDefaults(suiteName: "group.com.bnbmedia.further.contents")) var appType: appType = .unknown
-    #endif
     
     // MARK: API
     @AppStorage("baseURL", store: UserDefaults(suiteName: "group.com.bnbmedia.further.contents")) var baseURL: String = "https://further-app.com/connect/"
     
+    // MARK: Data Sharing
+    @Published var didShareDataSuccessfully = false
+    @Published var establishmentName = "this establishment"
+    @Published var establishmentID: String?
+    
     init() {
         baseURL = "https://further-app.com/connect/"
+        
+        self.appType = .user
+        
     }
 }

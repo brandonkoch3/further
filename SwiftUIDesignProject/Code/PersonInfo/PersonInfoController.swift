@@ -54,6 +54,7 @@ class PersonInfoController: ObservableObject {
         // Load person info
         if let infoModel = loadPersonInfo() {
             self.personInfo = infoModel
+            print("Have person info")
             if let qr = self.qrGenerator.userQRCode() {
                 self.qrCode = qr
             }
@@ -61,6 +62,12 @@ class PersonInfoController: ObservableObject {
             
             // Generate person info
             self.personInfo = PersonInfoModel(id: UUID().uuidString, name: "", email: "", phone: "", address: "", unit: "", addressZip: "")
+            
+            print("need to gfenrate qr code")
+            self.generateQRCode()
+            if let qr = self.qrGenerator.userQRCode() {
+                self.qrCode = qr
+            }
             
             // Save locally
             savePersonInfo(data: self.personInfo!)
@@ -122,11 +129,17 @@ class PersonInfoController: ObservableObject {
         // Load environmental data
         loadEnvironmentInfo()
         
+        print("Type:", self.appType)
+        print("URL:", baseURL)
+        print("ID:", self.personInfo.id)
+        
         // Generate QR Code
         guard let type = self.appType, let url = baseURL, let id = self.personInfo?.id else {
             return
             
         }
+        
+        print("About to generate QR code")
         qrGenerator.buildQRCode(appType: type, uniqueID: id, baseURL: url)
     }
     
@@ -176,7 +189,6 @@ class PersonInfoController: ObservableObject {
     }
     
     public func savePersonInfo(data: PersonInfoModel) {
-        print("saving person info:", data)
         savePersonInfoLocally(data: data)
         savePersonInfoRemotely(data: data) { (response) in
             //

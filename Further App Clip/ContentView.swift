@@ -7,43 +7,63 @@
 //
 
 import SwiftUI
+import AuthenticationServices
 
 struct ContentView: View {
     
-    // MARK: Configuration
-    @AppStorage("hasSeenDisclaimer", store: UserDefaults(suiteName: "group.com.bnbmedia.further.contents")) var hasSeenDisclaimer: Bool = false
+    // MARK: Sheet config
+    enum sheets {
+        case disclaimer
+        case questions
+    }
     
-    // MARK: Helpers
-    
+    @State private var sheetToShow: sheets = .disclaimer
     
     // MARK: UI Config
     @Binding var isInRegion: Bool
-    @Binding var establishmentName: String
-    @State private var showingDisclaimer = false
+    @State private var showingSheet = true
+    @State private var showingQuestionSheet = false
+    
+    // MARK: Sharing
+    @Binding var isSharingData: Bool
+    var environmentSettings = EnvironmentSettings()
     
     // MARK: Test
     @Binding var receivedURL: String
+    @State private var showingDebugAlert = false
     
     var body: some View {
-        QuestionView(showingQuestionSheet: .constant(true))
-            .sheet(isPresented: $showingDisclaimer) {
-                Disclaimer(establishmentName: $establishmentName, isShowingDisclaimer: $showingDisclaimer, isInRegion: $isInRegion, receivedURL: $receivedURL)
+        EntryView()
+            .sheet(isPresented: $showingSheet) {
+                switch sheetToShow {
+                case .disclaimer:
+                    Disclaimer(isShowingDisclaimer: $showingSheet, isInRegion: $isInRegion, receivedURL: $receivedURL)
+                        .onDisappear() {
+                            self.sheetToShow = .questions
+                            self.showingSheet.toggle()
+                        }
+                case .questions:
+                    QuestionView(showingQuestionSheet: $showingSheet, isSharingData: $isSharingData)
+                }
             }
             .onAppear() {
-                self.showingDisclaimer = !hasSeenDisclaimer
+                if isSharingData {
+                    self.sheetToShow = .disclaimer
+                }
             }
-        
     }
 }
 
 struct Disclaimer: View {
     
-    // MARK: Configuration
-    @AppStorage("hasSeenDisclaimer", store: UserDefaults(suiteName: "group.com.bnbmedia.further.contents")) var hasSeenDisclaimer: Bool = false
-    
     // MARK: UI Configuration
-    @Binding var establishmentName: String
     @Binding var isShowingDisclaimer: Bool
+    
+    // MARK: Helpers
+    @StateObject var authenticationHelper = AuthenticationHelper()
+    @EnvironmentObject var environmentSettings: EnvironmentSettings
+    let defaults = UserDefaults(suiteName: "group.com.bnbmedia.further.contents")
+    let decoder = JSONDecoder()
     
     // MARK: Test
     @Binding var isInRegion: Bool
@@ -53,95 +73,117 @@ struct Disclaimer: View {
     
     var body: some View {
         GeometryReader { geometry in
-            VStack {
-                ZStack {
-                    Rectangle()
-                        .fill(Color.gray)
-                        .frame(height: geometry.size.height / 3)
-                    
+            ScrollView {
+                VStack {
                     ZStack {
-                        EntryBackgroundView()
-                            .frame(width: geometry.size.width - 40.0, height: geometry.size.height / 5)
-                            .cornerRadius(30)
+                        Rectangle()
+                            .fill(Color.gray)
+                            .frame(height: geometry.size.height / 3)
                         
-                        HStack {
-                            Image("\(colorScheme == .light ? "light" : "dark")_health_icon")
-                                .padding([.leading], 25.0)
-                            VStack {
-                                Path { path in
-                                    path.move(to: CGPoint(x: 0, y: 0))
-                                    path.addLine(to: CGPoint(x: 200, y: 0))
-                                }
-                                .stroke(Color.lairDarkGray, style: StrokeStyle(lineWidth: 12, lineCap: .round, lineJoin: .round))
-                                
-                                Path { path in
-                                    path.move(to: CGPoint(x: 0, y: 0))
-                                    path.addLine(to: CGPoint(x: 150, y: 0))
-                                }
-                                .stroke(Color.gray, style: StrokeStyle(lineWidth: 12, lineCap: .round, lineJoin: .round))
-                                
-                                Path { path in
-                                    path.move(to: CGPoint(x: 0, y: 0))
-                                    path.addLine(to: CGPoint(x: 100, y: 0))
-                                }
-                                .stroke(Color.gray, style: StrokeStyle(lineWidth: 12, lineCap: .round, lineJoin: .round))
-                            }
-                            .frame(height: 75.0)
-                            .padding([.top], 25.0)
+                        ZStack {
+                            EntryBackgroundView()
+                                .frame(width: geometry.size.width - 40.0, height: geometry.size.height / 5)
+                                .cornerRadius(30)
                             
+                            HStack {
+                                Image("\(colorScheme == .light ? "light" : "dark")_health_icon")
+                                    .padding([.leading], 25.0)
+                                VStack {
+                                    Path { path in
+                                        path.move(to: CGPoint(x: 0, y: 0))
+                                        path.addLine(to: CGPoint(x: 200, y: 0))
+                                    }
+                                    .stroke(Color.lairDarkGray, style: StrokeStyle(lineWidth: 12, lineCap: .round, lineJoin: .round))
+                                    
+                                    Path { path in
+                                        path.move(to: CGPoint(x: 0, y: 0))
+                                        path.addLine(to: CGPoint(x: 150, y: 0))
+                                    }
+                                    .stroke(Color.gray, style: StrokeStyle(lineWidth: 12, lineCap: .round, lineJoin: .round))
+                                    
+                                    Path { path in
+                                        path.move(to: CGPoint(x: 0, y: 0))
+                                        path.addLine(to: CGPoint(x: 100, y: 0))
+                                    }
+                                    .stroke(Color.gray, style: StrokeStyle(lineWidth: 12, lineCap: .round, lineJoin: .round))
+                                }
+                                .frame(height: 75.0)
+                                .padding([.top], 25.0)
+                                
+                            }
                         }
+                        
                     }
                     
-                }
-                
-                VStack(spacing: 30.0) {
-                    Text("Securely Share Contact Information")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .multilineTextAlignment(.center)
-                        .fixedSize(horizontal: false, vertical: true)
-                    Text("Your region requires at least one diner from your party provide contact information to \(establishmentName).")
-                        .multilineTextAlignment(.center)
-                    Text("This information will be used to contact you in the event someone dining at the same time as you reports a positive COVID-19 test.")
-                        .multilineTextAlignment(.center)
-                }.padding()
-                
-                Spacer()
-                
-                VStack {
-                    Text("Information you enter with this app will be stored securely on behalf of this establishment.  Your information will be removed after 14 days and will only be accessible by a public health authority.")
-                        .font(.footnote)
-                        .foregroundColor(.gray)
-                        .padding()
-                    Button(action: {
-                        self.hasSeenDisclaimer = true
-                        self.isShowingDisclaimer.toggle()
-                    }, label: {
-                        Text("Get Started")
+                    VStack(spacing: 30.0) {
+                        Text("Securely Share Contact Information")
+                            .font(.largeTitle)
                             .fontWeight(.bold)
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 50.0)
-                            .background(Color.blue)
-                            .foregroundColor(.white)
-                            .cornerRadius(40)
-                            .padding()
-                    })
+                            .multilineTextAlignment(.center)
+                            .fixedSize(horizontal: false, vertical: true)
+                        Text("Your region requires at least one diner from your party provide contact information to \(environmentSettings.establishmentName).")
+                            .multilineTextAlignment(.center)
+                            .fixedSize(horizontal: false, vertical: true)
+                        Text("This information will be used to contact you in the event someone dining at the same time as you reports a positive COVID-19 test.")
+                            .multilineTextAlignment(.center)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }.padding()
                     
-                    Button(action: {
-                        //
-                    }, label: {
-                        Text("Learn More")
+                    Spacer()
+                    
+                    VStack {
+                        Text(receivedURL != "" ? receivedURL : "Information you enter with this app will be stored securely on behalf of this establishment.  Your information will be removed after 14 days and will only be accessible by a public health authority.")
                             .font(.footnote)
-                    })
+                            .foregroundColor(.gray)
+                            .multilineTextAlignment(.center)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .padding()
+                        
+                        Button(action: {
+                            self.isShowingDisclaimer.toggle()
+                        }, label: {
+                            Text(hasUserInfoSaved() ? "Confirm My Information" : "Get Started")
+                                .fontWeight(.bold)
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 50.0)
+                                .background(Color.blue)
+                                .foregroundColor(.white)
+                                .cornerRadius(40)
+                                .padding()
+                        })
+                    }
                 }
             }
         }
     }
+    
+    private func hasUserInfoSaved() -> Bool {
+        if let savedData = defaults!.object(forKey: "personInfoModel") as? Data {
+            if let loadedData = try? decoder.decode(PersonInfoModel.self, from: savedData) {
+                _ = loadedData
+                return true
+            }
+        }
+        return false
+    }
 }
 
-struct ContentView_Previews: PreviewProvider {
+//struct ContentView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ContentView(isInRegion: .constant(true), establishmentName: .constant("poop"), receivedURL: .constant(""))
+//            .environmentObject(PersonInfoController())
+//    }
+//}
+
+struct Disclaimer_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(isInRegion: .constant(true), establishmentName: .constant("poop"), receivedURL: .constant(""))
-            .environmentObject(PersonInfoController())
+        Group {
+            Disclaimer(isShowingDisclaimer: .constant(true), isInRegion: .constant(true), receivedURL: .constant(""))
+                .previewDevice("iPhone SE (2nd generation)")
+            
+            Disclaimer(isShowingDisclaimer: .constant(true), isInRegion: .constant(true), receivedURL: .constant(""))
+                .previewDevice("iPhone 11 Pro Max")
+        }
+        
     }
 }

@@ -44,7 +44,6 @@ struct FormattedTextField: UIViewRepresentable {
     }
     
     func updateUIView(_ uiView: UITextField, context: UIViewRepresentableContext<FormattedTextField>) {
-        print("Active tag:", activeTag)
         uiView.textColor = isValid ? (colorScheme == .light ? .black : .white) : (isInValidationMode ? .red : colorScheme == .light ? .black : .white)
         uiView.text = text
         if self.activeTag == 99 && context.coordinator.didBecomeFirstResponder {
@@ -52,11 +51,6 @@ struct FormattedTextField: UIViewRepresentable {
             context.coordinator.didBecomeFirstResponder = false
         }
         if self.tag == activeTag && !context.coordinator.didBecomeFirstResponder {
-            #if APPCLIP
-            if !UserDefaults(suiteName: "group.com.bnbmedia.further.contents")!.bool(forKey: "hasSeenDisclaimer") {
-                return
-            }
-            #endif
             uiView.becomeFirstResponder()
             context.coordinator.didBecomeFirstResponder = true
         }

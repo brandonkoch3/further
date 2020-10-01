@@ -24,6 +24,10 @@ struct EntryView: View {
     // Person config
     @StateObject var personController = PersonInfoController()
     
+    // MARK: Sharing
+    @State private var isSharingData = false
+    @State private var qrVendorID = ""
+    
     var body: some View {
         if environmentSettings.appType == .unknown {
             appTypeSelection()
@@ -68,10 +72,10 @@ struct EntryView: View {
                 }
                 Spacer()
                 HStack {
-                    QuestionButton(showingQuestionSheet: $showingQuestionSheet)
+                    QuestionButton(showingQuestionSheet: $showingQuestionSheet, isSharingData: $isSharingData)
                         .environmentObject(self.personController)
                     Spacer()
-                    StoryButton(showingStorySheet: $showingStorySheet)
+                    StoryButton(showingStorySheet: $showingStorySheet, qrVendorID: $qrVendorID)
                 }
             }.padding()
         }
@@ -131,12 +135,14 @@ struct MainTextView: View {
     
     // UI Config
     @Environment(\.colorScheme) var colorScheme
+    @EnvironmentObject var environmentSettings: EnvironmentSettings
     
     // View
     var body: some View {
-        Text("Scan your QR code to check in")
+        Text(environmentSettings.didShareDataSuccessfully ? "Successfully shared contact information with \(environmentSettings.establishmentName)" : "Scan your QR code to check in")
             .font(.custom("Rubik-Regular", size: CGFloat(26.67).scaledForDevice, relativeTo: .headline))
             .foregroundColor(colorScheme == .light ? Color(UIColor(red: 50.0/255.0, green: 54.0/255.0, blue: 83.0/255.0, alpha: 1.0)) : Color(UIColor(red: 172.0/255.0, green: 178.0/255.0, blue: 181.0/255.0, alpha: 1.0)))
+            .fixedSize(horizontal: false, vertical: true)
     }
 }
 

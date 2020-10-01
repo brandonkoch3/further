@@ -21,6 +21,9 @@ struct QuestionView: View {
     
     @Environment(\.colorScheme) var colorScheme
     
+    // MARK: Sharing
+    @Binding var isSharingData: Bool
+    
     // Header Text
     struct HeaderText: View {
         var body: some View {
@@ -58,7 +61,7 @@ struct QuestionView: View {
                 
                             // Information
                             VStack {
-                                InformationView(sectionImage: Image("\(colorScheme == .light ? "light" : "dark")_hand_icon"), headerTitle: "Name", subTitle: "Your Name", showingQuestionSheet: $showingQuestionSheet)
+                                InformationView(sectionImage: Image("\(colorScheme == .light ? "light" : "dark")_hand_icon"), headerTitle: "Name", subTitle: "Your Name", showingQuestionSheet: $showingQuestionSheet, isSharingData: $isSharingData)
                                 Spacer()
                             }
                                 .padding(.top, 25.0)
@@ -93,12 +96,12 @@ extension View {
 struct QuestionView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            QuestionView(showingQuestionSheet: .constant(true))
+            QuestionView(showingQuestionSheet: .constant(true), isSharingData: .constant(false))
                 .previewDevice("iPhone SE (2nd generation)")
                 .environment(\.colorScheme, .dark)
                 .environmentObject(PersonInfoController())
             
-            QuestionView(showingQuestionSheet: .constant(true))
+            QuestionView(showingQuestionSheet: .constant(true), isSharingData: .constant(false))
                 .previewDevice("iPhone 11 Pro Max")
             .environment(\.colorScheme, .light)
             .environmentObject(PersonInfoController())
@@ -115,6 +118,7 @@ struct InformationView: View {
     @Environment(\.colorScheme) var colorScheme
     
     @EnvironmentObject var personController: PersonInfoController
+    @EnvironmentObject var environmentSettings: EnvironmentSettings
     
     @State private var showList = false
     
@@ -135,17 +139,20 @@ struct InformationView: View {
     // MARK: Navigation
     @Binding var showingQuestionSheet: Bool
     
+    // MARK: Sharing
+    @Binding var isSharingData: Bool
+    
     var body: some View {
         GeometryReader { geometry in
             VStack(spacing: 20.0) {
                 
                 if !showList {
                     Group {
-                        EntryField(geometry: geometry, sectionImage: self.sectionImage, keyboardType: "name", headerText: "Name", subtitle: "First Last", fieldBinding: $personController.personInfo.name, tag: 0, activeTag: $activeTag, isValid: $personController.validName, isInValidationMode: $isValidating)
+                        EntryField(geometry: geometry, sectionImage: self.sectionImage, keyboardType: "name", headerText: "Name", subtitle: "First Last", fieldBinding: $personController.personInfo.name, tag: 0, activeTag: $activeTag, isValid: $personController.validName, isInValidationMode: $isValidating, isSharingData: $isSharingData)
                         
-                        EntryField(geometry: geometry, sectionImage: self.sectionImage, keyboardType: "phone", headerText: "Phone Number", subtitle: "A number you'll answer", fieldBinding: $personController.personInfo.phone, tag: 1, activeTag: $activeTag, isValid: $personController.validPhone, isInValidationMode: $isValidating)
+                        EntryField(geometry: geometry, sectionImage: self.sectionImage, keyboardType: "phone", headerText: "Phone Number", subtitle: "A number you'll answer", fieldBinding: $personController.personInfo.phone, tag: 1, activeTag: $activeTag, isValid: $personController.validPhone, isInValidationMode: $isValidating, isSharingData: $isSharingData)
                         
-                        EntryField(geometry: geometry, sectionImage: self.sectionImage, keyboardType: "email", headerText: "E-mail", subtitle: "An e-mail you check", fieldBinding: $personController.personInfo.email, tag: 2, activeTag: $activeTag, isValid: $personController.validEmail, isInValidationMode: $isValidating)
+                        EntryField(geometry: geometry, sectionImage: self.sectionImage, keyboardType: "email", headerText: "E-mail", subtitle: "An e-mail you check", fieldBinding: $personController.personInfo.email, tag: 2, activeTag: $activeTag, isValid: $personController.validEmail, isInValidationMode: $isValidating, isSharingData: $isSharingData)
                     }
                 }
                 
@@ -172,18 +179,8 @@ struct InformationView: View {
                                         }
                                     }
                                 
-//                                TextField("Address", text: $personController.personInfo.address) { (changed) in
-//                                    withAnimation {
-//                                        if changed { showList = true } else { showList = false }
-//                                    }
-//                                }
-//                                .keyboardConfigured(for: "address")
-
-                                
                                 if !showList {
                                     Spacer()
-//                                    TextField("Apt/Suite", text: $personController.personInfo.unit)
-//                                    .keyboardConfigured(for: "unit")
                                     FormattedTextField(text: $personController.personInfo.unit, placeholder: "Apt/Suite", type: "unit", isValid: .constant(true), isInValidationMode: $isValidating, isFirstResponder: .constant(false), activeTag: $activeTag, tag: 4)
                                     .frame(height: 25.0)
                                     .frame(width: 75.0)
@@ -193,9 +190,7 @@ struct InformationView: View {
                             
                             FormattedTextField(text: $personController.personInfo.addressZip, placeholder: "Zip", type: "locale", isValid: $personController.validAddress, isInValidationMode: $isValidating, isFirstResponder: .constant(false), activeTag: $activeTag, tag: 5)
                                 .frame(height: 25.0)
-                            
-//                            TextField("Zip", text: $personController.personInfo.addressZip)
-//                                .keyboardConfigured(for: "locale")
+
                         }
                         Spacer()
                     }
@@ -217,6 +212,7 @@ struct InformationView: View {
                             self.submitted = response
                             if response {
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
+                                    self.environmentSettings.didShareDataSuccessfully = response
                                     self.showingQuestionSheet.toggle()
                                 }
                             }
@@ -236,7 +232,7 @@ struct InformationView: View {
                         .matchedGeometryEffect(id: "complete", in: animation)
                         
                     } else {
-                        Text(submitText)
+                        Text(isSharingData ? submitText : "Save")
                             .fontWeight(.bold)
                             .frame(maxWidth: .infinity)
                             .frame(height: 50.0)
@@ -368,6 +364,7 @@ struct EntryField: View {
     @Binding var activeTag: Int
     @Binding var isValid: Bool
     @Binding var isInValidationMode: Bool
+    @Binding var isSharingData: Bool
     
     var body: some View {
         ZStack {
