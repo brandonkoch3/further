@@ -40,14 +40,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // TODO: Implement check to see if our information was pulled
         
-        let storiesController = StoriesController()
-        storiesController.update() { response in }
-        task.expirationHandler = {
-            self.scheduleRefreshTask()
-            DispatchQueue.main.async {
-                task.setTaskCompleted(success: true)
-            }
-        }
+//        let storiesController = StoriesController()
+//        storiesController.update() { response in }
+//        task.expirationHandler = {
+//            self.scheduleRefreshTask()
+//            DispatchQueue.main.async {
+//                task.setTaskCompleted(success: true)
+//            }
+//        }
     }
 
     // MARK: UISceneSession Lifecycle

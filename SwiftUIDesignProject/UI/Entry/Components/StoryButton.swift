@@ -14,9 +14,6 @@ struct StoryButton: View {
     @Binding var showingStorySheet: Bool
     @Environment(\.colorScheme) var colorScheme
     
-    // Helpers
-    var storiesController = StoriesController()
-    
     // View
     var body: some View {
         Button(action: {
@@ -26,7 +23,7 @@ struct StoryButton: View {
                 .foregroundColor(self.colorScheme == .dark ? Color.gray : Color.lairDarkGray)
                 .font(.system(size: 25, weight: .regular))
         }.sheet(isPresented: $showingStorySheet) {
-            StoryView(storyController: self.storiesController)
+            // TODO: Implement Camera
         }.padding()
     }
 }

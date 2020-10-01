@@ -24,11 +24,6 @@ struct EntryView: View {
     // Person config
     @StateObject var personController = PersonInfoController()
     
-    // Detector config
-    @ObservedObject var detector = PersonDetectee()
-    @ObservedObject var questionsController = QuestionsController()
-    @ObservedObject var storyController = StoriesController()
-    
     var body: some View {
         if environmentSettings.appType == .unknown {
             appTypeSelection()
@@ -68,15 +63,15 @@ struct EntryView: View {
                     VStack {
                         HeartView(image: $personController.qrCode)
                         Spacer()
-                        MainTextView(detector: detector)
+                        MainTextView()
                     }.frame(maxHeight: 240)
                 }
                 Spacer()
                 HStack {
-                    QuestionButton(showingQuestionSheet: $showingQuestionSheet).environmentObject(self.questionsController)
+                    QuestionButton(showingQuestionSheet: $showingQuestionSheet)
                         .environmentObject(self.personController)
                     Spacer()
-                    StoryButton(showingStorySheet: $showingStorySheet, storiesController: self.storyController)
+                    StoryButton(showingStorySheet: $showingStorySheet)
                 }
             }.padding()
         }
@@ -136,9 +131,6 @@ struct MainTextView: View {
     
     // UI Config
     @Environment(\.colorScheme) var colorScheme
-    
-    // Person Config
-    @ObservedObject var detector: PersonDetectee
     
     // View
     var body: some View {

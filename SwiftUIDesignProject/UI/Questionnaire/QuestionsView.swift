@@ -13,7 +13,6 @@ struct QuestionsView: View {
     
     // MARK: Config
     var questionID: Int
-    @EnvironmentObject var questions: QuestionsController
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.colorScheme) var colorScheme
     @Binding var showingQuestion: Bool

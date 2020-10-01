@@ -21,6 +21,8 @@ class QuestionsController: ObservableObject {
     var publishSubscriber: AnyCancellable?
     var updateCancellable: AnyCancellable?
     
+    
+    
     // Helpers
     let encoder = JSONEncoder()
     let decoder = JSONDecoder()

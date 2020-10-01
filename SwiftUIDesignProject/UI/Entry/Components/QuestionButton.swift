@@ -14,9 +14,6 @@ struct QuestionButton: View {
     @Binding var showingQuestionSheet: Bool
     @Environment(\.colorScheme) var colorScheme
     
-    // Helpers
-    @EnvironmentObject var questions: QuestionsController
-    
     var body: some View {
         Button(action: {
             self.showingQuestionSheet.toggle()
@@ -26,7 +23,7 @@ struct QuestionButton: View {
                 .font(.system(size: 25, weight: .regular))
                 .padding()
         }.sheet(isPresented: $showingQuestionSheet) {
-            QuestionView(showingQuestionSheet: self.$showingQuestionSheet).environmentObject(self.questions)
+            QuestionView(showingQuestionSheet: self.$showingQuestionSheet)
         }
     }
 }

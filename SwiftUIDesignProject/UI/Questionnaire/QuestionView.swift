@@ -17,7 +17,6 @@ struct QuestionView: View {
     @State private var showingQuestion = false
     
     // MARK: Helpers
-    @EnvironmentObject var questions: QuestionsController
     @EnvironmentObject var personController: PersonInfoController
     
     @Environment(\.colorScheme) var colorScheme
@@ -47,9 +46,6 @@ struct QuestionView: View {
                     Image(self.colorScheme == .light ? "day_graident" : "night_graident").resizable()
                     VStack {
                         
-                        
-
-                        
                         // Header
                         HeaderText()
                             .padding(.top, 60.0)
@@ -61,24 +57,16 @@ struct QuestionView: View {
                             .cornerRadius(20, corners: [.topLeft, .topRight])
                 
                             // Information
-                            self.informationView()
+                            VStack {
+                                InformationView(sectionImage: Image("\(colorScheme == .light ? "light" : "dark")_hand_icon"), headerTitle: "Name", subTitle: "Your Name", showingQuestionSheet: $showingQuestionSheet)
+                                Spacer()
+                            }
                                 .padding(.top, 25.0)
                                 .padding([.leading, .trailing], 15.0)
                         }
                     }
                 }
             }
-        }
-    }
-    
-    // Information View
-    func informationView() -> some View {
-        return VStack {
-            InformationView(sectionImage: Image("\(colorScheme == .light ? "light" : "dark")_hand_icon"), headerTitle: "Name", subTitle: "Your Name", showingQuestionSheet: $showingQuestionSheet)
-//            InformationView(sectionImage: Image("\(colorScheme == .light ? "light" : "dark")_people_icon"), headerTitle: "Phone", subTitle: "Phone Number")
-//            InformationView(sectionImage: Image("\(colorScheme == .light ? "light" : "dark")_health_icon"), headerTitle: "Address", subTitle: "Local Address")
-//            InformationView(sectionImage: Image("\(colorScheme == .light ? "light" : "dark")_health_icon"), headerTitle: "Email", subTitle: "An e-mail you check")
-            Spacer()
         }
     }
 }
@@ -108,13 +96,11 @@ struct QuestionView_Previews: PreviewProvider {
             QuestionView(showingQuestionSheet: .constant(true))
                 .previewDevice("iPhone SE (2nd generation)")
                 .environment(\.colorScheme, .dark)
-                .environmentObject(QuestionsController())
                 .environmentObject(PersonInfoController())
             
             QuestionView(showingQuestionSheet: .constant(true))
                 .previewDevice("iPhone 11 Pro Max")
             .environment(\.colorScheme, .light)
-            .environmentObject(QuestionsController())
             .environmentObject(PersonInfoController())
         }
     }
@@ -137,6 +123,9 @@ struct InformationView: View {
     
     // MARK: Text
     @State private var activeTag = 0
+    
+    // MARK: Selection
+    @State private var didSelect = false
     
     // MARK: Validation
     @State private var isValidating = false
@@ -175,10 +164,11 @@ struct InformationView: View {
                                     .frame(height: 25.0)
                                     .animation(Animation.easeInOut)
                                     .onChange(of: personController.personInfo.address) { value in
-                                        if activeTag == 3 {
-                                            showList = true
-                                        } else {
+                                        if didSelect {
                                             showList = false
+                                            self.didSelect = false
+                                        } else {
+                                            showList = true
                                         }
                                     }
                                 
@@ -213,7 +203,7 @@ struct InformationView: View {
 
                 // Search List
                 if showList {
-                    SearchView(showList: $showList, activeTag: $activeTag)
+                    SearchView(showList: $showList, activeTag: $activeTag, didSelect: $didSelect)
                 }
 
                 Spacer()
@@ -320,6 +310,7 @@ struct SearchView: View {
     @Environment(\.colorScheme) var colorScheme
     @Binding var showList: Bool
     @Binding var activeTag: Int
+    @Binding var didSelect: Bool
     
     var body: some View {
         ScrollView(showsIndicators: true) {
@@ -335,6 +326,7 @@ struct SearchView: View {
                             personController.mapHelper.itemSelected(selection: item)
                             self.activeTag = 7
                             self.showList = false
+                            self.didSelect = true
                             UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                         }
                         Spacer()

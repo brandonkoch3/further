@@ -18,6 +18,7 @@ struct FormattedTextField: UIViewRepresentable {
     var type: String
     @Binding var isValid: Bool
     @Binding var isInValidationMode: Bool
+    @Environment(\.colorScheme) var colorScheme
     
     // MARK: Responder
     @Binding var isFirstResponder: Bool
@@ -32,6 +33,7 @@ struct FormattedTextField: UIViewRepresentable {
         textField.textContentType = context.coordinator.contentType()
         textField.font = UIFont(name: "Rubik-Light", size: 15.5)
         textField.tag = tag
+        textField.textColor = colorScheme == .light ? .black : .white
         
         let attributes = [
             NSAttributedString.Key.font : UIFont(name: "Rubik-Light", size: 15.5)!
@@ -42,7 +44,8 @@ struct FormattedTextField: UIViewRepresentable {
     }
     
     func updateUIView(_ uiView: UITextField, context: UIViewRepresentableContext<FormattedTextField>) {
-        uiView.textColor = isValid ? .black : (isInValidationMode ? .red : .black)
+        print("Active tag:", activeTag)
+        uiView.textColor = isValid ? (colorScheme == .light ? .black : .white) : (isInValidationMode ? .red : colorScheme == .light ? .black : .white)
         uiView.text = text
         if self.activeTag == 99 && context.coordinator.didBecomeFirstResponder {
             uiView.resignFirstResponder()
