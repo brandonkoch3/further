@@ -19,6 +19,7 @@ struct QuestionButton: View {
     
     var body: some View {
         Button(action: {
+            print("Tapped buton", self.showingQuestionSheet)
             self.showingQuestionSheet.toggle()
         }) {
             Image(systemName: "person")
@@ -27,6 +28,9 @@ struct QuestionButton: View {
                 .padding()
         }.sheet(isPresented: $showingQuestionSheet) {
             QuestionView(showingQuestionSheet: self.$showingQuestionSheet, isSharingData: $isSharingData)
+        }
+        .onAppear() {
+            print("HI QUESTION BUTTON")
         }
     }
 }

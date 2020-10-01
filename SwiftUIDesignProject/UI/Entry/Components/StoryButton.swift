@@ -17,6 +17,8 @@ struct StoryButton: View {
     
     // MARK: Helpers
     private let logger = FurtherLogger(category: "storyButton")
+    @EnvironmentObject var environmentSettings: EnvironmentSettings
+    let dataParser = DataParser()
     
     // MARK: Sharing
     @Binding var qrVendorID: String
@@ -26,12 +28,19 @@ struct StoryButton: View {
         Button(action: {
             self.showingStorySheet.toggle()
         }) {
-            Image(systemName: "qrcode.viewfinder")
+            Image(systemName: environmentSettings.appType == .user ? "qrcode.viewfinder" : "calendar")
                 .foregroundColor(self.colorScheme == .dark ? Color.gray : Color.lairDarkGray)
                 .font(.system(size: 25, weight: .regular))
         }.sheet(isPresented: $showingStorySheet) {
-            CodeScannerView(codeTypes: [.qr], simulatedData: "Paul Hudson\npaul@hackingwithswift.com", completion: handleScan)
-                .edgesIgnoringSafeArea(.all)
+            switch environmentSettings.appType {
+            case .user:
+                CodeScannerView(codeTypes: [.qr], simulatedData: "Paul Hudson\npaul@hackingwithswift.com", completion: handleScan)
+                    .edgesIgnoringSafeArea(.all)
+            default:
+                CalendarView()
+                    .edgesIgnoringSafeArea(.all)
+            }
+            
         }.padding()
     }
     
@@ -39,7 +48,12 @@ struct StoryButton: View {
        self.showingStorySheet = false
         switch result {
         case .success(let code):
-            self.qrVendorID = "miyabi"
+            if let scannedURL = URL(string: code) {
+                dataParser.setURL(url: scannedURL)
+                guard let vendorName = dataParser.vendorID else { return }
+                self.qrVendorID = vendorName
+                environmentSettings.didShareDataSuccessfully = true
+            }
         case .failure(let error):
             self.logger.logger.log("Error scanning QR Code: \(error.localizedDescription, privacy: .public)")
         }

@@ -29,8 +29,6 @@ class EnvironmentSettings: ObservableObject {
     
     // MARK: Data Sharing
     @Published var didShareDataSuccessfully = false
-    @Published var establishmentName = "this establishment"
-    @Published var establishmentID: String?
     
     init() {
         baseURL = "https://further-app.com/connect/"

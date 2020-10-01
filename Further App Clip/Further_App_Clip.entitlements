@@ -10,7 +10,6 @@
 	<array>
 		<string>appclips:dining.further-app.com</string>
 		<string>appclips:dining.further-app.com/establishment/0000</string>
-		<string>appclips:dining.further-app.com/user/</string>
 	</array>
 	<key>com.apple.developer.parent-application-identifiers</key>
 	<array>

@@ -113,20 +113,13 @@ struct HeartView: View {
     var body: some View {
         ZStack {
             Image(colorScheme == .light ? "light_heart_back" : "dark_heart_back")
-            ZStack {
-                Image(colorScheme == .light ? "light_heart_middle" : "dark_heart_middle")
-                Image(uiImage: image)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 80, height: 80)
-//                    .shadow(radius: 5)
-                    .offset(x: 0, y: -5)
-                .scaleEffect(pulsate ? 0.95 : 1)
-                    .animation(Animation.easeInOut(duration: 1).delay(0).repeat(while: pulsate))
-                    .onAppear() {
-                        self.pulsate.toggle()
-                    }
-            }
+            Image(colorScheme == .light ? "light_heart_middle" : "dark_heart_middle")
+            Image(colorScheme == .light ? "light_heart_on" : "dark_heart_on")
+            .scaleEffect(pulsate ? 0.5 : 1)
+                .animation(Animation.easeInOut(duration: 1).delay(0).repeat(while: pulsate))
+                .onAppear() {
+                    self.pulsate.toggle()
+                }
         }
     }
 }
@@ -136,13 +129,22 @@ struct MainTextView: View {
     // UI Config
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var environmentSettings: EnvironmentSettings
+    @State private var mainText = "Scan a QR code to check in"
     
     // View
     var body: some View {
-        Text(environmentSettings.didShareDataSuccessfully ? "Successfully shared contact information with \(environmentSettings.establishmentName)" : "Scan your QR code to check in")
+        Text(mainText)
             .font(.custom("Rubik-Regular", size: CGFloat(26.67).scaledForDevice, relativeTo: .headline))
             .foregroundColor(colorScheme == .light ? Color(UIColor(red: 50.0/255.0, green: 54.0/255.0, blue: 83.0/255.0, alpha: 1.0)) : Color(UIColor(red: 172.0/255.0, green: 178.0/255.0, blue: 181.0/255.0, alpha: 1.0)))
             .fixedSize(horizontal: false, vertical: true)
+            .onChange(of: environmentSettings.didShareDataSuccessfully) { change in
+                if change {
+                    self.mainText = "Successfully checked in!"
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
+                        self.mainText = "Scan a QR code to check in"
+                    })
+                }
+            }
     }
 }
 

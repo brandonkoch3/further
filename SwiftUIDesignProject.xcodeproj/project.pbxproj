@@ -11,6 +11,10 @@
 		7CF3215EFAED12AD035CA676 /* Pods_Futher.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9143917E45A644B5F4206922 /* Pods_Futher.framework */; };
 		CA11D509242ACAE10074E024 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA11D508242ACAE10074E024 /* Extensions.swift */; };
 		CA11D50B242ACB920074E024 /* SimpleButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA11D50A242ACB920074E024 /* SimpleButtonStyle.swift */; };
+		CA1B6A1E25265BF000652258 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA1B6A1D25265BF000652258 /* CalendarView.swift */; };
+		CA1B6A2525265D1E00652258 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA1B6A1D25265BF000652258 /* CalendarView.swift */; };
+		CA1B6A2A25265E3400652258 /* DataParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA1B6A2925265E3400652258 /* DataParser.swift */; };
+		CA1B6A2E25265FB100652258 /* DataParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA1B6A2925265E3400652258 /* DataParser.swift */; };
 		CA30396525153EFE00BE4082 /* MapHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA30396425153EFE00BE4082 /* MapHelper.swift */; };
 		CA3039702515405A00BE4082 /* MapHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA30396425153EFE00BE4082 /* MapHelper.swift */; };
 		CA42DFAE250AB9BE006C0125 /* PersonInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA42DFAD250AB9BE006C0125 /* PersonInfoModel.swift */; };
@@ -18,8 +22,6 @@
 		CA42DFB2250AC5CA006C0125 /* PersonInfoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA42DFB1250AC5CA006C0125 /* PersonInfoController.swift */; };
 		CA4AD792251BC5AC00AD9BC6 /* FormattedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7C9EBD251BA898009EC2B6 /* FormattedTextField.swift */; };
 		CA61CA1C252556C50094DD4C /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = CA61CA1B252556C50094DD4C /* CodeScanner */; };
-		CA61CA2525255A300094DD4C /* DataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA61CA2425255A300094DD4C /* DataHelper.swift */; };
-		CA61CA2625255A300094DD4C /* DataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA61CA2425255A300094DD4C /* DataHelper.swift */; };
 		CA61CA2D25255D720094DD4C /* EntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9D81D2242151AE009625DF /* EntryView.swift */; };
 		CA61CA3125255DE00094DD4C /* StoryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9A0CC9243FCD2B00724394 /* StoryButton.swift */; };
 		CA61CA3625255E650094DD4C /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = CA61CA3525255E650094DD4C /* CodeScanner */; };
@@ -165,12 +167,13 @@
 		C6F6B18DB5F2356960A29D88 /* Pods-Further App Clip.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Further App Clip.release.xcconfig"; path = "Target Support Files/Pods-Further App Clip/Pods-Further App Clip.release.xcconfig"; sourceTree = "<group>"; };
 		CA11D508242ACAE10074E024 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		CA11D50A242ACB920074E024 /* SimpleButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleButtonStyle.swift; sourceTree = "<group>"; };
+		CA1B6A1D25265BF000652258 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
+		CA1B6A2925265E3400652258 /* DataParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataParser.swift; sourceTree = "<group>"; };
 		CA30396425153EFE00BE4082 /* MapHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapHelper.swift; sourceTree = "<group>"; };
 		CA42DFAD250AB9BE006C0125 /* PersonInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonInfoModel.swift; sourceTree = "<group>"; };
 		CA42DFAF250ABA56006C0125 /* QRCodeGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeGenerator.swift; sourceTree = "<group>"; };
 		CA42DFB1250AC5CA006C0125 /* PersonInfoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonInfoController.swift; sourceTree = "<group>"; };
 		CA42DFB6250C3E57006C0125 /* FurtherWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FurtherWidgetExtension.entitlements; sourceTree = "<group>"; };
-		CA61CA2425255A300094DD4C /* DataHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataHelper.swift; sourceTree = "<group>"; };
 		CA6879662513DB32008B6937 /* Further App Clip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Further App Clip.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA6879682513DB33008B6937 /* Further_App_ClipApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Further_App_ClipApp.swift; sourceTree = "<group>"; };
 		CA68796A2513DB33008B6937 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -254,6 +257,7 @@
 		CA11D4FF242AC9220074E024 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				CA1B6A1C25265BE400652258 /* Calendar */,
 				CA11D506242AC9D60074E024 /* Shared */,
 				CA11D503242AC9540074E024 /* Entry */,
 				CA7544672432F5DB00C45C28 /* Questionnaire */,
@@ -309,6 +313,14 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		CA1B6A1C25265BE400652258 /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				CA1B6A1D25265BF000652258 /* CalendarView.swift */,
+			);
+			path = Calendar;
+			sourceTree = "<group>";
+		};
 		CA30396325153EF000BE4082 /* Map */ = {
 			isa = PBXGroup;
 			children = (
@@ -330,7 +342,7 @@
 		CA61CA2325255A200094DD4C /* DataSharing */ = {
 			isa = PBXGroup;
 			children = (
-				CA61CA2425255A300094DD4C /* DataHelper.swift */,
+				CA1B6A2925265E3400652258 /* DataParser.swift */,
 			);
 			path = DataSharing;
 			sourceTree = "<group>";
@@ -792,15 +804,16 @@
 			files = (
 				CA6879A82513DD09008B6937 /* QuestionButton.swift in Sources */,
 				CA6879BE2513DD22008B6937 /* QRCodeGenerator.swift in Sources */,
+				CA1B6A2E25265FB100652258 /* DataParser.swift in Sources */,
 				CA6879BD2513DD22008B6937 /* PersonInfoModel.swift in Sources */,
 				CA6879BC2513DD22008B6937 /* PersonInfoController.swift in Sources */,
 				CA4AD792251BC5AC00AD9BC6 /* FormattedTextField.swift in Sources */,
 				CA3039702515405A00BE4082 /* MapHelper.swift in Sources */,
 				CA80631025147BC4004B73B0 /* AuthenticationHelper.swift in Sources */,
 				CA68798D2513DCF4008B6937 /* SimpleButtonStyle.swift in Sources */,
+				CA1B6A2525265D1E00652258 /* CalendarView.swift in Sources */,
 				CA6879C42513DD28008B6937 /* EnvironmentSettings.swift in Sources */,
 				CA61CA3125255DE00094DD4C /* StoryButton.swift in Sources */,
-				CA61CA2625255A300094DD4C /* DataHelper.swift in Sources */,
 				CA68796B2513DB33008B6937 /* ContentView.swift in Sources */,
 				CA6879932513DCF6008B6937 /* FontHelper.swift in Sources */,
 				CABAAD5825140AA500961080 /* LocationAuthenticator.swift in Sources */,
@@ -819,14 +832,15 @@
 			files = (
 				CA9A0CCA243FCD2B00724394 /* StoryButton.swift in Sources */,
 				CA9A0CC7243FCBCA00724394 /* QuestionButton.swift in Sources */,
-				CA61CA2525255A300094DD4C /* DataHelper.swift in Sources */,
 				CA80631825147FCF004B73B0 /* FurtherLogger.swift in Sources */,
 				CA11D50B242ACB920074E024 /* SimpleButtonStyle.swift in Sources */,
+				CA1B6A2A25265E3400652258 /* DataParser.swift in Sources */,
 				CA7C9EBE251BA898009EC2B6 /* FormattedTextField.swift in Sources */,
 				CA80630525147BBB004B73B0 /* AuthenticationHelper.swift in Sources */,
 				CA42DFB0250ABA56006C0125 /* QRCodeGenerator.swift in Sources */,
 				CA9A0CBE243FCAE500724394 /* EntryBackgroundView.swift in Sources */,
 				CA42DFB2250AC5CA006C0125 /* PersonInfoController.swift in Sources */,
+				CA1B6A1E25265BF000652258 /* CalendarView.swift in Sources */,
 				CA9D81CF242151AE009625DF /* AppDelegate.swift in Sources */,
 				CA9A0C99243F9EB500724394 /* FontHelper.swift in Sources */,
 				CA9D81D1242151AE009625DF /* SceneDelegate.swift in Sources */,

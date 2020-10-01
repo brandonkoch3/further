@@ -26,31 +26,36 @@ struct ContentView: View {
     
     // MARK: Sharing
     @Binding var isSharingData: Bool
-    var environmentSettings = EnvironmentSettings()
+    @EnvironmentObject var environmentSettings: EnvironmentSettings
     
     // MARK: Test
     @Binding var receivedURL: String
     @State private var showingDebugAlert = false
     
     var body: some View {
-        EntryView()
-            .sheet(isPresented: $showingSheet) {
-                switch sheetToShow {
-                case .disclaimer:
+        if !environmentSettings.didShareDataSuccessfully {
+            QuestionView(showingQuestionSheet: $showingSheet, isSharingData: $isSharingData)
+                .sheet(isPresented: $showingSheet) {
                     Disclaimer(isShowingDisclaimer: $showingSheet, isInRegion: $isInRegion, receivedURL: $receivedURL)
-                        .onDisappear() {
-                            self.sheetToShow = .questions
-                            self.showingSheet.toggle()
-                        }
-                case .questions:
-                    QuestionView(showingQuestionSheet: $showingSheet, isSharingData: $isSharingData)
                 }
-            }
-            .onAppear() {
-                if isSharingData {
-                    self.sheetToShow = .disclaimer
-                }
-            }
+            
+//            EmptyView()
+//                .sheet(isPresented: $showingSheet) {
+//                    switch sheetToShow {
+//                    case .disclaimer:
+//
+//                    case .questions:
+//                        QuestionView(showingQuestionSheet: $showingSheet, isSharingData: $isSharingData)
+//                    }
+//                }
+//                .onAppear() {
+//                    if isSharingData {
+//                        self.sheetToShow = .disclaimer
+//                    }
+//                }
+        } else {
+            EntryView()
+        }
     }
 }
 
@@ -62,6 +67,7 @@ struct Disclaimer: View {
     // MARK: Helpers
     @StateObject var authenticationHelper = AuthenticationHelper()
     @EnvironmentObject var environmentSettings: EnvironmentSettings
+    @EnvironmentObject var dataParser: DataParser
     let defaults = UserDefaults(suiteName: "group.com.bnbmedia.further.contents")
     let decoder = JSONDecoder()
     
@@ -121,7 +127,7 @@ struct Disclaimer: View {
                             .fontWeight(.bold)
                             .multilineTextAlignment(.center)
                             .fixedSize(horizontal: false, vertical: true)
-                        Text("Your region requires at least one diner from your party provide contact information to \(environmentSettings.establishmentName).")
+                        Text("Your region requires at least one diner from your party provide contact information to \(dataParser.establishmentName).")
                             .multilineTextAlignment(.center)
                             .fixedSize(horizontal: false, vertical: true)
                         Text("This information will be used to contact you in the event someone dining at the same time as you reports a positive COVID-19 test.")

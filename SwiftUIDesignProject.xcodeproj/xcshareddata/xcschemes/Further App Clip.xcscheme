@@ -54,12 +54,12 @@
          <EnvironmentVariable
             key = "_XCAppClipURL"
             value = "https://dining.further-app.com/user/pair?userID=ABCD"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </EnvironmentVariable>
          <EnvironmentVariable
             key = "_XCAppClipURL"
             value = "https://dining.further-app.com/vendor/checkin?vendorID=0123&amp;longitude=-117.844190&amp;latitude=33.680913&amp;vendorName=Coffee%20Shop"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>
    </LaunchAction>

@@ -15,6 +15,7 @@ struct Further_App_ClipApp: App {
     // MARK: Helpers
     let locationAuthenticator = LocationAuthenticator()
     var environmentSettings = EnvironmentSettings()
+    var dataParser = DataParser()
     
     // MARK: UI Config
     @State private var inRegion = false
@@ -28,6 +29,7 @@ struct Further_App_ClipApp: App {
             ContentView(isInRegion: $inRegion, isSharingData: $isSharingData, receivedURL: $receivedURL)
                 .environmentObject(PersonInfoController())
                 .environmentObject(environmentSettings)
+                .environmentObject(dataParser)
                 .onContinueUserActivity(NSUserActivityTypeBrowsingWeb, perform: { userActivity in
                     
                     // Verify we truly have activity
@@ -39,44 +41,18 @@ struct Further_App_ClipApp: App {
                     self.isSharingData = true
                     
                     // Parse the incoming URL
-                    guard let incomingURL = userActivity.webpageURL,
-                          let components = NSURLComponents(url: incomingURL, resolvingAgainstBaseURL: true),
-                          let queryItems = components.queryItems
-                    else { return }
+                    guard let incomingURL = userActivity.webpageURL else { return }
+                    
+                    // Parse URL
+                    dataParser.setURL(url: incomingURL)
                     
                     // Set our received URL (for debug)
                     self.receivedURL = incomingURL.absoluteString
                     
-                    print("Components:", components)
-                    
-                    // Get the path component
-                    guard let path = components.path else { return }
-                    
-                    // Find the vendor ID, or exit
-                    guard let vendorID = queryItems.first(where: { $0.name == "vendorID" }), let id = vendorID.value else {
-                        return
-                    }
-                    environmentSettings.establishmentID = id
-                    
-                    // Find the vendor name, if it exists
-                    if let vendorName = queryItems.first(where: { $0.name == "vendorName" }) {
-                        if let name = vendorName.value {
-                            environmentSettings.establishmentName = name.capitalized
-                        }
-                    }
-                    
-                    print("PATH:", path)
-                    
                     // Handle configurations
-                    switch path {
+                    switch dataParser.path {
                         case "":
                             self.inRegion = true
-                        case "/dine":
-                            self.inRegion = true
-                        case "/user/pair":
-                            self.inRegion = true
-                        case "/vendor/checkin":
-                            self.inRegion = false
                         default:
                             break
                     }
@@ -85,19 +61,14 @@ struct Further_App_ClipApp: App {
                     guard !inRegion else { return }
                     if let payload = userActivity.appClipActivationPayload {
                         
-                        // Get the coordinates, and display name, if they exist
-                        guard let longitude = queryItems.first(where: { $0.name == "longitude" }),
-                        let latitude = queryItems.first(where: { $0.name == "latitude" }),
-                        let longitudeCoords = longitude.value,
-                        let latitudeCoords = latitude.value,
-                        let long = Double(longitudeCoords),
-                        let lat = Double(latitudeCoords) else {
-                            print("Problem")
+                        // Set coordinates, if they exist
+                        guard let longitude = dataParser.longitude,
+                        let latitude = dataParser.latitude else {
                             return
                         }
                         
                         // Perform region check
-                        locationAuthenticator.verify(payload: payload, longitude: long, latitude: lat, name: environmentSettings.establishmentName) { (inRegion, error) in
+                        locationAuthenticator.verify(payload: payload, longitude: longitude, latitude: latitude, name: dataParser.establishmentName) { (inRegion, error) in
                             if let e = error {
                                 print("There was an error verifying region: ", e.localizedDescription)
                             }

@@ -129,10 +129,6 @@ class PersonInfoController: ObservableObject {
         // Load environmental data
         loadEnvironmentInfo()
         
-        print("Type:", self.appType)
-        print("URL:", baseURL)
-        print("ID:", self.personInfo.id)
-        
         // Generate QR Code
         guard let type = self.appType, let url = baseURL, let id = self.personInfo?.id else {
             return
@@ -206,7 +202,10 @@ class PersonInfoController: ObservableObject {
         }
     }
     
-    public func test(completion: @escaping (Bool) -> Void) {
+    public func shareInteraction(vendorID: String, completion: @escaping (Bool) -> Void) {
+        let userID = self.personInfo.id
+        
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             completion(true)
         }
