@@ -41,6 +41,7 @@ class PersonInfoController: ObservableObject {
     var mapCancellable: AnyCancellable?
     var editorCancellable: AnyCancellable?
     var addressCancellable: AnyCancellable?
+    var publishCancellable: AnyCancellable?
     
     // MARK: Validators
     @Published var validName = false
@@ -186,10 +187,14 @@ class PersonInfoController: ObservableObject {
     
     public func savePersonInfo(data: PersonInfoModel) {
         savePersonInfoLocally(data: data)
-        savePersonInfoRemotely(data: data) { (response) in
-            //
-        }
+
         updateWidget()
+    }
+    
+    public func savePressed() {
+        savePersonInfoRemotely(data: self.personInfo) { response in
+            
+        }
     }
     
     private func savePersonInfoLocally(data: PersonInfoModel) {
@@ -212,7 +217,34 @@ class PersonInfoController: ObservableObject {
     }
     
     private func savePersonInfoRemotely(data: PersonInfoModel, completion: @escaping (Bool) -> Void) {
-        // TODO: Implement
+        let t = try? encoder.encode(self.personInfo)
+        let destination = URL(string: "https://someapi.com")!
+        let urlconfig = URLSessionConfiguration.default
+        urlconfig.timeoutIntervalForResource = 15.0
+        urlconfig.timeoutIntervalForRequest = 15.0
+        let session = URLSession(configuration: urlconfig)
+        
+        var request = URLRequest(url: destination)
+        request.httpMethod = "POST"
+        request.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData
+        request.httpBody = t
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        publishCancellable = session.dataTaskPublisher(for: request)
+            .receive(on: RunLoop.main)
+            .map({ $0.response })
+            .compactMap({ $0 as? HTTPURLResponse })
+            .eraseToAnyPublisher()
+            .sink(receiveCompletion: { completed in
+                self.publishCancellable?.cancel()
+            }, receiveValue: { response in
+                switch response.statusCode {
+                case 200:
+                    completion(true)
+                default:
+                    completion(false)
+                }
+            })
     }
     
     private func updateWidget() {

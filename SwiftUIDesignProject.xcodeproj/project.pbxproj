@@ -58,6 +58,8 @@
 		CA80631025147BC4004B73B0 /* AuthenticationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA80630425147BBB004B73B0 /* AuthenticationHelper.swift */; };
 		CA80631825147FCF004B73B0 /* FurtherLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA80631725147FCF004B73B0 /* FurtherLogger.swift */; };
 		CA80631E25148063004B73B0 /* FurtherLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA80631725147FCF004B73B0 /* FurtherLogger.swift */; };
+		CA971808252682F20016A86E /* CheckinModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA971807252682F20016A86E /* CheckinModel.swift */; };
+		CA971809252682F20016A86E /* CheckinModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA971807252682F20016A86E /* CheckinModel.swift */; };
 		CA9A0C99243F9EB500724394 /* FontHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9A0C98243F9EB500724394 /* FontHelper.swift */; };
 		CA9A0CA5243F9FB900724394 /* Rubik-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA9A0C9B243F9FB800724394 /* Rubik-Bold.ttf */; };
 		CA9A0CA7243F9FB900724394 /* Rubik-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA9A0C9C243F9FB800724394 /* Rubik-Light.ttf */; };
@@ -186,6 +188,7 @@
 		CA7C9EBD251BA898009EC2B6 /* FormattedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormattedTextField.swift; sourceTree = "<group>"; };
 		CA80630425147BBB004B73B0 /* AuthenticationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationHelper.swift; sourceTree = "<group>"; };
 		CA80631725147FCF004B73B0 /* FurtherLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FurtherLogger.swift; sourceTree = "<group>"; };
+		CA971807252682F20016A86E /* CheckinModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckinModel.swift; sourceTree = "<group>"; };
 		CA9A0C98243F9EB500724394 /* FontHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontHelper.swift; sourceTree = "<group>"; };
 		CA9A0C9B243F9FB800724394 /* Rubik-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rubik-Bold.ttf"; sourceTree = "<group>"; };
 		CA9A0C9C243F9FB800724394 /* Rubik-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rubik-Light.ttf"; sourceTree = "<group>"; };
@@ -343,6 +346,7 @@
 			isa = PBXGroup;
 			children = (
 				CA1B6A2925265E3400652258 /* DataParser.swift */,
+				CA971807252682F20016A86E /* CheckinModel.swift */,
 			);
 			path = DataSharing;
 			sourceTree = "<group>";
@@ -807,6 +811,7 @@
 				CA1B6A2E25265FB100652258 /* DataParser.swift in Sources */,
 				CA6879BD2513DD22008B6937 /* PersonInfoModel.swift in Sources */,
 				CA6879BC2513DD22008B6937 /* PersonInfoController.swift in Sources */,
+				CA971809252682F20016A86E /* CheckinModel.swift in Sources */,
 				CA4AD792251BC5AC00AD9BC6 /* FormattedTextField.swift in Sources */,
 				CA3039702515405A00BE4082 /* MapHelper.swift in Sources */,
 				CA80631025147BC4004B73B0 /* AuthenticationHelper.swift in Sources */,
@@ -835,6 +840,7 @@
 				CA80631825147FCF004B73B0 /* FurtherLogger.swift in Sources */,
 				CA11D50B242ACB920074E024 /* SimpleButtonStyle.swift in Sources */,
 				CA1B6A2A25265E3400652258 /* DataParser.swift in Sources */,
+				CA971808252682F20016A86E /* CheckinModel.swift in Sources */,
 				CA7C9EBE251BA898009EC2B6 /* FormattedTextField.swift in Sources */,
 				CA80630525147BBB004B73B0 /* AuthenticationHelper.swift in Sources */,
 				CA42DFB0250ABA56006C0125 /* QRCodeGenerator.swift in Sources */,
